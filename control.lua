@@ -13,7 +13,9 @@ local function set_button_sprite(button, spritepath)
 			end
 		else
 			if button["button_sprite"] == nil then
-				button.add({type="sprite", name="button_sprite", sprite=spritepath, ignored_by_interaction=true })
+				local sprite = button.add({type="sprite", name="button_sprite", sprite=spritepath, ignored_by_interaction=true })
+				sprite.style.stretch_image_to_widget_size = true
+				sprite.style.size = {32,32}
 			else
 				button["button_sprite"].sprite = spritepath
 			end
