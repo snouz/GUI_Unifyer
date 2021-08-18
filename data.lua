@@ -1,38 +1,54 @@
+local ICONPATH = "__GUI_Unifyer__/graphics/icons/"
+
 data:extend({
 	{
 		type = "sprite",
 		name = "placeables",
-
-		filename = "__Better_Modbuttons__/graphics/icons/placeables.png",
+		filename = ICONPATH .. "placeables.png",
 		flags = { "gui-icon" },
 		width = 64,
 		height = 64,
 		scale = 0.5,
-
 		priority = "extra-high-no-scale"
 	},
 	{
 		type = "sprite",
 		name = "todolist",
-
-		filename = "__Better_Modbuttons__/graphics/icons/todolist.png",
+		filename = ICONPATH .. "todolist.png",
 		flags = { "gui-icon" },
 		width = 64,
 		height = 64,
 		scale = 0.5,
-
 		priority = "extra-high-no-scale"
 	},
 	{
 		type = "sprite",
-		name = "calculator",
-
-		filename = "__Better_Modbuttons__/graphics/icons/calculator.png",
+		name = "helmod",
+		filename = ICONPATH .. "helmod.png",
 		flags = { "gui-icon" },
-		width = 32,
-		height = 32,
-		scale = 1.0,
-
+		width = 64,
+		height = 64,
+		scale = 0.5,
+		priority = "extra-high-no-scale"
+	},
+	{
+		type = "sprite",
+		name = "factoryplanner",
+		filename = ICONPATH .. "factoryplanner.png",
+		flags = { "gui-icon" },
+		width = 64,
+		height = 64,
+		scale = 0.5,
+		priority = "extra-high-no-scale"
+	},
+	{
+		type = "sprite",
+		name = "what-is-it-really-used-for",
+		filename = ICONPATH .. "what-is-it-really-used-for.png",
+		flags = { "gui-icon" },
+		width = 64,
+		height = 64,
+		scale = 0.5,
 		priority = "extra-high-no-scale"
 	}
 })

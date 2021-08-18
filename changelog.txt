@@ -1,10 +1,12 @@
 ---------------------------------------------------------------------------------------------------
-Version: 1.0.2
-Date: 2021.07.18
+Version: 1.0.0
+Date: 2021.08.18
   Changes:
-    - Fixed wrong icon size when ui scale is not 100%
+    - Initial release based on Better_Modicons by Dr_Pepper (with permission) but with new icons.
+    - Supports factoryplanner.
+    - Supports helmod.
+    - Supports ModuleInserter.
+    - Supports Placeables.
+    - Supports Todo-List.
+    - (new) Supports what-is-it-really-used-for.
 ---------------------------------------------------------------------------------------------------
-Version: 1.0.1
-Date: 2021.07.17
-  Changes:
-    - Initial release
