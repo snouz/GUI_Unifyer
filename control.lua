@@ -75,6 +75,13 @@ local function fix_buttons(player)
 		set_button_sprite(wiiuf_button, "what-is-it-really-used-for")
 	end
 
+	-- creative-mod
+	local creativemod_button = button_flow["creative-mod_main-menu-open-button"]
+	if creativemod_button then
+		creativemod_button.style = "slot_button"
+		set_button_sprite(creativemod_button, "creativemod_button")
+	end
+
 	--[[
 	local informatron_button = button_flow["informatron_overhead"]
 	if informatron_button then

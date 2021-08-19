@@ -50,6 +50,16 @@ data:extend({
 		height = 64,
 		scale = 0.5,
 		priority = "extra-high-no-scale"
+	},
+	{
+		type = "sprite",
+		name = "creativemod_button",
+		filename = ICONPATH .. "creative-mod.png",
+		flags = { "gui-icon" },
+		width = 64,
+		height = 64,
+		scale = 0.5,
+		priority = "extra-high-no-scale"
 	}
 })
 
