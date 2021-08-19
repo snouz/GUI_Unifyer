@@ -1,80 +1,32 @@
 local ICONPATH = "__GUI_Unifyer__/graphics/icons/"
 
-data:extend({
-	{
-		type = "sprite",
-		name = "placeables",
-		filename = ICONPATH .. "placeables.png",
-		flags = { "gui-icon" },
-		width = 64,
-		height = 64,
-		scale = 0.5,
-		priority = "extra-high-no-scale"
-	},
-	{
-		type = "sprite",
-		name = "todolist",
-		filename = ICONPATH .. "todolist.png",
-		flags = { "gui-icon" },
-		width = 64,
-		height = 64,
-		scale = 0.5,
-		priority = "extra-high-no-scale"
-	},
-	{
-		type = "sprite",
-		name = "helmod",
-		filename = ICONPATH .. "helmod.png",
-		flags = { "gui-icon" },
-		width = 64,
-		height = 64,
-		scale = 0.5,
-		priority = "extra-high-no-scale"
-	},
-	{
-		type = "sprite",
-		name = "factoryplanner",
-		filename = ICONPATH .. "factoryplanner.png",
-		flags = { "gui-icon" },
-		width = 64,
-		height = 64,
-		scale = 0.5,
-		priority = "extra-high-no-scale"
-	},
-	{
-		type = "sprite",
-		name = "what-is-it-really-used-for",
-		filename = ICONPATH .. "what-is-it-really-used-for.png",
-		flags = { "gui-icon" },
-		width = 64,
-		height = 64,
-		scale = 0.5,
-		priority = "extra-high-no-scale"
-	},
-	{
-		type = "sprite",
-		name = "creativemod_button",
-		filename = ICONPATH .. "creative-mod.png",
-		flags = { "gui-icon" },
-		width = 64,
-		height = 64,
-		scale = 0.5,
-		priority = "extra-high-no-scale"
-	}
-})
+local sprites = {"placeables", "todolist", "helmod", "factoryplanner", "what-is-it-really-used-for", "creativemod_button"}
 
+for _, i in pairs(sprites) do
+	local p = {}
+	p.type = "sprite"
+	p.name = i
+	p.filename = ICONPATH .. i .. ".png"
+	p.flags = { "gui-icon" }
+	p.width = 64
+	p.height = 64
+	p.scale = 0.5
+	p.priority = "extra-high-no-scale"
+	data:extend({p})
+end
+
+local def = {0, 0, 0, 0}
 local slot_button_notext = {
 	type = "button_style",
 	parent = "slot_button",
-
-	default_font_color = {0, 0, 0, 0},
-	hovered_font_color = {0, 0, 0, 0},
-	clicked_font_color = {0, 0, 0, 0},
-	disabled_font_color = {0, 0, 0, 0},
-	selected_font_color = {0, 0, 0, 0},
-	selected_hovered_font_color = {0, 0, 0, 0},
-	selected_clicked_font_color = {0, 0, 0, 0},
-	strikethrough_color = {0, 0, 0, 0},
+	default_font_color = def,
+	hovered_font_color = def,
+	clicked_font_color = def,
+	disabled_font_color = def,
+	selected_font_color = def,
+	selected_hovered_font_color = def,
+	selected_clicked_font_color = def,
+	strikethrough_color = def,
 }
 
 data.raw["gui-style"].default["slot_button_notext"] = slot_button_notext
