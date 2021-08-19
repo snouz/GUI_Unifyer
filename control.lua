@@ -67,7 +67,6 @@ local function fix_buttons(player)
 		set_button_sprite(todolist_button, "todolist")
 	end
 
-
 	-- what-is-it-really-used-for
 	local wiiuf_button = button_flow.wiiuf_flow and button_flow.wiiuf_flow.search_flow and button_flow.wiiuf_flow.search_flow["looking-glass"]
 	if wiiuf_button then
@@ -82,18 +81,17 @@ local function fix_buttons(player)
 		set_button_sprite(creativemod_button, "creativemod_button")
 	end
 
-	--[[
-	local informatron_button = button_flow["informatron_overhead"]
-	if informatron_button then
-		-- move button to right
-		-- we can only do this because informatron allows buttons from different mods to toggle their gui
-		informatron_button.name = "informatron_overhead_old"
-		button_flow.add({type = "sprite-button", name="informatron_overhead", sprite=informatron_button.sprite, style="slot_button", tooltip = informatron_button.tooltip})	
-		informatron_button.destroy()
-	end
-	]]--
+end
 
-	-- game.print(serpent.block(messg))
+local function fix_buttons_not_on_startup(player)
+	local button_flow = mod_gui.get_button_flow(player)
+
+	-- creative-mod
+	local creativemod_button = button_flow["creative-mod_main-menu-open-button"]
+	if creativemod_button then
+		creativemod_button.style = "slot_button"
+		set_button_sprite(creativemod_button, "creativemod_button")
+	end
 end
 
 local function on_init()
@@ -108,6 +106,12 @@ local function on_configuration_changed()
 	end
 end
 
+local function on_gui_opened()
+	for idx, player in pairs(game.players) do
+		fix_buttons_not_on_startup(player)
+	end
+end
+
 local function on_player_created(event)
 	fix_buttons(game.players[event.player_index])
 end
@@ -115,3 +119,4 @@ end
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
 script.on_event(defines.events.on_player_created, on_player_created)
+script.on_event(defines.events.on_gui_click, on_gui_opened)
