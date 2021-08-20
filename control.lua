@@ -81,18 +81,15 @@ local function fix_buttons(player)
 		set_button_sprite(creativemod_button, "creativemod_button")
 	end
 
-end
-
-local function fix_buttons_not_on_startup(player)
-	local button_flow = mod_gui.get_button_flow(player)
-
-	-- creative-mod
-	local creativemod_button = button_flow["creative-mod_main-menu-open-button"]
-	if creativemod_button then
-		creativemod_button.style = "slot_button"
-		set_button_sprite(creativemod_button, "creativemod_button")
+	-- BeastFinder
+	local beastfinder_button = button_flow["beastfinder-menu-button"]
+	if beastfinder_button then
+		beastfinder_button.style = "slot_button"
+		set_button_sprite(beastfinder_button, "beastfinder_button")
 	end
+
 end
+
 
 local function on_init()
 	for idx, player in pairs(game.players) do
@@ -106,12 +103,6 @@ local function on_configuration_changed()
 	end
 end
 
-local function on_gui_opened()
-	for idx, player in pairs(game.players) do
-		fix_buttons_not_on_startup(player)
-	end
-end
-
 local function on_player_created(event)
 	fix_buttons(game.players[event.player_index])
 end
@@ -119,4 +110,4 @@ end
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
 script.on_event(defines.events.on_player_created, on_player_created)
-script.on_event(defines.events.on_gui_click, on_gui_opened)
+script.on_event(defines.events.on_gui_click, on_configuration_changed)
