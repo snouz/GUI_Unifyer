@@ -133,7 +133,7 @@ local function fix_buttons(player)
 	-- OutpostPlanner
 	local outpostplanner_button = button_flow["OutpostBuilder"]
 	if outpostplanner_button then
-		outpostplanner_button.style = "slot_button"
+		outpostplanner_button.style = "slot_button_notext"
 		set_button_sprite(outpostplanner_button, "outpostplanner_button")
 	end
 
@@ -147,11 +147,11 @@ local function fix_buttons(player)
 			set_button_sprite(quickbarimportexport_button, "quickbarimportexport_button")
 		end
 		if quickbarimport_button then
-			quickbarimport_button.style = "slot_button"
+			quickbarimport_button.style = "slot_button_notext"
 			set_button_sprite(quickbarimport_button, "quickbarimport_button")
 		end
 		if quickbarexport_button then
-			quickbarexport_button.style = "slot_button"
+			quickbarexport_button.style = "slot_button_notext"
 			set_button_sprite(quickbarexport_button, "quickbarexport_button")
 		end
 	end
