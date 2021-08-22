@@ -88,13 +88,6 @@ local function fix_buttons(player)
 		set_button_sprite(beastfinder_button, "beastfinder_button")
 	end
 
-	-- blueprint-request
-	local blueprint_request_button = button_flow["blueprint-request-button"]
-	if blueprint_request_button then
-		blueprint_request_button.style = "slot_button"
-		set_button_sprite(blueprint_request_button, "blueprint_request_button")
-	end
-
 	-- bobclasses
 	local bobclasses_button = button_flow["bob_avatar_toggle_gui"]
 	if bobclasses_button then
@@ -108,8 +101,91 @@ local function fix_buttons(player)
 		bobinserters_button.style = "slot_button"
 		set_button_sprite(bobinserters_button, "bobinserters_button")
 	end
+
+	-- CleanMap
+	local cleanmap_button = button_flow["CleanMap"]
+	if cleanmap_button then
+		cleanmap_button.style = "slot_button"
+		set_button_sprite(cleanmap_button, "cleanmap_button")
+	end
+
+	-- Death_Counter
+	local deathcounter_button = button_flow["DeathCounterMainButton"]
+	if deathcounter_button then
+		deathcounter_button.style = "slot_button"
+		set_button_sprite(deathcounter_button, "deathcounter_button")
+	end
+
+	-- DeleteEmptyChunks
+	local deleteemptychunks_button = button_flow["DeleteEmptyChunks"]
+	if deleteemptychunks_button then
+		deleteemptychunks_button.style = "slot_button"
+		set_button_sprite(deleteemptychunks_button, "deleteemptychunks_button")
+	end
+
+	-- ingteb
+	local ingteb_button = button_flow["ingteb"]
+	if ingteb_button then
+		ingteb_button.style = "slot_button"
+		set_button_sprite(ingteb_button, "ingteb_button")
+	end
+
+	-- OutpostPlanner
+	local outpostplanner_button = button_flow["OutpostBuilder"]
+	if outpostplanner_button then
+		outpostplanner_button.style = "slot_button"
+		set_button_sprite(outpostplanner_button, "outpostplanner_button")
+	end
+
+	-- quickbarimportexport
+	if button_flow["qbie_flow_choose_action"] then
+		local quickbarimportexport_button = button_flow["qbie_flow_choose_action"]["qbie_button_show_options"]
+		local quickbarimport_button = button_flow["qbie_flow_choose_action"]["qbie_button_import"]
+		local quickbarexport_button = button_flow["qbie_flow_choose_action"]["qbie_button_export"]
+		if quickbarimportexport_button then
+			quickbarimportexport_button.style = "slot_button"
+			set_button_sprite(quickbarimportexport_button, "quickbarimportexport_button")
+		end
+		if quickbarimport_button then
+			quickbarimport_button.style = "slot_button"
+			set_button_sprite(quickbarimport_button, "quickbarimport_button")
+		end
+		if quickbarexport_button then
+			quickbarexport_button.style = "slot_button"
+			set_button_sprite(quickbarexport_button, "quickbarexport_button")
+		end
+	end
+
+	-- rocket-silo-stats
+	local rocketsilostats_button = button_flow["rocket-silo-stats-toggle"]
+	if rocketsilostats_button then
+		rocketsilostats_button.style = "slot_button"
+		set_button_sprite(rocketsilostats_button, "rocketsilostats_button")
+	end
+
+	-- SchallSatelliteController
+	local schallsatellitecontroller_button = button_flow["Schall-SC-mod-button"]
+	if schallsatellitecontroller_button then
+		schallsatellitecontroller_button.style = "slot_button"
+		set_button_sprite(schallsatellitecontroller_button, "schallsatellitecontroller_button")
+	end
 end
 
+function handle_cursor_changed_bp(event)
+
+	-- blueprint-request
+	local player = game.players[event.player_index]
+    if not player or not player.valid then return end
+    if player.is_cursor_blueprint() then
+    	local button_flow = mod_gui.get_button_flow(player)
+    	local blueprintrequest_button = button_flow["blueprint-request-button"]
+		if blueprintrequest_button then
+			blueprintrequest_button.style = "slot_button"
+			set_button_sprite(blueprintrequest_button, "blueprintrequest_button")
+		end
+    end
+
+end
 
 local function on_init()
 	for idx, player in pairs(game.players) do
@@ -131,3 +207,4 @@ script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
 script.on_event(defines.events.on_player_created, on_player_created)
 script.on_event(defines.events.on_gui_click, on_configuration_changed)
+script.on_event(defines.events.on_player_cursor_stack_changed, handle_cursor_changed_bp)

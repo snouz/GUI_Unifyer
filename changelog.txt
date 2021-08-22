@@ -1,9 +1,24 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.4.0
+Date: 2021.08.22
+  Changes:
+    - Fixed Blueprint request support, changed icon
+    - Supports CleanMap
+    - Supports DeleteEmptyChunks
+    - Supports Death Counter
+    - Supports Ingame Technology Browser
+    - Supports Outpost Planner
+    - Supports Quickbar Import/Export
+    - Supports Rocket Silo Stats
+    - Supports Schall Satellite Controller
+    - Changed Todo list icon
+    - Changed Bob's Character classes icon
+---------------------------------------------------------------------------------------------------
 Version: 1.3.0
 Date: 2021.08.21
   Changes:
     - Supports Blueprint-request
-    - Supports Bob's Inserters / Bob's Logistics
+    - Supports Bob's Adjustable Inserters / Bob's Logistics
     - Supports Bob's Character classes
 ---------------------------------------------------------------------------------------------------
 Version: 1.2.0

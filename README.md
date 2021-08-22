@@ -10,13 +10,20 @@ Factorio Mod forcing mod buttons to look uniform and aligned.
 - Todo List
 - What Is It Really Used For
 - Creative Mod
+- BeastFinder
+- Blueprint request
+- Bob's mods
+- CleanMap / DeleteEmptyChunks
+- Death Counter
+- Ingame Technology Browser
+- Outpost Planner
+- Quickbar Import/Export
+- Rocket Silo Stats
+- Schall Satellite Controller
 - ... and more soon.
 
 # Current advancement
-Before
-![before](https://i.imgur.com/Wto8MoZ.png)
-![after](https://i.imgur.com/UzNccyu.png)
-After
+![comparison](https://i.imgur.com/LMYaJ1Z.png)
 
 # Installation from Factorio Mod Portal
 Go to https://mods.factorio.com/mod/GUI_Unifyer or download it ingame.
