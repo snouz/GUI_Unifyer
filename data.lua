@@ -1,6 +1,6 @@
 local ICONPATH = "__GUI_Unifyer__/graphics/icons/"
 
-local sprites = {"placeables", "todolist", "helmod", "factoryplanner", "what-is-it-really-used-for", "creativemod_button", "beastfinder_button", "blueprintrequest_button", "bobclasses_button", "bobinserters_button", "cleanmap_button", "deathcounter_button", "deleteemptychunks_button", "ingteb_button", "outpostplanner_button", "quickbarimportexport_button", "quickbarimport_button", "quickbarexport_button", "rocketsilostats_button", "schallsatellitecontroller_button"}
+local sprites = {"placeables_button", "todolist_button", "helmod_button", "factoryplanner_button", "moduleinserter_button", "wiiuf_button", "creativemod_button", "beastfinder_button", "blueprintrequest_button", "bobclasses_button", "bobinserters_button", "cleanmap_button", "deathcounter_button", "ingteb_button", "outpostplanner_button", "quickbarimportexport_button", "quickbarimport_button", "quickbarexport_button", "rocketsilostats_button", "schallsatellitecontroller_button"}
 
 for _, i in pairs(sprites) do
 	local p = {}
