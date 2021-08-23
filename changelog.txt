@@ -1,4 +1,16 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.5.0
+Date: 2021.08.23
+  Changes:
+    - Supports Actual Craft Times Remade
+    - Supports Attila Zoom Mod
+    - Supports Auto Trash
+    - Supports Better Bots Technologies
+    - Supports Change Map Settings
+    - Supports Doing Things By Hand
+    - Supports Kill Lost Bots
+    - Code factorisation and code preparation for next mods
+---------------------------------------------------------------------------------------------------
 Version: 1.4.0
 Date: 2021.08.22
   Changes:

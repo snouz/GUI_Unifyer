@@ -33,11 +33,13 @@ end
 
 
 local function change_one_icon(player, sprite, button)
-	local button_flow = mod_gui.get_button_flow(player)
-	local modbutton = button_flow[button]
-	if modbutton then
-		modbutton.style = "slot_button_notext"
-		set_button_sprite(modbutton, sprite)
+	if player and sprite and button then
+		local button_flow = mod_gui.get_button_flow(player)
+		local modbutton = button_flow[button]
+		if modbutton then
+			modbutton.style = "slot_button_notext"
+			set_button_sprite(modbutton, sprite)
+		end
 	end
 end
 
@@ -61,11 +63,56 @@ local function fix_buttons(player)
 		{"rocketsilostats_button", "rocket-silo-stats-toggle"},
 		{"schallsatellitecontroller_button", "Schall-SC-mod-button"},
 		--{"", ""},
+		{"actualcrafttimesremade_button", "ACTR_mod_button"},
+		{"attachnotes_button", ""},
+		{"avatars_button", ""},
+		{"betterbotsfixed_button", "betterbots_top_btn"},
+		{"blackmarket2_button", ""},
+		{"changemapsettings_button", "change-map-settings-toggle-config"},
+		{"dana_button", "modGuiButton"}, -- can't find the button name!
+		{"deleteadjacentchunk_button", ""},
+		{"doingthingsbyhand_button", "DoingThingsByHandMainButton"},
+		{"facautoscreenshot_button", ""},
+		{"helicopterrevival_button", ""},
+		{"factorissimo2_button", ""},
+		{"killlostbots_button", "KillLostBots"},
+		{"kraskaskatotalrawresourcescalc_button", ""},
+		{"kuxcraftingtools_button", ""},
+		{"kuxorbitalioncannon_button", ""},
+		{"landfilleverythingbuttrains_button", ""},
+		{"landfilleverythingu_button", ""},
+		{"markers_button", "markers_gui_toggle"},
+		{"modmashsplinterboom_button", ""},
+		{"modmashsplinternewworlds_button", ""},
+		{"newgameplus_button", ""},
+		{"notenoughtodo_button", ""},
+		{"nullius_button", ""},
+		{"omnimattercompression_button", ""},
+		{"oshahotswap_button", ""},
+		{"pickerinventorytools_button", ""},
+		{"picksrocketstats_button", ""},
+		{"poweredentities_button", ""},
+		{"reloadmodsredux_button", ""},
+		{"researchcounter_button", ""},
+		{"richtexthelper_button", ""},
+		{"ritnteleportation_button", ""},
+		{"schallendgameevolution_button", ""},
+		{"solarcalc_button", ""},
+		{"solarratio_button", ""},
+		{"spacemod_button", ""},
+		{"thefatcontroller_button", ""},
+		{"togglepeacefulmode_button", ""},
+		{"trainlog_button", ""},
+		{"trainpubsub_button", ""},
+		{"upgradeplannernext_button", ""},
+		{"whatsmissing_button", ""},
 	}
 
 	for _, k in pairs(iconlist) do
 		change_one_icon(player, k[1], k[2])
 	end
+
+	--game.print(serpent.block(mod_gui.get_button_flow(player)))
 
 	--------------------------------
 	--------- UNIQUE ONES ----------
@@ -97,22 +144,49 @@ local function fix_buttons(player)
 		end
 	end
 
+	-- AttilaZoomMod
+	for i=1,15 do
+		local attilazoommod_button = button_flow["Attila_zm_btn_"..tostring(i)]
+		if attilazoommod_button then
+			attilazoommod_button.style = "slot_button_whitetext"
+			set_button_sprite(attilazoommod_button, "attilazoommod_button")
+		end
+	end
+
+	--AutoTrash
+	local autotrash_button = button_flow["at_config_button"]
+	if autotrash_button then
+		autotrash_button.style = "slot_button_notext"
+	end
+
 
 end
 
 function handle_cursor_changed_bp(event)
-	-- blueprint-request
 	local player = game.players[event.player_index]
     if not player or not player.valid then return end
     if player.is_cursor_blueprint() then
+
     	local button_flow = mod_gui.get_button_flow(player)
+
+    	-- blueprint-request
     	local blueprintrequest_button = button_flow["blueprint-request-button"]
 		if blueprintrequest_button then
 			blueprintrequest_button.style = "slot_button_notext"
 			set_button_sprite(blueprintrequest_button, "blueprintrequest_button")
 		end
+		--[[
+		-- BlueprintAlignment
+		local blueprintalignment_button = button_flow["BlueprintAlignment_Button"]
+		if blueprintalignment_button then
+			blueprintalignment_button.style = "slot_button_notext"
+			--set_button_sprite(blueprintalignment_button, "blueprintalignment_button")
+		end
+		]]--
+
     end
 end
+
 
 local function on_init()
 	for idx, player in pairs(game.players) do
@@ -135,3 +209,4 @@ script.on_configuration_changed(on_configuration_changed)
 script.on_event(defines.events.on_player_created, on_player_created)
 script.on_event(defines.events.on_gui_click, on_configuration_changed)
 script.on_event(defines.events.on_player_cursor_stack_changed, handle_cursor_changed_bp)
+script.on_event(defines.events.on_gui_opened, handle_cursor_changed_bp)

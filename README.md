@@ -20,6 +20,14 @@ Factorio Mod forcing mod buttons to look uniform and aligned.
 - Quickbar Import/Export
 - Rocket Silo Stats
 - Schall Satellite Controller
+- Actual Craft Times Remade
+- Attila Zoom Mod
+- Auto Trash
+- Better Bots Technologies
+- Change Map Settings
+- Doing Things By Hand
+- Kill Lost Bots
+
 - ... and more soon.
 
 # Current advancement
