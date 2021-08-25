@@ -1,4 +1,31 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.6.0
+Date: 2021.08.25
+  Changes:
+    - Supports Screenshot Toolkit
+    - Supports Factorissimo2
+    - Supports Kraskaska's Technology Total Raw Resources Calc
+    - Supports Crafting Tools
+    - Supports Orbital Ion Cannon (SE Edition)
+    - Supports Landfill Everything
+    - Supports Not Enough Todo
+    - Supports OSHA Hot Swap
+    - Supports Picker Inventory Tools
+    - Supports Powered Entities
+    - Supports Research Counter
+    - Supports Rich Text Helper
+    - Supports RitnTeleportation
+    - Supports Solar Calculator
+    - Supports Solar Ratio Calculator
+    - Supports Space Extension Mod (SpaceX)
+    - Supports The Fat Controller
+    - Supports Toggle Peaceful Mode
+    - Supports Train Log
+    - Supports Train Supply Manager (TSM)
+    - Supports Upgrade Builder and Planner
+    - Supports What's Missing?
+    - Added hover text on 27 icons
+---------------------------------------------------------------------------------------------------
 Version: 1.5.0
 Date: 2021.08.23
   Changes:
@@ -9,6 +36,7 @@ Date: 2021.08.23
     - Supports Change Map Settings
     - Supports Doing Things By Hand
     - Supports Kill Lost Bots
+    - Supports Markers
     - Code factorisation and code preparation for next mods
 ---------------------------------------------------------------------------------------------------
 Version: 1.4.0
