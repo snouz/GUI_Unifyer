@@ -1,5 +1,6 @@
 local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
+local gui_button_style_whitetext = "slot_button_whitetext"
 
 local function set_button_sprite(button, spritepath)
 	if spritepath == nil then
@@ -164,7 +165,7 @@ local function fix_buttons(player)
 	for i=1,15 do
 		local attilazoommod_button = button_flow["Attila_zm_btn_"..tostring(i)]
 		if attilazoommod_button then
-			attilazoommod_button.style = "slot_button_whitetext"
+			attilazoommod_button.style = gui_button_style_whitetext
 			attilazoommod_button.tooltip = {'guiu.attilazoommod_button'}
 			set_button_sprite(attilazoommod_button, "attilazoommod_button")
 		end
@@ -290,6 +291,10 @@ local function on_player_created(event)
 	fix_buttons(game.players[event.player_index])
 end
 
+local function on_player_changed_surface(event)
+	fix_buttons(game.players[event.player_index])
+end
+
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
 script.on_event(defines.events.on_game_created_from_scenario, on_init)
@@ -299,3 +304,4 @@ script.on_event(defines.events.on_player_cursor_stack_changed, on_player_cursor_
 script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
+script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
