@@ -1,4 +1,5 @@
 local mod_gui = require("mod-gui")
+local gui_button_style = "slot_button_notext"
 
 local function set_button_sprite(button, spritepath)
 	if spritepath == nil then
@@ -36,7 +37,7 @@ local function change_one_icon(player, sprite, button, tooltip)
 		local modbutton = button_flow[button]
 		if modbutton then
 			if modbutton.type == "button" or modbutton.type == "sprite-button" then
-				modbutton.style = "slot_button_notext"
+				modbutton.style = gui_button_style
 				set_button_sprite(modbutton, sprite)
 				if tooltip then
 					modbutton.tooltip = tooltip
@@ -66,7 +67,6 @@ local function fix_buttons(player)
 		{"outpostplanner_button", 		"OutpostBuilder"},
 		{"rocketsilostats_button", 		"rocket-silo-stats-toggle", 			{'guiu.rocketsilostats_button'}},
 		{"schallsatellitecontroller_button", "Schall-SC-mod-button"},
-
 		{"actualcrafttimesremade_button", "ACTR_mod_button"},
 		{"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}},
 		{"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}},
@@ -121,7 +121,7 @@ local function fix_buttons(player)
 	-- what-is-it-really-used-for
 	local wiiuf_button = button_flow.wiiuf_flow and button_flow.wiiuf_flow.search_flow and button_flow.wiiuf_flow.search_flow["looking-glass"]
 	if wiiuf_button then
-		wiiuf_button.style = "slot_button_notext"
+		wiiuf_button.style = gui_button_style
 		wiiuf_button.tooltip = {'guiu.wiiuf_button'}
 		set_button_sprite(wiiuf_button, "wiiuf_button")
 	end
@@ -129,14 +129,14 @@ local function fix_buttons(player)
 	-- LandfillEverythingU
 	local landfilleverythingu_button = button_flow.le_flow and button_flow.le_flow.le_button
 	if landfilleverythingu_button then
-		landfilleverythingu_button.style = "slot_button_notext"
+		landfilleverythingu_button.style = gui_button_style
 		set_button_sprite(landfilleverythingu_button, "landfilleverythingu_button")
 	end
 
 	-- TheFatController
 	local thefatcontroller_button = button_flow.fatControllerButtons and button_flow.fatControllerButtons.toggleTrainInfo
 	if thefatcontroller_button then
-		thefatcontroller_button.style = "slot_button_notext"
+		thefatcontroller_button.style = gui_button_style
 		thefatcontroller_button.tooltip = {'guiu.thefatcontroller_button'}
 		set_button_sprite(thefatcontroller_button, "thefatcontroller_button")
 	end
@@ -147,15 +147,15 @@ local function fix_buttons(player)
 		local quickbarimport_button = button_flow["qbie_flow_choose_action"]["qbie_button_import"]
 		local quickbarexport_button = button_flow["qbie_flow_choose_action"]["qbie_button_export"]
 		if quickbarimportexport_button then
-			quickbarimportexport_button.style = "slot_button_notext"
+			quickbarimportexport_button.style = gui_button_style
 			set_button_sprite(quickbarimportexport_button, "quickbarimportexport_button")
 		end
 		if quickbarimport_button then
-			quickbarimport_button.style = "slot_button_notext"
+			quickbarimport_button.style = gui_button_style
 			set_button_sprite(quickbarimport_button, "quickbarimport_button")
 		end
 		if quickbarexport_button then
-			quickbarexport_button.style = "slot_button_notext"
+			quickbarexport_button.style = gui_button_style
 			set_button_sprite(quickbarexport_button, "quickbarexport_button")
 		end
 	end
@@ -173,13 +173,13 @@ local function fix_buttons(player)
 	-- AutoTrash
 	local autotrash_button = button_flow["at_config_button"]
 	if autotrash_button then
-		autotrash_button.style = "slot_button_notext"
+		autotrash_button.style = gui_button_style
 	end
 
 	-- TogglePeacefulMode
 	local togglepeacefulmode_button = button_flow["tpm-button"]
 	if togglepeacefulmode_button and togglepeacefulmode_button.type == "sprite-button" then
-		togglepeacefulmode_button.style = "slot_button_notext"
+		togglepeacefulmode_button.style = gui_button_style
 		togglepeacefulmode_button.tooltip = {'guiu.togglepeacefulmode_button'}
 	end
 
@@ -189,8 +189,9 @@ end
 local function update_factorissimo(event)
 	if event then
 		local player = game.players[event.player_index]
+		if not player or not player.valid then return end
 		local button_flow = mod_gui.get_button_flow(player)
-		if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and event.element.valid and event.element.name == "factory_camera_toggle_button" and button_flow.factory_camera_toggle_button then
+		if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and event.element and event.element.valid and event.element.name == "factory_camera_toggle_button" and button_flow.factory_camera_toggle_button then
 			if button_flow.factory_camera_toggle_button.sprite == "technology/factory-architecture-t1" then
 				button_flow.factory_camera_toggle_button.sprite = "factorissimo2_button"
 				button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
@@ -201,14 +202,16 @@ local function update_factorissimo(event)
 		end
 	else
 		for idx, player in pairs(game.players) do
-			local button_flow = mod_gui.get_button_flow(player)
-			if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and button_flow.factory_camera_toggle_button then
-				if button_flow.factory_camera_toggle_button.sprite == "technology/factory-architecture-t1" then
-					button_flow.factory_camera_toggle_button.sprite = "factorissimo2_button"
-					button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
-				elseif button_flow.factory_camera_toggle_button.sprite == "technology/factory-preview" then
-					button_flow.factory_camera_toggle_button.sprite = "factorissimo2_inspect_button"
-					button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
+			if player and player.valid then
+				local button_flow = mod_gui.get_button_flow(player)
+				if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and button_flow.factory_camera_toggle_button then
+					if button_flow.factory_camera_toggle_button.sprite == "technology/factory-architecture-t1" then
+						button_flow.factory_camera_toggle_button.sprite = "factorissimo2_button"
+						button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
+					elseif button_flow.factory_camera_toggle_button.sprite == "technology/factory-preview" then
+						button_flow.factory_camera_toggle_button.sprite = "factorissimo2_inspect_button"
+						button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
+					end
 				end
 			end
 		end
@@ -224,7 +227,7 @@ local function on_player_cursor_stack_changed(event)
     	-- blueprint-request
     	local blueprintrequest_button = button_flow["blueprint-request-button"]
 		if blueprintrequest_button then
-			blueprintrequest_button.style = "slot_button_notext"
+			blueprintrequest_button.style = gui_button_style
 			set_button_sprite(blueprintrequest_button, "blueprintrequest_button")
 		end
     end
@@ -238,20 +241,20 @@ local function on_gui_opened(event)
     -- PickerInventoryTools
     local requests = button_flow["filterfill_requests"]
     if requests then
-    	if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = "slot_button_notext" end
-    	if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = "slot_button_notext" end
-    	if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = "slot_button_notext" end
-    	if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = "slot_button_notext" end
-    	if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = "slot_button_notext" end
-    	if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = "slot_button_notext" end
+    	if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = gui_button_style end
+    	if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = gui_button_style end
+    	if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = gui_button_style end
+    	if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = gui_button_style end
+    	if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = gui_button_style end
+    	if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = gui_button_style end
     end
     local filters = button_flow["filterfill_filters"]
     if filters then
-    	if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = "slot_button_notext" end
-    	if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = "slot_button_notext" end
-    	if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = "slot_button_notext" end
-    	if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = "slot_button_notext" end
-    	if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = "slot_button_notext" end
+    	if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = gui_button_style end
+    	if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = gui_button_style end
+    	if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = gui_button_style end
+    	if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = gui_button_style end
+    	if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = gui_button_style end
     end
 end
 
