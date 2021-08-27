@@ -4,14 +4,16 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "blueprintrequest_button", "bobclasses_button", "bobinserters_button", "cleanmap_button", "deathcounter_button", "ingteb_button", "outpostplanner_button",
 "quickbarimportexport_button", "quickbarimport_button", "quickbarexport_button", "rocketsilostats_button", "schallsatellitecontroller_button",
 
-"actualcrafttimesremade_button", "attachnotes_button", "attilazoommod_button", "avatars_button", "betterbotsfixed_button", "blackmarket2_button",
+"actualcrafttimesremade_button", "attachnotes_button", "attilazoommod_button", "avatars_button", "betterbotsfixed_button", "blackmarket1_button", "blackmarket2_button",
 "blueprintalignment_button", "changemapsettings_button", "dana_button", "deleteadjacentchunk_button", "doingthingsbyhand_button",
 "facautoscreenshot_button", "factorissimo2_button", "factorissimo2_inspect_button", "killlostbots_button",
 "kraskaskatotalrawresourcescalc_button", "kuxcraftingtools_button", "kuxorbitalioncannon_button", "landfilleverythingu_button",
 "markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "newgameplus_button", "notenoughtodo_button", "nullius_button",
-"oshahotswap_button", "pickerinventorytools_button", "picksrocketstats_button", "poweredentities_button", "researchcounter_button",
-"richtexthelper_button", "ritnteleportation_button", "schallendgameevolution_button", "solarcalc_button", "solarratio_button", "spacemod_button",
-"thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button",
+"oshahotswap_button", "picksrocketstats_button", "poweredentities_button", "researchcounter_button",
+"richtexthelper_button", "ritnteleportation_button", "schallendgameevolution_button", "solarcalc_button",
+--"solarratio_button",
+"spacemod_button",
+"thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button", "schallrailwaycontroller_button"
 }
 
 for _, i in pairs(sprites) do
@@ -40,9 +42,6 @@ if data.raw["sprite"]["tpm_button_sprite_peace"] and data.raw["sprite"]["tpm_but
 	data.raw["sprite"]["tpm_button_sprite_war"].filename = ICONPATH .. "tpm_button_sprite_war.png"
 	data.raw["sprite"]["tpm_button_sprite_war"].size = {64, 64}
 end
-
-
-
 
 local nothing = {0, 0, 0, 0}
 local white = {1, 1, 1, 0.9}

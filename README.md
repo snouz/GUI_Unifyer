@@ -3,11 +3,9 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 (Continuation of Better_Modbuttons by Dr_Pepper)
 
 # Current advancement (before/after)
-![comparison](https://i.imgur.com/LMYaJ1Z.png)
+![before](https://i.imgur.com/yudkRLa.png)
 -----------------------------
-![comparison](https://i.imgur.com/CrUesg0.png)
------------------------------
-![comparison](https://i.imgur.com/x4UwmHu.png)
+![after](https://i.imgur.com/D3vMpmR.png)
 
 # Supports 
 - Factory Planner
@@ -57,7 +55,6 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Train Supply Manager (TSM)
 - Upgrade Builder and Planner
 - What's Missing?
+- Schall Railway Controller
+- Picks Rocket Stats
 - ... and more soon.
-
-# Installation from Factorio Mod Portal
-Go to https://mods.factorio.com/mod/GUI_Unifyer or download it ingame.
