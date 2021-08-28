@@ -2,18 +2,17 @@ local ICONPATH = "__GUI_Unifyer__/graphics/icons/"
 
 local sprites = {"placeables_button", "todolist_button", "helmod_button", "factoryplanner_button", "moduleinserter_button", "wiiuf_button", "creativemod_button", "beastfinder_button",
 "blueprintrequest_button", "bobclasses_button", "bobinserters_button", "cleanmap_button", "deathcounter_button", "ingteb_button", "outpostplanner_button",
-"quickbarimportexport_button", "quickbarimport_button", "quickbarexport_button", "rocketsilostats_button", "schallsatellitecontroller_button",
+"quickbarimportexport_button", "quickbarimport_button", "quickbarexport_button", "rocketsilostats_button", "schall_sc_button",
 
-"actualcrafttimesremade_button", "attachnotes_button", "attilazoommod_button", "avatars_button", "betterbotsfixed_button", "blackmarket1_button", "blackmarket2_button",
+"actr_button", "attachnotes_button", "attilazoommod_button", "avatars_button", "betterbotsfixed_button", "blackmarket1_button", "blackmarket2_button",
 "blueprintalignment_button", "changemapsettings_button", "dana_button", "deleteadjacentchunk_button", "doingthingsbyhand_button",
 "facautoscreenshot_button", "factorissimo2_button", "factorissimo2_inspect_button", "killlostbots_button",
-"kraskaskatotalrawresourcescalc_button", "kuxcraftingtools_button", "kuxorbitalioncannon_button", "landfilleverythingu_button",
+"kttrrc_button", "kuxcraftingtools_button", "kuxorbitalioncannon_button", "landfilleverythingu_button",
 "markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "newgameplus_button", "notenoughtodo_button", "nullius_button",
 "oshahotswap_button", "picksrocketstats_button", "poweredentities_button", "researchcounter_button",
 "richtexthelper_button", "ritnteleportation_button", "schallendgameevolution_button", "solarcalc_button",
---"solarratio_button",
 "spacemod_button",
-"thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button", "schallrailwaycontroller_button"
+"thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button", "schall_rc_button"
 }
 
 for _, i in pairs(sprites) do
@@ -72,3 +71,7 @@ local slot_button_whitetext = {
 
 data.raw["gui-style"].default["slot_button_notext"] = slot_button_notext
 data.raw["gui-style"].default["slot_button_whitetext"] = slot_button_whitetext
+
+--data.raw["gui-style"].default["attach-notes-add-button"] = slot_button_an_add
+--data.raw["gui-style"].default["attach-notes-edit-button"]
+--data.raw["gui-style"].default["attach-notes-view-button"]

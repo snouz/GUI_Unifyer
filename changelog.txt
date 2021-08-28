@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.0
+Date: 2021.08.28
+  Changes:
+    - Supports Black Market 2
+    - Code simplified
+    - Handle Informatron and Space Exploration (without replacing images)
+---------------------------------------------------------------------------------------------------
 Version: 1.7.0
 Date: 2021.08.28
   Changes:

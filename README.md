@@ -1,5 +1,5 @@
 # GUI Unifyer
-Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most icons.
+Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most icons. It also hads some hover text.
 (Continuation of Better_Modbuttons by Dr_Pepper)
 
 # Current advancement (before/after)
@@ -57,4 +57,5 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - What's Missing?
 - Schall Railway Controller
 - Picks Rocket Stats
+- Black Market 2
 - ... and more soon.
