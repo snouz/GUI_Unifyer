@@ -1,6 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.8.1
+Date: 2021.08.29
+  Changes:
+    - Fixed crash
+---------------------------------------------------------------------------------------------------
 Version: 1.8.0
-Date: 2021.08.28
+Date: 2021.08.29
   Changes:
     - Supports Black Market 2
     - Added per-player setting to choose between 2 button styles

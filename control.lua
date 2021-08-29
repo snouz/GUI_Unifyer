@@ -172,8 +172,8 @@ local function update_factorissimo(event)
 			if player and player.valid then
 				local button_flow = mod_gui.get_button_flow(player)
 				local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-				button_flow.factory_camera_toggle_button.style = gu_button_style_setting
 				if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and button_flow.factory_camera_toggle_button then
+					button_flow.factory_camera_toggle_button.style = gu_button_style_setting
 					if button_flow.factory_camera_toggle_button.sprite == "technology/factory-architecture-t1" then
 						button_flow.factory_camera_toggle_button.sprite = "factorissimo2_button"
 						button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
