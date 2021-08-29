@@ -34,6 +34,7 @@ end
 
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath)
 	if player and player.valid and sprite and button then
+	    local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 		local button_flow = mod_gui.get_button_flow(player)
 		if buttonpath then
 			for _, k in pairs(buttonpath) do
@@ -44,7 +45,7 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
 		end
 		local modbutton = button_flow[button]
 		if modbutton and modbutton.type == "button" or modbutton and modbutton.type == "sprite-button" then
-			modbutton.style = gui_button_style
+			modbutton.style = gu_button_style_setting
 			if not dontreplacesprite then
 				set_button_sprite(modbutton, sprite)
 			end
@@ -57,6 +58,8 @@ end
 
 local function fix_buttons(player)
 	if not player or not player.valid then return end
+
+
 	local button_flow = mod_gui.get_button_flow(player)
 	local blackmarketvalue = button_flow.flw_blkmkt and button_flow.flw_blkmkt.but_blkmkt_credits and button_flow.flw_blkmkt.but_blkmkt_credits.caption or ""
 	local iconlist = {
@@ -109,7 +112,7 @@ local function fix_buttons(player)
 		{"togglepeacefulmode_button",	"tpm-button",							{'guiu.togglepeacefulmode_button'},	1,			nil},
 		{"wiiuf_button",				"looking-glass",						{'guiu.wiiuf_button'}, 				nil, 		{"wiiuf_flow", "search_flow"}},
 		{"thefatcontroller_button",		"toggleTrainInfo",						{'guiu.thefatcontroller_button'}, 	nil, 		{"fatControllerButtons"}},
-		{"landfilleverythingu_button",	"le_button",							nil,								nil, 		{"le_flow"}},
+		--{"landfilleverythingu_button",	"le_button",							nil,								nil, 		{"le_flow"}},
 		{"quickbarimportexport_button", "qbie_button_show_options", 			nil,								nil,		{"qbie_flow_choose_action"}},
 		{"quickbarimport_button", 		"qbie_button_import", 					nil,								nil,		{"qbie_flow_choose_action"}},
 		{"quickbarexport_button", 		"qbie_button_export", 					nil,								nil,		{"qbie_flow_choose_action"}},
@@ -136,8 +139,11 @@ local function fix_buttons(player)
 	-- AttilaZoomMod
 	for i=1,15 do
 		local attilazoommod_button = button_flow["Attila_zm_btn_"..tostring(i)]
+		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+		local attila_button_style_setting = "slot_button_whitetext"
+		if gu_button_style_setting == "slot_sized_button_notext" then attila_button_style_setting = "slot_sized_button_blacktext" end
 		if attilazoommod_button then
-			attilazoommod_button.style = gui_button_style_whitetext
+			attilazoommod_button.style = attila_button_style_setting
 			attilazoommod_button.tooltip = {'guiu.attilazoommod_button'}
 			set_button_sprite(attilazoommod_button, "attilazoommod_button")
 		end
@@ -151,6 +157,8 @@ local function update_factorissimo(event)
 		if not player or not player.valid then return end
 		local button_flow = mod_gui.get_button_flow(player)
 		if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and event.element and event.element.valid and event.element.name == "factory_camera_toggle_button" and button_flow.factory_camera_toggle_button then
+			local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+			button_flow.factory_camera_toggle_button.style = gu_button_style_setting
 			if button_flow.factory_camera_toggle_button.sprite == "technology/factory-architecture-t1" then
 				button_flow.factory_camera_toggle_button.sprite = "factorissimo2_button"
 				button_flow.factory_camera_toggle_button.tooltip = {'guiu.factorissimo2_button'}
@@ -163,6 +171,8 @@ local function update_factorissimo(event)
 		for idx, player in pairs(game.players) do
 			if player and player.valid then
 				local button_flow = mod_gui.get_button_flow(player)
+				local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+				button_flow.factory_camera_toggle_button.style = gu_button_style_setting
 				if player.force.technologies["factory-preview"] and player.force.technologies["factory-preview"].researched and button_flow.factory_camera_toggle_button then
 					if button_flow.factory_camera_toggle_button.sprite == "technology/factory-architecture-t1" then
 						button_flow.factory_camera_toggle_button.sprite = "factorissimo2_button"
@@ -180,14 +190,36 @@ end
 local function on_player_cursor_stack_changed(event)
 	local player = game.players[event.player_index]
     if not player or not player.valid then return end
+    local button_flow = mod_gui.get_button_flow(player)
+
+    -- landfilleverythingu
+    if button_flow.le_flow and button_flow.le_flow.le_button then
+    	button_flow.le_flow.le_button.destroy()
+    	button_flow.le_flow.destroy()
+    end
+    if button_flow.le_button then button_flow.le_button.destroy() end
+
+
     if player.is_cursor_blueprint() then
-    	local button_flow = mod_gui.get_button_flow(player)
+
+    	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 
     	-- blueprint-request
     	local blueprintrequest_button = button_flow["blueprint-request-button"]
 		if blueprintrequest_button then
-			blueprintrequest_button.style = gui_button_style
+			blueprintrequest_button.style = gu_button_style_setting
 			set_button_sprite(blueprintrequest_button, "blueprintrequest_button")
+		end
+
+		-- landfilleverythingu
+		if not button_flow.le_button and game.active_mods["LandfillEverythingU"] then
+			button_flow.add {
+				type = "sprite-button",
+				name = "le_button",
+				sprite = "landfilleverythingu_button",
+				style = gu_button_style_setting,
+				tooltip = { "landfill_everything_tooltip" }
+		    }
 		end
     end
 end
@@ -201,32 +233,56 @@ local function on_gui_opened(event)
     -- PickerInventoryTools
     local requests = button_flow["filterfill_requests"]
     if requests then
-    	if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = gui_button_style end
-    	if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = gui_button_style end
-    	if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = gui_button_style end
-    	if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = gui_button_style end
-    	if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = gui_button_style end
-    	if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = gui_button_style end
+    	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+    	if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = gu_button_style_setting end
+    	if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = gu_button_style_setting end
+    	if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = gu_button_style_setting end
+    	if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = gu_button_style_setting end
+    	if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = gu_button_style_setting end
+    	if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = gu_button_style_setting end
     end
     local filters = button_flow["filterfill_filters"]
     if filters then
-    	if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = gui_button_style end
-    	if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = gui_button_style end
-    	if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = gui_button_style end
-    	if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = gui_button_style end
-    	if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = gui_button_style end
+    	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+    	if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = gu_button_style_setting end
+    	if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = gu_button_style_setting end
+    	if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = gu_button_style_setting end
+    	if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = gu_button_style_setting end
+    	if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = gu_button_style_setting end
     end
 end
 
 local function on_init()
 	for idx, player in pairs(game.players) do
+		set_player_setting(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
 end
 
+--[[local function set_player_setting(player)
+
+    local settings = settings.get_player_settings(player)
+    local settings_table = {}
+    settings_table.gu_button_style_setting = settings["gu_button_style_setting"].value
+    player.settings = settings_table
+
+end]]--
+
+
+--[[function set_player_setting(player)
+    if not global.guiunifyer then
+        global.guiunifyer = {}
+    end
+    if not global.guiunifyer[player] then
+        global.guiunifyer[player] = {button_style = "slot_button_notext"}
+    end
+end]]--
+
+
 local function on_configuration_changed()
 	for idx, player in pairs(game.players) do
+		--set_player_setting(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
@@ -247,7 +303,9 @@ end
 
 
 local function on_player_created(event)
-	fix_buttons(game.players[event.player_index])
+	local player = game.players[event.player_index]
+	--set_player_setting(player)
+	fix_buttons(player)
 end
 
 local function on_player_changed_surface(event)
@@ -256,13 +314,20 @@ end
 
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
+script.on_event(defines.events.on_runtime_mod_setting_changed, on_configuration_changed)
 script.on_event(defines.events.on_game_created_from_scenario, on_init)
-script.on_event(defines.events.on_player_created, on_player_created)
+script.on_event({defines.events.on_player_created, defines.events.on_player_joined_game}, on_player_created)
 script.on_event(defines.events.on_gui_click, on_gui_click)
 script.on_event(defines.events.on_player_cursor_stack_changed, on_player_cursor_stack_changed)
 script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
 script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
+--[[script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
+    if event.setting_type == "runtime-per-user" then  -- this mod only has per-user settings
+        local player = game.players[event.player_index]
+        set_player_setting(player)
+    end
+end)]]--
 
 --game.print(serpent.block())

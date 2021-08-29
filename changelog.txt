@@ -3,6 +3,7 @@ Version: 1.8.0
 Date: 2021.08.28
   Changes:
     - Supports Black Market 2
+    - Added per-player setting to choose between 2 button styles
     - Code simplified
     - Handle Informatron and Space Exploration (without replacing images)
 ---------------------------------------------------------------------------------------------------

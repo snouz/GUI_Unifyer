@@ -44,6 +44,7 @@ end
 
 local nothing = {0, 0, 0, 0}
 local white = {1, 1, 1, 0.9}
+local black = {0, 0, 0, 0.9}
 local slot_button_notext = {
 	type = "button_style",
 	parent = "slot_button",
@@ -68,10 +69,35 @@ local slot_button_whitetext = {
 	selected_clicked_font_color = white,
 	strikethrough_color = white,
 }
+local slot_sized_button_notext = {
+	type = "button_style",
+	parent = "slot_sized_button",
+	default_font_color = nothing,
+	hovered_font_color = nothing,
+	clicked_font_color = nothing,
+	disabled_font_color = nothing,
+	selected_font_color = nothing,
+	selected_hovered_font_color = nothing,
+	selected_clicked_font_color = nothing,
+	strikethrough_color = nothing,
+}
+local slot_sized_button_blacktext = {
+	type = "button_style",
+	parent = "slot_sized_button",
+	default_font_color = black,
+	hovered_font_color = black,
+	clicked_font_color = black,
+	disabled_font_color = black,
+	selected_font_color = black,
+	selected_hovered_font_color = black,
+	selected_clicked_font_color = black,
+	strikethrough_color = black,
+}
 
 data.raw["gui-style"].default["slot_button_notext"] = slot_button_notext
 data.raw["gui-style"].default["slot_button_whitetext"] = slot_button_whitetext
-
---data.raw["gui-style"].default["attach-notes-add-button"] = slot_button_an_add
+data.raw["gui-style"].default["slot_sized_button_notext"] = slot_sized_button_notext
+data.raw["gui-style"].default["slot_sized_button_blacktext"] = slot_sized_button_blacktext
+--data.raw["gui-style"].default["attach-notes-add-button"]
 --data.raw["gui-style"].default["attach-notes-edit-button"]
 --data.raw["gui-style"].default["attach-notes-view-button"]
