@@ -1,11 +1,16 @@
 # GUI Unifyer
-Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most icons. It also hads some hover text.
+Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most icons.
 (Continuation of Better_Modbuttons by Dr_Pepper)
 
 # Current advancement (before/after)
 ![before](https://i.imgur.com/yudkRLa.png)
 -----------------------------
 ![after](https://i.imgur.com/D3vMpmR.png)
+
+# Extra features
+- Many buttons which didn't have hover text now do.
+- Per-player setting to switch to grey square buttons.
+- Blueprint related buttons only show when one is selected.
 
 # Supports 
 - Factory Planner
@@ -58,4 +63,6 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Schall Railway Controller
 - Picks Rocket Stats
 - Black Market 2
+- Commu Guide Mod
+- Blueprint Flip And Turn
 - ... and more soon.

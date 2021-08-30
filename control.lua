@@ -120,6 +120,8 @@ local function fix_buttons(player)
 		{"se_interstellar_button", 		"se-overhead_interstellar",				nil,								1,			nil},
 		{"se_satellite_button", 		"se-overhead_satellite",				nil,								1,			nil},
 		{"se_explorer_button", 			"se-overhead_explorer",					nil,								1,			nil},
+		{"commuguidemod_guide_button", 	"main_menu_guide_button",				{'guiu.commuguidemod_guide_button'}, nil,			nil},
+		{"commuguidemod_pupil_button", 	"main_menu_player_button",				{'guiu.commuguidemod_pupil_button'}, nil,			nil},
 		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil}
 		--{"attachnotes_button", ""},
 		--{"avatars_button", ""},
@@ -187,42 +189,115 @@ local function update_factorissimo(event)
 	end
 end
 
+local function destroy_obsolete_buttons(player)
+	if not player or not player.valid then return end
+	local button_flow = mod_gui.get_button_flow(player)
+
+	-- landfilleverythingu (destroy)
+	if button_flow.le_flow and button_flow.le_flow.le_button then
+		button_flow.le_flow.le_button.destroy()
+		button_flow.le_flow.destroy()
+	end
+
+	-- blueprint_flip_and_turn (destroy)
+	if game.active_mods["blueprint_flip_and_turn"] then
+		if player.gui and player.gui.top and player.gui.top.blpflip_flow then
+			local top_flow = player.gui.top.blpflip_flow
+			if top_flow.blueprint_flip_horizontal and top_flow.blueprint_flip_vertical then
+				top_flow.blueprint_flip_horizontal.destroy()
+				top_flow.blueprint_flip_vertical.destroy()
+				top_flow.destroy()
+			end
+		end
+	end
+
+	if not player.is_cursor_blueprint() then
+		if button_flow.le_button then button_flow.le_button.destroy() end
+		if button_flow.blueprint_flip_horizontal then button_flow.blueprint_flip_horizontal.destroy() end
+		if button_flow.blueprint_flip_vertical then button_flow.blueprint_flip_vertical.destroy() end
+	end
+
+
+	--[[
+	-- FNEI
+
+	if not global.fneibuttonevent then global.fneibuttonevent = nil end
+
+	if player.gui and player.gui.left and player.gui.left.fnei_left_flow and player.gui.left.fnei_left_flow["hotbar-main-table"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"] then
+		global.fneibuttonevent = player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"].event
+		game.print(serpent.block(global.fneibuttonevent))
+		player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"].destroy()
+	end
+	if player.gui and player.gui.left and player.gui.left.fnei_left_flow and player.gui.left.fnei_left_flow["fnei_hotbar_flow"] then
+		game.print(serpent.block(player.gui.left.fnei_left_flow["fnei_hotbar_flow"]))
+	end
+
+	if not button_flow["fnei-button"] then
+		button_flow.add {
+			type = "sprite-button",
+			name = "fnei-button",
+			style = "fnei_hotbar_label_button",
+			caption = "FNEI",
+			event = global.fneibuttonevent,
+		}
+	end]]--
+
+end
+
 local function on_player_cursor_stack_changed(event)
 	local player = game.players[event.player_index]
-    if not player or not player.valid then return end
-    local button_flow = mod_gui.get_button_flow(player)
+	if not player or not player.valid then return end
+	local button_flow = mod_gui.get_button_flow(player)
 
-    -- landfilleverythingu
-    if button_flow.le_flow and button_flow.le_flow.le_button then
-    	button_flow.le_flow.le_button.destroy()
-    	button_flow.le_flow.destroy()
-    end
-    if button_flow.le_button then button_flow.le_button.destroy() end
+	destroy_obsolete_buttons(player)
 
+	if player.is_cursor_blueprint() then
 
-    if player.is_cursor_blueprint() then
+		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 
-    	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-
-    	-- blueprint-request
-    	local blueprintrequest_button = button_flow["blueprint-request-button"]
+		-- blueprint-request
+		local blueprintrequest_button = button_flow["blueprint-request-button"]
 		if blueprintrequest_button then
 			blueprintrequest_button.style = gu_button_style_setting
 			set_button_sprite(blueprintrequest_button, "blueprintrequest_button")
 		end
 
 		-- landfilleverythingu
-		if not button_flow.le_button and game.active_mods["LandfillEverythingU"] then
-			button_flow.add {
-				type = "sprite-button",
-				name = "le_button",
-				sprite = "landfilleverythingu_button",
-				style = gu_button_style_setting,
-				tooltip = { "landfill_everything_tooltip" }
-		    }
+		if game.active_mods["LandfillEverythingU"] or game.active_mods["LandfillEverythingButTrains"] then
+			if not button_flow.le_button then
+				button_flow.add {
+					type = "sprite-button",
+					name = "le_button",
+					sprite = "landfilleverythingu_button",
+					style = gu_button_style_setting,
+					tooltip = { "landfill_everything_tooltip" }
+				}
+			end
+		end
+
+		-- blueprint_flip_and_turn
+		if game.active_mods["blueprint_flip_and_turn"] then
+			if not button_flow.blueprint_flip_horizontal and not button_flow.blueprint_flip_vertical then
+				button_flow.add {
+					type = "sprite-button",
+					name = "blueprint_flip_horizontal",
+					sprite = "blueprint_flip_horizontal_button",
+					style = gu_button_style_setting,
+					tooltip = {'guiu.blueprint_flip_horizontal_button'}
+				}
+				button_flow.add {
+					type = "sprite-button",
+					name = "blueprint_flip_vertical",
+					sprite = "blueprint_flip_vertical_button",
+					style = gu_button_style_setting,
+					tooltip = {'guiu.blueprint_flip_vertical_button'}
+			    }
+			end
 		end
     end
 end
+
+
 
 local function on_gui_opened(event)
 	local player = game.players[event.player_index]
@@ -254,35 +329,15 @@ end
 
 local function on_init()
 	for idx, player in pairs(game.players) do
-		set_player_setting(player)
+		destroy_obsolete_buttons(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
 end
 
---[[local function set_player_setting(player)
-
-    local settings = settings.get_player_settings(player)
-    local settings_table = {}
-    settings_table.gu_button_style_setting = settings["gu_button_style_setting"].value
-    player.settings = settings_table
-
-end]]--
-
-
---[[function set_player_setting(player)
-    if not global.guiunifyer then
-        global.guiunifyer = {}
-    end
-    if not global.guiunifyer[player] then
-        global.guiunifyer[player] = {button_style = "slot_button_notext"}
-    end
-end]]--
-
-
 local function on_configuration_changed()
 	for idx, player in pairs(game.players) do
-		--set_player_setting(player)
+		destroy_obsolete_buttons(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
@@ -297,6 +352,7 @@ end
 
 local function on_gui_click(event)
 	local player = game.players[event.player_index]
+	destroy_obsolete_buttons(player)
 	fix_buttons(player)
 	update_factorissimo(event)
 end
@@ -304,7 +360,7 @@ end
 
 local function on_player_created(event)
 	local player = game.players[event.player_index]
-	--set_player_setting(player)
+	destroy_obsolete_buttons(player)
 	fix_buttons(player)
 end
 
