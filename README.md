@@ -9,8 +9,11 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 
 # Extra features
 - Many buttons which didn't have hover text now do.
+![tooltips](https://i.imgur.com/IXbqUlR.png)
 - Per-player setting to switch to grey square buttons.
-- Blueprint related buttons only show when one is selected.
+![greybuttons](https://i.imgur.com/kcSHyzX.png)
+- Blueprint related buttons only show when one is selected:
+![blueprint](https://i.imgur.com/jUbwLoX.png)
 
 # Supports 
 - Factory Planner
@@ -65,4 +68,5 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Black Market 2
 - Commu Guide Mod
 - Blueprint Flip And Turn
+- FJEI
 - ... and more soon.

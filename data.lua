@@ -13,7 +13,7 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "richtexthelper_button", "ritnteleportation_button", "schallendgameevolution_button", "solarcalc_button",
 "spacemod_button",
 "thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button", "schall_rc_button",
-"commuguidemod_guide_button", "commuguidemod_pupil_button", "blueprint_flip_horizontal_button", "blueprint_flip_vertical_button",
+"commuguidemod_guide_button", "commuguidemod_pupil_button", "blueprint_flip_horizontal_button", "blueprint_flip_vertical_button", "fjei_button",
 }
 
 for _, i in pairs(sprites) do

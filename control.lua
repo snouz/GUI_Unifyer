@@ -139,15 +139,34 @@ local function fix_buttons(player)
 	end
 
 	-- AttilaZoomMod
-	for i=1,15 do
-		local attilazoommod_button = button_flow["Attila_zm_btn_"..tostring(i)]
+	if game.active_mods["AttilaZoomMod"] then
+		for i=1,15 do
+			local attilazoommod_button = button_flow["Attila_zm_btn_"..tostring(i)]
+			local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+			local attila_button_style_setting = "slot_button_whitetext"
+			if gu_button_style_setting == "slot_sized_button_notext" then attila_button_style_setting = "slot_sized_button_blacktext" end
+			if attilazoommod_button then
+				attilazoommod_button.style = attila_button_style_setting
+				attilazoommod_button.tooltip = {'guiu.attilazoommod_button'}
+				set_button_sprite(attilazoommod_button, "attilazoommod_button")
+			end
+		end
+	end
+end
+
+local function create_new_buttons(player)
+	if not player or not player.valid then return end
+	if game.active_mods["FJEI"] then
+		local button_flow = mod_gui.get_button_flow(player)
 		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-		local attila_button_style_setting = "slot_button_whitetext"
-		if gu_button_style_setting == "slot_sized_button_notext" then attila_button_style_setting = "slot_sized_button_blacktext" end
-		if attilazoommod_button then
-			attilazoommod_button.style = attila_button_style_setting
-			attilazoommod_button.tooltip = {'guiu.attilazoommod_button'}
-			set_button_sprite(attilazoommod_button, "attilazoommod_button")
+		if not button_flow.fjei_toggle_button then
+			button_flow.add {
+				type = "sprite-button",
+				name = "fjei_toggle_button",
+				sprite = "fjei_button",
+				style = gu_button_style_setting,
+				tooltip = {'guiu.fjei_button'}
+			}
 		end
 	end
 end
@@ -216,6 +235,11 @@ local function destroy_obsolete_buttons(player)
 		if button_flow.blueprint_flip_horizontal then button_flow.blueprint_flip_horizontal.destroy() end
 		if button_flow.blueprint_flip_vertical then button_flow.blueprint_flip_vertical.destroy() end
 	end
+
+	if game.active_mods["FJEI"] then
+		if player.gui.top.fjei_toggle_button then player.gui.top.fjei_toggle_button.destroy() end
+	end
+
 
 
 	--[[
@@ -330,6 +354,7 @@ end
 local function on_init()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
+		create_new_buttons(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
@@ -338,6 +363,7 @@ end
 local function on_configuration_changed()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
+		create_new_buttons(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
@@ -361,6 +387,7 @@ end
 local function on_player_created(event)
 	local player = game.players[event.player_index]
 	destroy_obsolete_buttons(player)
+	create_new_buttons(player)
 	fix_buttons(player)
 end
 
@@ -379,11 +406,5 @@ script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
 script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
---[[script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
-    if event.setting_type == "runtime-per-user" then  -- this mod only has per-user settings
-        local player = game.players[event.player_index]
-        set_player_setting(player)
-    end
-end)]]--
 
 --game.print(serpent.block())
