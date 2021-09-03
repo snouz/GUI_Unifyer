@@ -84,11 +84,11 @@ local function fix_buttons(player)
 		{"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}, 	nil,		nil},
 		{"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}, 	nil,		nil},
 		{"doingthingsbyhand_button", 	"DoingThingsByHandMainButton", 			{'guiu.doingthingsbyhand_button'},	nil,		nil},
-		{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	nil,		nil},
+		{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	1,			nil},
 		{"killlostbots_button", 		"KillLostBots", 						nil,								nil,		nil},
 		{"kttrrc_button", 				"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil},
 		{"kuxcraftingtools_button", 	"CraftNearbyGhostItemsButton", 			nil,								nil,		nil},
-		{"kuxorbitalioncannon_button", 	"ion-cannon-button", 					{'guiu.kuxorbitalioncannon_button'}, nil,		nil},
+		{"kuxorbitalioncannon_button", 	"ion-cannon-button", 					{'guiu.kuxorbitalioncannon_button'},nil,		nil},
 		{"markers_button", 				"markers_gui_toggle", 					{'guiu.markers_button'}, 			nil,		nil},
 		{"notenoughtodo_button", 		"TODO_CLICK01_", 						{'guiu.notenoughtodo_button'}, 		nil,		nil},
 		{"oshahotswap_button", 			"hotswap-menu-button", 					{'guiu.oshahotswap_button'}, 		nil,		nil},
@@ -112,7 +112,6 @@ local function fix_buttons(player)
 		{"togglepeacefulmode_button",	"tpm-button",							{'guiu.togglepeacefulmode_button'},	1,			nil},
 		{"wiiuf_button",				"looking-glass",						{'guiu.wiiuf_button'}, 				nil, 		{"wiiuf_flow", "search_flow"}},
 		{"thefatcontroller_button",		"toggleTrainInfo",						{'guiu.thefatcontroller_button'}, 	nil, 		{"fatControllerButtons"}},
-		--{"landfilleverythingu_button",	"le_button",							nil,								nil, 		{"le_flow"}},
 		{"quickbarimportexport_button", "qbie_button_show_options", 			nil,								nil,		{"qbie_flow_choose_action"}},
 		{"quickbarimport_button", 		"qbie_button_import", 					nil,								nil,		{"qbie_flow_choose_action"}},
 		{"quickbarexport_button", 		"qbie_button_export", 					nil,								nil,		{"qbie_flow_choose_action"}},
@@ -120,14 +119,16 @@ local function fix_buttons(player)
 		{"se_interstellar_button", 		"se-overhead_interstellar",				nil,								1,			nil},
 		{"se_satellite_button", 		"se-overhead_satellite",				nil,								1,			nil},
 		{"se_explorer_button", 			"se-overhead_explorer",					nil,								1,			nil},
-		{"commuguidemod_guide_button", 	"main_menu_guide_button",				{'guiu.commuguidemod_guide_button'}, nil,			nil},
-		{"commuguidemod_pupil_button", 	"main_menu_player_button",				{'guiu.commuguidemod_pupil_button'}, nil,			nil},
+		{"commuguidemod_guide_button", 	"main_menu_guide_button",				{'guiu.commuguidemod_guide_button'},nil,		nil},
+		{"commuguidemod_pupil_button", 	"main_menu_player_button",				{'guiu.commuguidemod_pupil_button'},nil,		nil},
+		{"fjei_toggle_button", 			"fjei_toggle_button",					nil,								1,			nil},
+		{"togglespeedboost_button", 	"togglespeedboost_button",				nil,								1,			nil},
 		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil}
 		--{"attachnotes_button", ""},
 		--{"avatars_button", ""},
 		--{"modmashsplinterboom_button", "landmine-toggle-button"},
 		--{"modmashsplinternewworlds_button", "planets-toggle-button"},
-		--{"dana_button", "modGuiButton"}, -- can't find the button name!
+		--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, -- can't find the button name!
 		--{"deleteadjacentchunk_button", ""},
 		--{"schallendgameevolution_button", "Schall-EE-mod-button"},
 		--{"nullius_button", ""},
@@ -381,6 +382,10 @@ local function on_gui_click(event)
 	destroy_obsolete_buttons(player)
 	fix_buttons(player)
 	update_factorissimo(event)
+
+	--debug
+	if event and event.element then player.print(event.element.name) end
+
 end
 
 
