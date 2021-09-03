@@ -3,9 +3,34 @@ Version: 1.10.0
 Date: 2021.09.03
   Changes:
     - Supports FJEI
-    - Better hover text
+    - Supports ToggleSpeedBoost
+    - Supports 248k Mod
+    - Supports Blueprint Alignment
+    - Supports Cargo Train Manager
+    - Supports Clusterio
+    - Supports Cursed Upgradable Buildings
+    - Supports Default Wait Conditions
+    - Supports Diplomacy
+    - Supports Electronic Locomotives
+    - Supports Forces
+    - Supports Hive Mind
+    - Supports Hive Mind Remastered
+    - Supports How Far Has it Been?
+    - Supports Kuxynator's Blueprint Editor
+    - Supports Handcraft Ghosts
+    - Supports Logistic Machines
+    - Supports Logistic Request Manager (continued)
+    - Supports Region Cloner
+    - Supports Reset Evolution and Pollution
+    - Supports Schall Ore Conversion
+    - Supports Shuttle Train Continued
+    - Supports Simple Circuit Trains
+    - Supports Smart chest
+    - Supports TeamCoop
+    - Improved 6 existing icons
+    - Hover text improvements
     - Fixed ingame changelog
-    - Deactivate Screenshot Toolkit sprite replacement (their button is WIP)
+    - Deactivate Screenshot Toolkit sprite replacement (button is WIP)
 ---------------------------------------------------------------------------------------------------
 Version: 1.9.0
 Date: 2021.08.30

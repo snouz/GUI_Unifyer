@@ -4,8 +4,10 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 
 # Current advancement (before/after)
 ![before](https://i.imgur.com/yudkRLa.png)
+![before](https://i.imgur.com/PRWSeGo.png)
 -----------------------------
 ![after](https://i.imgur.com/D3vMpmR.png)
+![after](https://i.imgur.com/5OUYZgh.png)
 
 # Extra features
 - Many buttons which didn't have hover text now do.
@@ -15,7 +17,7 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Blueprint related buttons only show when one is selected:
 ![blueprint](https://i.imgur.com/jUbwLoX.png)
 
-# Supports 
+# Supports (so far)
 - Factory Planner
 - Helmod
 - Module Inserter
@@ -69,4 +71,26 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Commu Guide Mod
 - Blueprint Flip And Turn
 - FJEI
-- ... and more soon.
+- 248k Mod
+- Blueprint Alignment
+- Cargo Train Manager
+- Clusterio
+- Cursed Upgradable Buildings
+- Default Wait Conditions
+- Diplomacy
+- Electronic Locomotives
+- Forces
+- Hive Mind
+- Hive Mind Remastered
+- How Far Has it Been?
+- Kuxynator's Blueprint Editor
+- Handcraft Ghosts
+- Logistic Machines
+- Logistic Request Manager (continued)
+- Region Cloner
+- Reset Evolution and Pollution
+- Schall Ore Conversion
+- Shuttle Train Continued
+- Simple Circuit Trains
+- Smart chest
+- TeamCoop

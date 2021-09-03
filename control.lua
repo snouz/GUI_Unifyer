@@ -1,6 +1,7 @@
 local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
+local checknexttick = false
 
 local function set_button_sprite(button, spritepath)
 	if spritepath == nil then
@@ -34,7 +35,7 @@ end
 
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath)
 	if player and player.valid and sprite and button then
-	    local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 		local button_flow = mod_gui.get_button_flow(player)
 		if buttonpath then
 			for _, k in pairs(buttonpath) do
@@ -123,16 +124,40 @@ local function fix_buttons(player)
 		{"commuguidemod_pupil_button", 	"main_menu_player_button",				{'guiu.commuguidemod_pupil_button'},nil,		nil},
 		{"fjei_toggle_button", 			"fjei_toggle_button",					nil,								1,			nil},
 		{"togglespeedboost_button", 	"togglespeedboost_button",				nil,								1,			nil},
-		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil}
-		--{"attachnotes_button", ""},
-		--{"avatars_button", ""},
-		--{"modmashsplinterboom_button", "landmine-toggle-button"},
-		--{"modmashsplinternewworlds_button", "planets-toggle-button"},
-		--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, -- can't find the button name!
-		--{"deleteadjacentchunk_button", ""},
-		--{"schallendgameevolution_button", "Schall-EE-mod-button"},
-		--{"nullius_button", ""},
-		--{"newgameplus_button", ""},
+		{"248k_button", 				"top248kbutton",						{'guiu.248k_button'},				nil,		nil},
+		{"blueprintalignment_button", 	"BlueprintAlignment_Button",			nil,								nil,		nil},
+		{"cargotrainmanager_button", 	"ctm_toolbutton",						nil,								nil,		nil},
+		{"clusterio_button", 			"clusterio-main-config-gui-toggle-button",{'guiu.clusterio_button'},		nil,		nil},
+		{"cursedexp_button", 			"openMain",								{'guiu.cursedexp_button'},			nil,		{"openMainFlow"}},
+		{"defaultwaitconditions_button","default-wait-conditions-main-button",	nil,								nil,		nil},
+		{"diplomacy_button", 			"diplomacy_button",						nil,								nil,		nil},
+		{"electronic_locomotives_button","ELECTRONIC_CLICK01",					{'guiu.electronic_locomotives_button'},nil,		nil},
+		{"forces_button", 				"forcesMenu",							nil,								nil,		nil},
+		{"hive_mind_button1", 			"join-hive-button",						nil,								nil,		nil},
+		{"hive_mind_button2", 			"leave-hive-button",					nil,								nil,		nil},
+		{"howfardiditgo_button", 		"train_distance_button",				{'guiu.howfardiditgo_button'},		nil,		nil},
+		{"kuxblueprinteditor_button", 	"mod-blueprint-editor-toolbar-button",	nil,								nil,		nil},
+		{"kuxcraftingtools_button", 	"PlayerGhostCraft",						nil,								nil,		nil},
+		{"logisticmachines_button", 	"lm_default_circuit_button",			{'guiu.logisticmachines_button'},	nil,		nil},
+		{"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},	nil,		nil},
+		{"regioncloner_button", 		"region-cloner_main-button",			nil,								nil,		nil},
+		{"resetevolutionpollution_button","ResetEvolutionPollution",			nil,								nil,		nil},
+		--{"schalloreconversion_button", 	"Schall-OC-mod-button",					nil,								nil,		nil},
+		{"shuttle_train_continued_button","shuttle_lite_button",				nil,								nil,		nil},
+		{"simple_circuit_trains_button","SIMPLE_CLICK_01",						{'guiu.simple_circuit_trains_button'},nil,		nil},
+		{"teamcoop_button1", 			"spwn_ctrls",							{'guiu.teamcoop_button1'},			nil,		nil},
+		{"teamcoop_button2", 			"spwn_admin_ctrls",						{'guiu.teamcoop_button2'},			nil,		nil},
+		{"smartchest_button", 			"sc_button",							nil,								1,			nil},
+
+		--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
+		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
+		--{"avatars_button", ""},																												??
+		--{"modmashsplinterboom_button", "landmine-toggle-button"},																				??
+		--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
+		--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, 												-- can't button name!
+		--{"deleteadjacentchunk_button", ""},																								-- too complex
+		--{"schallendgameevolution_button", "Schall-EE-mod-button"},																		--to do
+		--{"nullius_button", ""},										--to do
 	}
 
 	for _, k in pairs(iconlist) do
@@ -260,7 +285,7 @@ local function destroy_obsolete_buttons(player)
 	if not button_flow["fnei-button"] then
 		button_flow.add {
 			type = "sprite-button",
-			name = "fnei-button",
+			name = "fnei_hotbar_fnei-button",
 			style = "fnei_hotbar_label_button",
 			caption = "FNEI",
 			event = global.fneibuttonevent,
@@ -288,7 +313,7 @@ local function on_player_cursor_stack_changed(event)
 		end
 
 		-- landfilleverythingu
-		if game.active_mods["LandfillEverythingU"] or game.active_mods["LandfillEverythingButTrains"] then
+		if game.active_mods["LandfillEverythingU"] or game.active_mods["LandfillEverything"] or game.active_mods["LandfillEverythingButTrains"] then
 			if not button_flow.le_button then
 				button_flow.add {
 					type = "sprite-button",
@@ -316,10 +341,25 @@ local function on_player_cursor_stack_changed(event)
 					sprite = "blueprint_flip_vertical_button",
 					style = gu_button_style_setting,
 					tooltip = {'guiu.blueprint_flip_vertical_button'}
-			    }
+				}
 			end
 		end
-    end
+	end
+
+	-- SchallOreConversion
+	if game.active_mods["SchallOreConversion"] then
+		local pcs = player.cursor_stack
+		if pcs and pcs.valid_for_read and pcs.valid and pcs.name then
+			if pcs.name == "iron-ore" or pcs.name == "copper-ore" or pcs.name == "stone" or pcs.name == "coal" or pcs.name == "uranium-ore" or pcs.name == "crude-oil" then
+				local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+				local schalloreconversion_button = button_flow["Schall-OC-mod-button"]
+				if schalloreconversion_button then
+					schalloreconversion_button.style = gu_button_style_setting
+					set_button_sprite(schalloreconversion_button, "schalloreconversion_button")
+				end
+			end
+		end
+	end
 end
 
 
@@ -327,29 +367,29 @@ end
 local function on_gui_opened(event)
 	local player = game.players[event.player_index]
 	fix_buttons(player)
-    if not player or not player.valid then return end
-    local button_flow = mod_gui.get_button_flow(player)
+	if not player or not player.valid then return end
+	local button_flow = mod_gui.get_button_flow(player)
 
-    -- PickerInventoryTools
-    local requests = button_flow["filterfill_requests"]
-    if requests then
-    	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-    	if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = gu_button_style_setting end
-    	if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = gu_button_style_setting end
-    	if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = gu_button_style_setting end
-    	if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = gu_button_style_setting end
-    	if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = gu_button_style_setting end
-    	if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = gu_button_style_setting end
-    end
-    local filters = button_flow["filterfill_filters"]
-    if filters then
-    	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-    	if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = gu_button_style_setting end
-    	if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = gu_button_style_setting end
-    	if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = gu_button_style_setting end
-    	if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = gu_button_style_setting end
-    	if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = gu_button_style_setting end
-    end
+	-- PickerInventoryTools
+	local requests = button_flow["filterfill_requests"]
+	if requests then
+		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+		if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = gu_button_style_setting end
+		if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = gu_button_style_setting end
+		if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = gu_button_style_setting end
+		if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = gu_button_style_setting end
+		if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = gu_button_style_setting end
+		if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = gu_button_style_setting end
+	end
+	local filters = button_flow["filterfill_filters"]
+	if filters then
+		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+		if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = gu_button_style_setting end
+		if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = gu_button_style_setting end
+		if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = gu_button_style_setting end
+		if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = gu_button_style_setting end
+		if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = gu_button_style_setting end
+	end
 end
 
 local function on_init()
@@ -359,6 +399,7 @@ local function on_init()
 		fix_buttons(player)
 	end
 	update_factorissimo()
+	checknexttick = true
 end
 
 local function on_configuration_changed()
@@ -368,6 +409,7 @@ local function on_configuration_changed()
 		fix_buttons(player)
 	end
 	update_factorissimo()
+	checknexttick = true
 end
 
 local function on_research_finished()
@@ -384,7 +426,7 @@ local function on_gui_click(event)
 	update_factorissimo(event)
 
 	--debug
-	if event and event.element then player.print(event.element.name) end
+	--if event and event.element then player.print(event.element.name) end
 
 end
 
@@ -400,16 +442,35 @@ local function on_player_changed_surface(event)
 	fix_buttons(game.players[event.player_index])
 end
 
+local function on_hivemindchange(event)
+	if game.active_mods["Hive_Mind"] or game.active_mods["Hive_Mind_Remastered"] then
+		fix_buttons(game.players[event.player_index])
+	end
+	checknexttick = true
+end
+
+local function on_tick()
+	if checknexttick then
+		for idx, player in pairs(game.players) do
+			fix_buttons(player)
+		end
+		checknexttick = false
+	end
+end
+
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
+script.on_event(defines.events.on_tick, on_tick)
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_configuration_changed)
 script.on_event(defines.events.on_game_created_from_scenario, on_init)
 script.on_event({defines.events.on_player_created, defines.events.on_player_joined_game}, on_player_created)
+script.on_event({defines.events.on_player_gun_inventory_changed, defines.events.on_player_died}, on_hivemindchange)
 script.on_event(defines.events.on_gui_click, on_gui_click)
 script.on_event(defines.events.on_player_cursor_stack_changed, on_player_cursor_stack_changed)
 script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
 script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
+
 
 --game.print(serpent.block())

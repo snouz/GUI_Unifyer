@@ -5,15 +5,20 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "quickbarimportexport_button", "quickbarimport_button", "quickbarexport_button", "rocketsilostats_button", "schall_sc_button",
 
 "actr_button", "attachnotes_button", "attilazoommod_button", "avatars_button", "betterbotsfixed_button", "blackmarket1_button", "blackmarket2_button",
-"blueprintalignment_button", "changemapsettings_button", "dana_button", "deleteadjacentchunk_button", "doingthingsbyhand_button",
+"changemapsettings_button", "dana_button", "deleteadjacentchunk_button", "doingthingsbyhand_button",
 "facautoscreenshot_button", "factorissimo2_button", "factorissimo2_inspect_button", "killlostbots_button",
 "kttrrc_button", "kuxcraftingtools_button", "kuxorbitalioncannon_button", "landfilleverythingu_button",
-"markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "newgameplus_button", "notenoughtodo_button", "nullius_button",
+"markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "notenoughtodo_button", "nullius_button",
 "oshahotswap_button", "picksrocketstats_button", "poweredentities_button", "researchcounter_button",
 "richtexthelper_button", "ritnteleportation_button", "schallendgameevolution_button", "solarcalc_button",
 "spacemod_button",
 "thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button", "schall_rc_button",
 "commuguidemod_guide_button", "commuguidemod_pupil_button", "blueprint_flip_horizontal_button", "blueprint_flip_vertical_button", "fjei_button",
+
+"248k_button", "blueprintalignment_button", "cargotrainmanager_button", "clusterio_button", "cursedexp_button", "defaultwaitconditions_button",
+"diplomacy_button", "electronic_locomotives_button", "forces_button", "hive_mind_button1", "hive_mind_button2", "howfardiditgo_button", "kuxblueprinteditor_button",
+"logisticmachines_button", "logisticrequestmanager_button", "regioncloner_button", "resetevolutionpollution_button",
+"schalloreconversion_button", "shuttle_train_continued_button", "simple_circuit_trains_button", "smartchest_button", "teamcoop_button1", "teamcoop_button2", "trainschedulesignals_button",
 }
 
 for _, i in pairs(sprites) do
