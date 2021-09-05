@@ -2,6 +2,8 @@ local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local checknexttick = false
+local activedebug = true
+local lastframestyle = nil
 
 local function set_button_sprite(button, spritepath)
 	if spritepath == nil then
@@ -266,6 +268,23 @@ local function destroy_obsolete_buttons(player)
 		if player.gui.top.fjei_toggle_button then player.gui.top.fjei_toggle_button.destroy() end
 	end
 
+	--if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.destroy() end
+	--if player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
+	--	player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame_snouz"
+	--	player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame_snouz"
+	--end
+--[[
+	-- FNEI
+
+	--if player.gui and player.gui.left and player.gui.left.fnei_hotbar_flow and player.gui.left.fnei_left_flow["hotbar-main-table"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"] then
+	if game.active_mods["FNEI"] then
+		if player.gui and player.gui.left and player.gui.left.fnei_left_flow and player.gui.left.fnei_left_flow.fnei_hotbar_flow and player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"] and player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"].fnei_hotbar_frame and player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"].fnei_hotbar_frame["fnei_hotbar_fnei-button"] then
+			local FNEI_button = player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"].fnei_hotbar_frame["fnei_hotbar_fnei-button"]
+			button_flow.add(FNEI_button)
+		end
+	end
+]]--
+
 
 
 	--[[
@@ -292,6 +311,29 @@ local function destroy_obsolete_buttons(player)
 		}
 	end]]--
 
+end
+
+local function update_frame_style(player)
+	local gu_frame_style_setting = settings.get_player_settings(player)["gu_frame_style_setting"].value or "normal_frame_style"
+	if not lastframesetting then
+		lastframesetting = gu_frame_style_setting
+		return
+	end
+	if lastframesetting == gu_frame_style_setting then return end
+
+	if player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
+		if gu_frame_style_setting == "normal_frame_style" then
+			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
+			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
+		elseif gu_frame_style_setting == "barebone_frame_style" then
+			player.gui.top.mod_gui_top_frame.style = "invisible_frame"
+			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "barebone_frame"
+		elseif gu_frame_style_setting == "invisible_frame_style" then
+			player.gui.top.mod_gui_top_frame.style = "invisible_frame"
+			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "invisible_frame"
+		end
+		lastframesetting = gu_frame_style_setting
+	end
 end
 
 local function on_player_cursor_stack_changed(event)
@@ -407,6 +449,7 @@ local function on_configuration_changed()
 		destroy_obsolete_buttons(player)
 		create_new_buttons(player)
 		fix_buttons(player)
+		update_frame_style(player)
 	end
 	update_factorissimo()
 	checknexttick = true
@@ -419,16 +462,45 @@ local function on_research_finished()
 	update_factorissimo()
 end
 
+local function debug_button(event)
+	--debug
+	if event and event.element then
+		local player = game.players[event.player_index]
+		player.print(event.element.name)
+		if event.element.parent then
+			player.print("parent1: " .. event.element.parent.name)
+			if event.element.parent.parent then
+				player.print("parent2: " .. event.element.parent.parent.name)
+				if event.element.parent.parent.parent then
+					player.print("parent3: " .. event.element.parent.parent.parent.name)
+					if event.element.parent.parent.parent.parent then
+						player.print("parent4: " .. event.element.parent.parent.parent.parent.name)
+						if event.element.parent.parent.parent.parent.parent then
+							player.print("parent5: " .. event.element.parent.parent.parent.parent.parent.name)
+							if event.element.parent.parent.parent.parent.parent.parent then
+								player.print("parent6: " .. event.element.parent.parent.parent.parent.parent.parent.name)
+								if event.element.parent.parent.parent.parent.parent.parent.parent then
+									player.print("parent7: " .. event.element.parent.parent.parent.parent.parent.parent.parent.name)
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+end
+
 local function on_gui_click(event)
 	local player = game.players[event.player_index]
 	destroy_obsolete_buttons(player)
 	fix_buttons(player)
 	update_factorissimo(event)
 
-	--debug
-	--if event and event.element then player.print(event.element.name) end
-
+	if activedebug then debug_button(event) end
 end
+
+
 
 
 local function on_player_created(event)
@@ -436,6 +508,7 @@ local function on_player_created(event)
 	destroy_obsolete_buttons(player)
 	create_new_buttons(player)
 	fix_buttons(player)
+	checknexttick = true
 end
 
 local function on_player_changed_surface(event)
