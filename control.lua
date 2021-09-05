@@ -2,7 +2,7 @@ local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local checknexttick = false
-local activedebug = true
+local activedebug = false
 local lastframestyle = nil
 
 local function set_button_sprite(button, spritepath)
@@ -141,7 +141,7 @@ local function fix_buttons(player)
 		{"kuxblueprinteditor_button", 	"mod-blueprint-editor-toolbar-button",	nil,								nil,		nil},
 		{"kuxcraftingtools_button", 	"PlayerGhostCraft",						nil,								nil,		nil},
 		{"logisticmachines_button", 	"lm_default_circuit_button",			{'guiu.logisticmachines_button'},	nil,		nil},
-		{"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},	nil,		nil},
+		{"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},	nil,	nil},
 		{"regioncloner_button", 		"region-cloner_main-button",			nil,								nil,		nil},
 		{"resetevolutionpollution_button","ResetEvolutionPollution",			nil,								nil,		nil},
 		--{"schalloreconversion_button", 	"Schall-OC-mod-button",					nil,								nil,		nil},
@@ -150,6 +150,15 @@ local function fix_buttons(player)
 		{"teamcoop_button1", 			"spwn_ctrls",							{'guiu.teamcoop_button1'},			nil,		nil},
 		{"teamcoop_button2", 			"spwn_admin_ctrls",						{'guiu.teamcoop_button2'},			nil,		nil},
 		{"smartchest_button", 			"sc_button",							nil,								1,			nil},
+		{"homeworld_redux_button", 		"Homeworld_btn",						{'guiu.homeworld_redux_button'},	nil,		nil},
+		{"mlawfulevil_button", 			"lawful_evil_button",					{'guiu.mlawfulevil_button'},		nil,		nil},
+		{"trashcan_button", 			"trashbinguibutton",					{'guiu.trashcan_button'},			nil,		nil},
+		{"pycoalprocessing_button", 	"pywiki",								{'guiu.pycoalprocessing_button'},	nil,		nil},
+		{"usagedetector_button", 		"usage_detector",						{'guiu.usagedetector_button'},		nil,		nil},
+		{"rpg_button", 					"104",									{'guiu.rpg_button'},				nil,		nil},
+		{"spawncontrol_button", 		"spawn",								{'guiu.spawncontrol_button'},		nil,		nil},
+		{"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil},
+		{"whatismissing_button", 		"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil},
 
 		--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -184,9 +193,10 @@ end
 
 local function create_new_buttons(player)
 	if not player or not player.valid then return end
+	local button_flow = mod_gui.get_button_flow(player)
+	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+
 	if game.active_mods["FJEI"] then
-		local button_flow = mod_gui.get_button_flow(player)
-		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 		if not button_flow.fjei_toggle_button then
 			button_flow.add {
 				type = "sprite-button",
@@ -197,6 +207,106 @@ local function create_new_buttons(player)
 			}
 		end
 	end
+
+	if game.active_mods["homeworld_redux"] then
+		if not button_flow.Homeworld_btn then
+			button_flow.add {
+				type = "sprite-button",
+				name = "Homeworld_btn",
+				style = gu_button_style_setting,
+				sprite = "homeworld_redux_button"
+			}
+		end
+	end
+
+	if game.active_mods["m-lawful-evil"] then
+		if not button_flow.lawful_evil_button then
+			button_flow.add {
+				type = "sprite-button",
+				name = "lawful_evil_button",
+				style = gu_button_style_setting,
+				sprite = "mlawfulevil_button"
+			}
+		end
+	end
+
+	if game.active_mods["Trashcan"] then
+		if not button_flow.trashbinguibutton then
+			button_flow.add {
+				type = "sprite-button",
+				name = "trashbinguibutton",
+				style = gu_button_style_setting,
+				sprite = "trashcan_button"
+			}
+		end
+	end
+
+	if game.active_mods["pycoalprocessing"] then
+		if not button_flow.pywiki then
+			button_flow.add {
+				type = "sprite-button",
+				name = "pywiki",
+				style = gu_button_style_setting,
+				sprite = "pycoalprocessing_button"
+			}
+		end
+	end
+
+	if game.active_mods["usage-detector"] then
+		if not button_flow.usage_detector then
+			button_flow.add {
+				type = "sprite-button",
+				name = "usage_detector",
+				style = gu_button_style_setting,
+				sprite = "usagedetector_button"
+			}
+		end
+	end
+
+	if game.active_mods["RPG"] then
+		if not button_flow["104"] then
+			button_flow.add {
+				type = "sprite-button",
+				name = "104",
+				style = gu_button_style_setting,
+				sprite = "rpg_button"
+			}
+		end
+	end
+
+	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
+		if not button_flow.spawn then
+			button_flow.add {
+				type = "sprite-button",
+				name = "spawn",
+				style = gu_button_style_setting,
+				sprite = "spawncontrol_button"
+			}
+		end
+	end
+
+	if game.active_mods["TimedSpawnControl"] then
+		if not button_flow.random then
+			button_flow.add {
+				type = "sprite-button",
+				name = "random",
+				style = gu_button_style_setting,
+				sprite = "spawncontrol_random_button"
+			}
+		end
+	end
+
+	if game.active_mods["what-is-missing"] then
+		if not button_flow.what_is_missing then
+			button_flow.add {
+				type = "sprite-button",
+				name = "what_is_missing",
+				style = gu_button_style_setting,
+				sprite = "whatismissing_button"
+			}
+		end
+	end
+
 end
 
 --Factorissimo2
@@ -237,25 +347,14 @@ local function update_factorissimo(event)
 end
 
 local function destroy_obsolete_buttons(player)
-	if not player or not player.valid then return end
+	if not player or not player.valid or not player.gui or not player.gui.top then return end
 	local button_flow = mod_gui.get_button_flow(player)
+	local top = player.gui.top
 
-	-- landfilleverythingu (destroy)
+	-- landfilleverythingu
 	if button_flow.le_flow and button_flow.le_flow.le_button then
 		button_flow.le_flow.le_button.destroy()
 		button_flow.le_flow.destroy()
-	end
-
-	-- blueprint_flip_and_turn (destroy)
-	if game.active_mods["blueprint_flip_and_turn"] then
-		if player.gui and player.gui.top and player.gui.top.blpflip_flow then
-			local top_flow = player.gui.top.blpflip_flow
-			if top_flow.blueprint_flip_horizontal and top_flow.blueprint_flip_vertical then
-				top_flow.blueprint_flip_horizontal.destroy()
-				top_flow.blueprint_flip_vertical.destroy()
-				top_flow.destroy()
-			end
-		end
 	end
 
 	if not player.is_cursor_blueprint() then
@@ -264,53 +363,50 @@ local function destroy_obsolete_buttons(player)
 		if button_flow.blueprint_flip_vertical then button_flow.blueprint_flip_vertical.destroy() end
 	end
 
-	if game.active_mods["FJEI"] then
-		if player.gui.top.fjei_toggle_button then player.gui.top.fjei_toggle_button.destroy() end
+	-- blueprint_flip_and_turn
+	if top.blpflip_flow and top.blpflip_flow.blueprint_flip_horizontal and top.blpflip_flow.blueprint_flip_vertical then
+		top.blpflip_flow.blueprint_flip_horizontal.destroy()
+		top.blpflip_flow.blueprint_flip_vertical.destroy()
+		top.blpflip_flow.destroy()
 	end
 
-	--if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.destroy() end
-	--if player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
-	--	player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame_snouz"
-	--	player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame_snouz"
-	--end
---[[
-	-- FNEI
-
-	--if player.gui and player.gui.left and player.gui.left.fnei_hotbar_flow and player.gui.left.fnei_left_flow["hotbar-main-table"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"] then
-	if game.active_mods["FNEI"] then
-		if player.gui and player.gui.left and player.gui.left.fnei_left_flow and player.gui.left.fnei_left_flow.fnei_hotbar_flow and player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"] and player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"].fnei_hotbar_frame and player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"].fnei_hotbar_frame["fnei_hotbar_fnei-button"] then
-			local FNEI_button = player.gui.left.fnei_left_flow.fnei_hotbar_flow["fnei_hotbar_hotbar-main-table"].fnei_hotbar_frame["fnei_hotbar_fnei-button"]
-			button_flow.add(FNEI_button)
-		end
-	end
-]]--
-
-
-
-	--[[
-	-- FNEI
-
-	if not global.fneibuttonevent then global.fneibuttonevent = nil end
-
-	if player.gui and player.gui.left and player.gui.left.fnei_left_flow and player.gui.left.fnei_left_flow["hotbar-main-table"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"] and player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"] then
-		global.fneibuttonevent = player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"].event
-		game.print(serpent.block(global.fneibuttonevent))
-		player.gui.left.fnei_left_flow["hotbar-main-table"]["fnei_hotbar_frame"]["fnei-button"].destroy()
-	end
-	if player.gui and player.gui.left and player.gui.left.fnei_left_flow and player.gui.left.fnei_left_flow["fnei_hotbar_flow"] then
-		game.print(serpent.block(player.gui.left.fnei_left_flow["fnei_hotbar_flow"]))
+	if top.Homeworld_btn then
+		top.Homeworld_btn.destroy()
 	end
 
-	if not button_flow["fnei-button"] then
-		button_flow.add {
-			type = "sprite-button",
-			name = "fnei_hotbar_fnei-button",
-			style = "fnei_hotbar_label_button",
-			caption = "FNEI",
-			event = global.fneibuttonevent,
-		}
-	end]]--
+	if top.lawful_evil_button then
+		top.lawful_evil_button.destroy()
+	end
 
+	if top.trashbingui and top.trashbingui.trashbinguibutton then
+		top.trashbingui.trashbinguibutton.destroy()
+		top.trashbingui.destroy()
+	end
+
+	if top.pywiki_frame and top.pywiki_frame.pywiki then
+		top.pywiki_frame.pywiki.destroy()
+		top.pywiki_frame.destroy()
+	end
+
+	if top.usage_detector then
+		top.usage_detector.destroy()
+	end
+
+	if top["104"] then
+		top["104"].destroy()
+	end
+
+	if top.spawn then
+		top.spawn.destroy()
+	end
+
+	if top.random then
+		top.random.destroy()
+	end
+
+	if top.what_is_missing then
+		top.what_is_missing.destroy()
+	end
 end
 
 local function update_frame_style(player)
@@ -437,7 +533,7 @@ end
 local function on_init()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
-		create_new_buttons(player)
+		--create_new_buttons(player)
 		fix_buttons(player)
 	end
 	update_factorissimo()
@@ -447,7 +543,7 @@ end
 local function on_configuration_changed()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
-		create_new_buttons(player)
+		--create_new_buttons(player)
 		fix_buttons(player)
 		update_frame_style(player)
 	end
@@ -500,13 +596,10 @@ local function on_gui_click(event)
 	if activedebug then debug_button(event) end
 end
 
-
-
-
 local function on_player_created(event)
 	local player = game.players[event.player_index]
 	destroy_obsolete_buttons(player)
-	create_new_buttons(player)
+	--create_new_buttons(player)
 	fix_buttons(player)
 	checknexttick = true
 end
@@ -522,10 +615,12 @@ local function on_hivemindchange(event)
 	checknexttick = true
 end
 
-local function on_tick()
+local function on_second_tick()
 	if checknexttick then
 		for idx, player in pairs(game.players) do
+			create_new_buttons(player)
 			fix_buttons(player)
+			destroy_obsolete_buttons(player)
 		end
 		checknexttick = false
 	end
@@ -533,7 +628,7 @@ end
 
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
-script.on_event(defines.events.on_tick, on_tick)
+script.on_event(defines.events.on_tick, on_second_tick)
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_configuration_changed)
 script.on_event(defines.events.on_game_created_from_scenario, on_init)
 script.on_event({defines.events.on_player_created, defines.events.on_player_joined_game}, on_player_created)
