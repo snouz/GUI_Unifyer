@@ -95,3 +95,17 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Simple Circuit Trains
 - Smart chest
 - TeamCoop
+- Pyanodon
+- Homeworld Redux
+- Lawful Evil (Added custom scripts in laws)
+- Trashcan
+- Usage Detector
+- RPG
+- Spawn Control
+- Spawn Control with cooldown
+- What Is Missing
+- Advanced Logistics System Fork
+- Zoom (fixed + re-published abandoned mod)
+- Production Statistics Monitor HUD
+- Teleportation_Redux
+- PersonalTeleporter

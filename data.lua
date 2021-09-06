@@ -21,7 +21,7 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "schalloreconversion_button", "shuttle_train_continued_button", "simple_circuit_trains_button", "smartchest_button", "teamcoop_button1", "teamcoop_button2", "trainschedulesignals_button",
 
 "homeworld_redux_button", "mlawfulevil_button", "trashcan_button", "pycoalprocessing_button", "usagedetector_button", "rpg_button", "spawncontrol_button", "spawncontrol_random_button", "whatismissing_button",
-
+"advancedlogisticssystemfork_button", "timeline_button", "somezoom_out_button", "somezoom_in_button", "productionmonitor_button", "teleportation_redux_button",
 }
 
 for _, i in pairs(sprites) do

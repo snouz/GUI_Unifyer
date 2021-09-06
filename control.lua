@@ -144,7 +144,6 @@ local function fix_buttons(player)
 		{"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},	nil,	nil},
 		{"regioncloner_button", 		"region-cloner_main-button",			nil,								nil,		nil},
 		{"resetevolutionpollution_button","ResetEvolutionPollution",			nil,								nil,		nil},
-		--{"schalloreconversion_button", 	"Schall-OC-mod-button",					nil,								nil,		nil},
 		{"shuttle_train_continued_button","shuttle_lite_button",				nil,								nil,		nil},
 		{"simple_circuit_trains_button","SIMPLE_CLICK_01",						{'guiu.simple_circuit_trains_button'},nil,		nil},
 		{"teamcoop_button1", 			"spwn_ctrls",							{'guiu.teamcoop_button1'},			nil,		nil},
@@ -159,6 +158,12 @@ local function fix_buttons(player)
 		{"spawncontrol_button", 		"spawn",								{'guiu.spawncontrol_button'},		nil,		nil},
 		{"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil},
 		{"whatismissing_button", 		"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil},
+		{"advancedlogisticssystemfork_button","logistics-view-button",			{'guiu.advancedlogisticssystemfork_button'},nil,nil},
+		{"somezoom_out_button", 		"but_zoom_zout",						{'guiu.somezoom_out_button'},		nil,		nil},
+		{"somezoom_in_button", 			"but_zoom_zin",							{'guiu.somezoom_in_button'},		nil,		nil},
+		{"productionmonitor_button", 	"stats_show_settings",					{'guiu.productionmonitor_button'},	nil,		nil},
+		{"teleportation_redux_button", 	"teleportation_main_button",			{'guiu.teleportation_redux_button'},nil,		nil},
+		{"teleportation_redux_button", 	"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_redux_button'},nil,		nil},
 
 		--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -203,7 +208,7 @@ local function create_new_buttons(player)
 				name = "fjei_toggle_button",
 				sprite = "fjei_button",
 				style = gu_button_style_setting,
-				tooltip = {'guiu.fjei_button'}
+				tooltip = {'guiu.fjei_button'},
 			}
 		end
 	end
@@ -214,7 +219,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "Homeworld_btn",
 				style = gu_button_style_setting,
-				sprite = "homeworld_redux_button"
+				sprite = "homeworld_redux_button",
 			}
 		end
 	end
@@ -225,7 +230,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "lawful_evil_button",
 				style = gu_button_style_setting,
-				sprite = "mlawfulevil_button"
+				sprite = "mlawfulevil_button",
 			}
 		end
 	end
@@ -236,7 +241,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "trashbinguibutton",
 				style = gu_button_style_setting,
-				sprite = "trashcan_button"
+				sprite = "trashcan_button",
 			}
 		end
 	end
@@ -247,7 +252,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "pywiki",
 				style = gu_button_style_setting,
-				sprite = "pycoalprocessing_button"
+				sprite = "pycoalprocessing_button",
 			}
 		end
 	end
@@ -258,7 +263,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "usage_detector",
 				style = gu_button_style_setting,
-				sprite = "usagedetector_button"
+				sprite = "usagedetector_button",
 			}
 		end
 	end
@@ -269,7 +274,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "104",
 				style = gu_button_style_setting,
-				sprite = "rpg_button"
+				sprite = "rpg_button",
 			}
 		end
 	end
@@ -280,7 +285,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "spawn",
 				style = gu_button_style_setting,
-				sprite = "spawncontrol_button"
+				sprite = "spawncontrol_button",
 			}
 		end
 	end
@@ -291,7 +296,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "random",
 				style = gu_button_style_setting,
-				sprite = "spawncontrol_random_button"
+				sprite = "spawncontrol_random_button",
 			}
 		end
 	end
@@ -302,11 +307,97 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "what_is_missing",
 				style = gu_button_style_setting,
-				sprite = "whatismissing_button"
+				sprite = "whatismissing_button",
 			}
 		end
 	end
 
+
+	if game.active_mods["advanced-logistics-system-fork"] then
+		if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
+			if not button_flow["logistics-view-button"] then
+				button_flow.add {
+					type = "sprite-button",
+					name = "logistics-view-button",
+					style = gu_button_style_setting,
+					sprite = "advancedlogisticssystemfork_button",
+					tooltip = {'guiu.advancedlogisticssystemfork_button'},
+				}
+			end
+		end
+	end
+
+	--[[if game.active_mods["timeline"] then
+		if not button_flow["timeline"] then
+			button_flow.add {
+				type = "sprite-button",
+				name = "timeline",
+				style = gu_button_style_setting,
+				sprite = "timeline_button",
+			}
+		end
+	end]]
+
+	if game.active_mods["some-zoom"] then
+		if not button_flow.but_zoom_zout then
+			button_flow.add {
+				type = "sprite-button",
+				name = "but_zoom_zout",
+				style = gu_button_style_setting,
+				sprite = "somezoom_out_button",
+				tooltip = {'guiu.somezoom_out_button'},
+			}
+		end
+		if not button_flow.but_zoom_zin then
+			button_flow.add {
+				type = "sprite-button",
+				name = "but_zoom_zin",
+				style = gu_button_style_setting,
+				sprite = "somezoom_in_button",
+				tooltip = {'guiu.somezoom_in_button'},
+			}
+		end
+	end
+
+	if game.active_mods["production-monitor"] then
+		if not button_flow.stats_show_settings then
+			button_flow.add {
+				type = "sprite-button",
+				name = "stats_show_settings",
+				style = gu_button_style_setting,
+				sprite = "productionmonitor_button",
+				tooltip = {'guiu.productionmonitor_button'},
+			}
+		end
+	end
+
+	if game.active_mods["Teleportation_Redux"] then
+		if global.Teleportation_Redux_built then
+			if not button_flow.teleportation_main_button then
+				button_flow.add {
+					type = "sprite-button",
+					name = "teleportation_main_button",
+					style = gu_button_style_setting,
+					sprite = "teleportation_redux_button",
+					tooltip = {'guiu.teleportation_redux_button'},
+				}
+			end
+		end
+	end
+
+	if game.active_mods["PersonalTeleporter"] then
+		if global.PersonalTeleporter_built then
+			if not button_flow.personalTeleporter_PersonalTeleportTool then
+				button_flow.add {
+					type = "sprite-button",
+					name = "personalTeleporter_PersonalTeleportTool",
+					style = gu_button_style_setting,
+					sprite = "teleportation_redux_button",
+					tooltip = {'guiu.teleportation_redux_button'},
+				}
+			end
+		end
+	end
 end
 
 --Factorissimo2
@@ -406,6 +497,60 @@ local function destroy_obsolete_buttons(player)
 
 	if top.what_is_missing then
 		top.what_is_missing.destroy()
+	end
+
+	if top["logistics-view-button"] then
+		top["logistics-view-button"].destroy()
+	end
+
+	--if top.timeline then
+	--	top.timeline.destroy()
+	--end
+
+	if top.flw_zoom and top.flw_zoom.but_zoom_zout and top.flw_zoom.but_zoom_zin then
+		top.flw_zoom.but_zoom_zout.destroy()
+		top.flw_zoom.but_zoom_zin.destroy()
+		top.flw_zoom.destroy()
+	end
+
+	if top.stats_show_settings then
+		top.stats_show_settings.destroy()
+	end
+
+	--Teleportation_Redux checks that top.teleportation_main_button exists, so we replace with invisible frame.
+	if top.teleportation_main_button and top.teleportation_main_button.type == "button" then
+		top.teleportation_main_button.destroy()
+		top.add {
+			type = "frame",
+			name = "teleportation_main_button",
+			style = "invisible_frame",
+		}
+	end
+
+	if top.personalTeleporter_PersonalTeleportTool then
+		top.personalTeleporter_PersonalTeleportTool.destroy()
+	end
+
+	if game.active_mods["production-monitor"] then
+		if player.gui.left.stats_item_flow then
+			local button_table_pm = player.gui.left.stats_item_flow.children_names[1]
+			if player.gui.left.stats_item_flow[button_table_pm] and player.gui.left.stats_item_flow[button_table_pm].stats_show_settings then
+
+				if player.gui.left.stats_item_flow[button_table_pm].column_count <= 1 then
+					player.gui.left.stats_item_flow[button_table_pm].stats_show_settings.enabled = false
+					player.gui.left.stats_item_flow[button_table_pm].stats_show_settings.visible = false
+				end
+			end
+		elseif player.gui.top.stats_item_flow then
+			local button_table_pm = player.gui.top.stats_item_flow.children_names[1]
+			if player.gui.top.stats_item_flow[button_table_pm] and player.gui.top.stats_item_flow[button_table_pm].stats_show_settings then
+
+				if player.gui.top.stats_item_flow[button_table_pm].column_count <= 1 then
+					player.gui.top.stats_item_flow[button_table_pm].stats_show_settings.enabled = false
+					player.gui.top.stats_item_flow[button_table_pm].stats_show_settings.visible = false
+				end
+			end
+		end
 	end
 end
 
@@ -551,10 +696,19 @@ local function on_configuration_changed()
 	checknexttick = true
 end
 
-local function on_research_finished()
+local function on_research_finished(event)
 	for idx, player in pairs(game.players) do
 		fix_buttons(player)
 	end
+
+	-- advanced-logistics-system-fork
+	if event.research.name == "advanced-logistics-systems" then
+        for idx, player in pairs(game.players) do
+        	destroy_obsolete_buttons(player)
+			create_new_buttons(player)
+		end
+    end
+
 	update_factorissimo()
 end
 
@@ -615,6 +769,52 @@ local function on_hivemindchange(event)
 	checknexttick = true
 end
 
+local function on_built(event)
+	if game.active_mods["Teleportation_Redux"] then
+		if not global.Teleportation_Redux_built then
+			if event and event.created_entity and event.created_entity.name == "teleportation-beacon" then
+				for idx, player in pairs(game.players) do
+					local button_flow = mod_gui.get_button_flow(player)
+					local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+					if not button_flow.teleportation_main_button then
+						button_flow.add {
+							type = "sprite-button",
+							name = "teleportation_main_button",
+							style = gu_button_style_setting,
+							sprite = "teleportation_redux_button",
+							tooltip = {'guiu.teleportation_redux_button'},
+						}
+					end
+				end
+				checknexttick = true
+				global.Teleportation_Redux_built = true
+			end
+		end
+	end
+
+	if game.active_mods["PersonalTeleporter"] then
+		if not global.PersonalTeleporter_built then
+			if event and event.created_entity and event.created_entity.name == "Teleporter_Beacon" then
+				for idx, player in pairs(game.players) do
+					local button_flow = mod_gui.get_button_flow(player)
+					local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+					if not button_flow.personalTeleporter_PersonalTeleportTool then
+						button_flow.add {
+							type = "sprite-button",
+							name = "personalTeleporter_PersonalTeleportTool",
+							style = gu_button_style_setting,
+							sprite = "teleportation_redux_button",
+							tooltip = {'guiu.teleportation_redux_button'},
+						}
+					end
+				end
+				checknexttick = true
+				global.PersonalTeleporter_built = true
+			end
+		end
+	end
+end
+
 local function on_second_tick()
 	if checknexttick then
 		for idx, player in pairs(game.players) do
@@ -639,6 +839,7 @@ script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
 script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
+script.on_event({defines.events.on_built_entity, defines.events.on_entity_cloned, defines.events.on_robot_built_entity}, on_built)
 
 
 --game.print(serpent.block())

@@ -1,4 +1,13 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.10.2
+Date: 2021.09.06
+  Changes:
+    - Supports Advanced Logistics System Fork
+    - Supports Zoom (fixed + re-published abandoned mod)
+    - Supports Production Statistics Monitor HUD
+    - Supports Teleportation_Redux
+    - Supports PersonalTeleporter
+---------------------------------------------------------------------------------------------------
 Version: 1.10.1
 Date: 2021.09.05
   Changes:
