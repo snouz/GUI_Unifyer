@@ -5,9 +5,11 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 # Current advancement (before/after)
 ![before](https://i.imgur.com/yudkRLa.png)
 ![before](https://i.imgur.com/PRWSeGo.png)
+![before](https://i.imgur.com/P9wklhD.png)
 -----------------------------
 ![after](https://i.imgur.com/D3vMpmR.png)
 ![after](https://i.imgur.com/5OUYZgh.png)
+![after](https://i.imgur.com/bSNqD4p.png)
 
 # Extra features
 - Many buttons which didn't have hover text now do.
@@ -15,6 +17,9 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 - Per-player setting to switch to grey square buttons.
 ![greybuttons](https://i.imgur.com/kcSHyzX.png)
 - Per-player setting to switch the style of the top left frame.
+![frame](https://i.imgur.com/fOtkHbr.png)
+![frame](https://i.imgur.com/linVC4l.png)
+![frame](https://i.imgur.com/rbWNha5.png)
 - Blueprint related buttons only show when one is selected:
 ![blueprint](https://i.imgur.com/jUbwLoX.png)
 

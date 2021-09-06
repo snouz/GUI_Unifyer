@@ -2,8 +2,8 @@ local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local checknexttick = false
-local activedebug = false
-local lastframestyle = nil
+local activedebug = true
+--local lastframestyle = nil
 
 local function set_button_sprite(button, spritepath)
 	if spritepath == nil then
@@ -461,6 +461,10 @@ local function destroy_obsolete_buttons(player)
 		top.blpflip_flow.destroy()
 	end
 
+	if top.fjei_toggle_button then
+		top.fjei_toggle_button.destroy()
+	end
+
 	if top.Homeworld_btn then
 		top.Homeworld_btn.destroy()
 	end
@@ -556,13 +560,14 @@ end
 
 local function update_frame_style(player)
 	local gu_frame_style_setting = settings.get_player_settings(player)["gu_frame_style_setting"].value or "normal_frame_style"
+	--[[
 	if not lastframesetting then
 		lastframesetting = gu_frame_style_setting
 		return
 	end
 	if lastframesetting == gu_frame_style_setting then return end
-
-	if player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
+	]]
+	if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
 		if gu_frame_style_setting == "normal_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
@@ -573,7 +578,7 @@ local function update_frame_style(player)
 			player.gui.top.mod_gui_top_frame.style = "invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "invisible_frame"
 		end
-		lastframesetting = gu_frame_style_setting
+		--lastframesetting = gu_frame_style_setting
 	end
 end
 
