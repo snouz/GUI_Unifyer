@@ -2,7 +2,7 @@ local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local checknexttick = false
-local activedebug = true
+local activedebug = false
 --local lastframestyle = nil
 
 local function set_button_sprite(button, spritepath)
