@@ -117,3 +117,4 @@ Consult your doctor to see if GUI Unifyer is right for you
 - Production Statistics Monitor HUD
 - Teleportation_Redux
 - PersonalTeleporter
+- Schall Endgame Evolution

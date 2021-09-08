@@ -10,7 +10,7 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "kttrrc_button", "kuxcraftingtools_button", "kuxorbitalioncannon_button", "landfilleverythingu_button",
 "markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "notenoughtodo_button", "nullius_button",
 "oshahotswap_button", "picksrocketstats_button", "poweredentities_button", "researchcounter_button",
-"richtexthelper_button", "ritnteleportation_button", "schallendgameevolution_button", "solarcalc_button",
+"richtexthelper_button", "ritnteleportation_button", "solarcalc_button",
 "spacemod_button",
 "thefatcontroller_button", "trainlog_button", "trainpubsub_button", "upgradeplannernext_button", "whatsmissing_button", "schall_rc_button",
 "commuguidemod_guide_button", "commuguidemod_pupil_button", "blueprint_flip_horizontal_button", "blueprint_flip_vertical_button", "fjei_button",
@@ -51,6 +51,27 @@ if data.raw["sprite"]["tpm_button_sprite_peace"] and data.raw["sprite"]["tpm_but
 	data.raw["sprite"]["tpm_button_sprite_peace"].size = {64, 64}
 	data.raw["sprite"]["tpm_button_sprite_war"].filename = ICONPATH .. "tpm_button_sprite_war.png"
 	data.raw["sprite"]["tpm_button_sprite_war"].size = {64, 64}
+end
+
+
+
+
+
+if mods["SchallEndgameEvolution"] then
+	local max_tier = settings.startup["endgameevolution-alien-tier-max"] and settings.startup["endgameevolution-alien-tier-max"].value or 20
+	for i = 1,max_tier do
+		local p = {}
+		local whiteness = (((max_tier + 2) - i) / (max_tier + 2))
+		p.type = "sprite"
+		p.name = "sprite-Schall-tier-"..i
+		p.layers = {
+			{filename = ICONPATH .. "schallendgameevolution_button.png", size = 64, scale = 0.5, tint = {1, whiteness, whiteness}},
+			{filename = "__SchallEndgameEvolution__/graphics/gui/tier-"..i..".png", size = 32, scale = 0.7}
+		}
+		p.flags = { "gui-icon" }
+		p.priority = "extra-high-no-scale"
+		data:extend({p})
+	end
 end
 
 ------------------

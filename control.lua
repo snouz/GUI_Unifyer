@@ -164,6 +164,7 @@ local function fix_buttons(player)
 		{"productionmonitor_button", 	"stats_show_settings",					{'guiu.productionmonitor_button'},	nil,		nil},
 		{"teleportation_redux_button", 	"teleportation_main_button",			{'guiu.teleportation_redux_button'},nil,		nil},
 		{"teleportation_redux_button", 	"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_redux_button'},nil,		nil},
+		{"schallendgameevolution_button","Schall-EE-mod-button",				nil,								1,			nil},
 
 		--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -172,7 +173,6 @@ local function fix_buttons(player)
 		--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
 		--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, 												-- can't button name!
 		--{"deleteadjacentchunk_button", ""},																								-- too complex
-		--{"schallendgameevolution_button", "Schall-EE-mod-button"},																		--to do
 		--{"nullius_button", ""},										--to do
 	}
 
