@@ -2,6 +2,9 @@
 Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most icons.
 (Continuation of Better_Modbuttons by Dr_Pepper)
 
+⚠️ Currently, there's no way to cleanly uninstall the mod from a save (will leave empty icons)
+Consult your doctor to see if GUI Unifyer is right for you
+
 # Current advancement (before/after)
 ![before](https://i.imgur.com/yudkRLa.png)
 ![before](https://i.imgur.com/PRWSeGo.png)

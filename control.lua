@@ -1,7 +1,7 @@
 local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
-local checknexttick = false
+local checknexttick = true
 local activedebug = false
 --local lastframestyle = nil
 
@@ -87,7 +87,7 @@ local function fix_buttons(player)
 		{"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}, 	nil,		nil},
 		{"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}, 	nil,		nil},
 		{"doingthingsbyhand_button", 	"DoingThingsByHandMainButton", 			{'guiu.doingthingsbyhand_button'},	nil,		nil},
-		{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	1,			nil},
+		--{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	1,			nil},
 		{"killlostbots_button", 		"KillLostBots", 						nil,								nil,		nil},
 		{"kttrrc_button", 				"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil},
 		{"kuxcraftingtools_button", 	"CraftNearbyGhostItemsButton", 			nil,								nil,		nil},
@@ -571,12 +571,14 @@ local function update_frame_style(player)
 		if gu_frame_style_setting == "normal_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
+			player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "barebone_frame_style" then
-			player.gui.top.mod_gui_top_frame.style = "invisible_frame"
-			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "barebone_frame"
+			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
+			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_barebone_frame"
+			player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "invisible_frame_style" then
-			player.gui.top.mod_gui_top_frame.style = "invisible_frame"
-			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "invisible_frame"
+			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
+			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_invisible_frame"
 		end
 		--lastframesetting = gu_frame_style_setting
 	end
@@ -717,6 +719,16 @@ local function on_research_finished(event)
 	update_factorissimo()
 end
 
+local function on_rocket_launched()
+	for idx, player in pairs(game.players) do
+		destroy_obsolete_buttons(player)
+		--create_new_buttons(player)
+		fix_buttons(player)
+		update_frame_style(player)
+	end
+	checknexttick = true
+end
+
 local function debug_button(event)
 	--debug
 	if event and event.element then
@@ -842,6 +854,7 @@ script.on_event(defines.events.on_gui_click, on_gui_click)
 script.on_event(defines.events.on_player_cursor_stack_changed, on_player_cursor_stack_changed)
 script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
+script.on_event(defines.events.on_rocket_launched, on_rocket_launched)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
 script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
 script.on_event({defines.events.on_built_entity, defines.events.on_entity_cloned, defines.events.on_robot_built_entity}, on_built)

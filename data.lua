@@ -121,7 +121,7 @@ data.raw["gui-style"].default["slot_sized_button_blacktext"] = slot_sized_button
 -- FRAME STYLES --
 ------------------
 
-local invisible_frame =
+local snouz_invisible_frame =
 {
   type = "frame_style",
   use_header_filler = false,
@@ -152,7 +152,7 @@ local invisible_frame =
   },
 }
 
-local barebone_frame =
+local snouz_barebone_frame =
 {
   type = "frame_style",
   padding = 0,
@@ -171,5 +171,5 @@ local barebone_frame =
   },
 }
 
-data.raw["gui-style"].default["invisible_frame"] = invisible_frame
-data.raw["gui-style"].default["barebone_frame"] = barebone_frame
+data.raw["gui-style"].default["snouz_invisible_frame"] = snouz_invisible_frame
+data.raw["gui-style"].default["snouz_barebone_frame"] = snouz_barebone_frame
