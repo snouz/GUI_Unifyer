@@ -568,20 +568,40 @@ local function update_frame_style(player)
 	if lastframesetting == gu_frame_style_setting then return end
 	]]
 	if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
-		if gu_frame_style_setting == "normal_frame_style" then
+		if gu_frame_style_setting == "snouz_normal_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
 			player.gui.top.mod_gui_top_frame.visible = true
-		elseif gu_frame_style_setting == "barebone_frame_style" then
+		elseif gu_frame_style_setting == "snouz_barebone_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_barebone_frame"
 			player.gui.top.mod_gui_top_frame.visible = true
-		elseif gu_frame_style_setting == "invisible_frame_style" then
+		elseif gu_frame_style_setting == "snouz_large_barebone_frame" then
+			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
+			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_large_barebone_frame"
+			player.gui.top.mod_gui_top_frame.visible = true
+		elseif gu_frame_style_setting == "snouz_invisible_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_invisible_frame"
 		end
 		--lastframesetting = gu_frame_style_setting
 	end
+	--[[if player.gui and player.gui.top and player.gui.top.mod_gui_button_flow then
+		if gu_frame_style_setting == "snouz_normal_frame_style" then
+			player.gui.top.mod_gui_button_flow.style = "quick_bar_window_frame"
+			player.gui.top.mod_gui_button_flow.visible = true
+		elseif gu_frame_style_setting == "snouz_barebone_frame_style" then
+			player.gui.top.mod_gui_button_flow.style = "snouz_barebone_frame"
+			player.gui.top.mod_gui_button_flow.visible = true
+		elseif gu_frame_style_setting == "snouz_large_barebone_frame" then
+			player.gui.top.mod_gui_button_flow.style = "snouz_large_barebone_frame"
+			player.gui.top.mod_gui_button_flow.visible = true
+		elseif gu_frame_style_setting == "snouz_invisible_frame_style" then
+			player.gui.top.mod_gui_button_flow.style = "snouz_invisible_frame"
+		end
+	end]]
+
+
 end
 
 local function on_player_cursor_stack_changed(event)

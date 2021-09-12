@@ -3,7 +3,7 @@ Factorio Mod forcing mod buttons to look uniform and aligned, harmonizes most ic
 (Continuation of Better_Modbuttons by Dr_Pepper)
 
 ⚠️ Currently, there's no way to cleanly uninstall the mod from a save (will leave empty icons)
-Consult your doctor to see if GUI Unifyer is right for you
+Consult with your doctor to see if GUI Unifyer is right for you
 
 # Current advancement (before/after)
 ![before](https://i.imgur.com/yudkRLa.png)
@@ -25,6 +25,11 @@ Consult your doctor to see if GUI Unifyer is right for you
 ![frame](https://i.imgur.com/rbWNha5.png)
 - Blueprint related buttons only show when one is selected:
 ![blueprint](https://i.imgur.com/jUbwLoX.png)
+
+# Check out my other mods
+https://mods.factorio.com/mod/snouz-useful-icons
+https://mods.factorio.com/mod/emoji-signals
+https://mods.factorio.com/mod/ToggleSpeedBoost
 
 # Supports (so far)
 - Factory Planner
