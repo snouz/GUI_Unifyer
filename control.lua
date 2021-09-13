@@ -87,7 +87,7 @@ local function fix_buttons(player)
 		{"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}, 	nil,		nil},
 		{"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}, 	nil,		nil},
 		{"doingthingsbyhand_button", 	"DoingThingsByHandMainButton", 			{'guiu.doingthingsbyhand_button'},	nil,		nil},
-		--{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	1,			nil},
+		{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	1,			nil},
 		{"killlostbots_button", 		"KillLostBots", 						nil,								nil,		nil},
 		{"kttrrc_button", 				"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil},
 		{"kuxcraftingtools_button", 	"CraftNearbyGhostItemsButton", 			nil,								nil,		nil},
@@ -157,7 +157,7 @@ local function fix_buttons(player)
 		{"rpg_button", 					"104",									{'guiu.rpg_button'},				nil,		nil},
 		{"spawncontrol_button", 		"spawn",								{'guiu.spawncontrol_button'},		nil,		nil},
 		{"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil},
-		{"whatismissing_button", 		"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil},
+		{"whatsmissing_button", 		"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil},
 		{"advancedlogisticssystemfork_button","logistics-view-button",			{'guiu.advancedlogisticssystemfork_button'},nil,nil},
 		{"somezoom_out_button", 		"but_zoom_zout",						{'guiu.somezoom_out_button'},		nil,		nil},
 		{"somezoom_in_button", 			"but_zoom_zin",							{'guiu.somezoom_in_button'},		nil,		nil},
@@ -165,6 +165,8 @@ local function fix_buttons(player)
 		{"teleportation_redux_button", 	"teleportation_main_button",			{'guiu.teleportation_redux_button'},nil,		nil},
 		{"teleportation_redux_button", 	"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_redux_button'},nil,		nil},
 		{"schallendgameevolution_button","Schall-EE-mod-button",				nil,								1,			nil},
+		{"newgameplus_button",			"new-game-plus-toggle-config",			nil,								nil,		nil},
+		{"nullius_button",				"nullius_mission_button",				nil,								nil,		nil},
 
 		--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 		--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -173,7 +175,6 @@ local function fix_buttons(player)
 		--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
 		--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, 												-- can't button name!
 		--{"deleteadjacentchunk_button", ""},																								-- too complex
-		--{"nullius_button", ""},										--to do
 	}
 
 	for _, k in pairs(iconlist) do
@@ -307,7 +308,7 @@ local function create_new_buttons(player)
 				type = "sprite-button",
 				name = "what_is_missing",
 				style = gu_button_style_setting,
-				sprite = "whatismissing_button",
+				sprite = "whatsmissing_button",
 			}
 		end
 	end
@@ -398,6 +399,27 @@ local function create_new_buttons(player)
 			end
 		end
 	end
+
+	if game.active_mods["inserter-throughput"] then
+		if not button_flow["inserter-throughput-toggle"] then
+			button_flow.add {
+				type = "sprite-button",
+				name = "inserter-throughput-toggle",
+				style = gu_button_style_setting,
+				sprite = "inserterthroughput_off_button",
+				tooltip = {'guiu.inserterthroughput_off_button'},
+			}
+		end
+		if button_flow["inserter-throughput-toggle"] and settings.get_player_settings(player)["inserter-throughput-enabled"] then
+			if settings.get_player_settings(player)["inserter-throughput-enabled"].value == true then
+				button_flow["inserter-throughput-toggle"].sprite = "inserterthroughput_on_button"
+				button_flow["inserter-throughput-toggle"].tooltip = {'guiu.inserterthroughput_on_button'}
+			else
+				button_flow["inserter-throughput-toggle"].sprite = "inserterthroughput_off_button"
+				button_flow["inserter-throughput-toggle"].tooltip = {'guiu.inserterthroughput_off_button'}
+			end
+		end
+	end
 end
 
 --Factorissimo2
@@ -473,13 +495,11 @@ local function destroy_obsolete_buttons(player)
 		top.lawful_evil_button.destroy()
 	end
 
-	if top.trashbingui and top.trashbingui.trashbinguibutton then
-		top.trashbingui.trashbinguibutton.destroy()
+	if top.trashbingui then
 		top.trashbingui.destroy()
 	end
 
-	if top.pywiki_frame and top.pywiki_frame.pywiki then
-		top.pywiki_frame.pywiki.destroy()
+	if top.pywiki_frame then
 		top.pywiki_frame.destroy()
 	end
 
@@ -555,6 +575,10 @@ local function destroy_obsolete_buttons(player)
 				end
 			end
 		end
+	end
+
+	if top["inserter-throughput-toggle"] and top["inserter-throughput-toggle"].visible == true then
+		top["inserter-throughput-toggle"].visible = false
 	end
 end
 

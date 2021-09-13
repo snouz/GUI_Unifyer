@@ -9,7 +9,7 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "changemapsettings_button", "dana_button", "deleteadjacentchunk_button", "doingthingsbyhand_button",
 "facautoscreenshot_button", "factorissimo2_button", "factorissimo2_inspect_button", "killlostbots_button",
 "kttrrc_button", "kuxcraftingtools_button", "kuxorbitalioncannon_button", "landfilleverythingu_button",
-"markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "notenoughtodo_button", "nullius_button",
+"markers_button", "modmashsplinterboom_button", "modmashsplinternewworlds_button", "notenoughtodo_button",
 "oshahotswap_button", "picksrocketstats_button", "poweredentities_button", "researchcounter_button",
 "richtexthelper_button", "ritnteleportation_button", "solarcalc_button",
 "spacemod_button",
@@ -21,8 +21,9 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 "logisticmachines_button", "logisticrequestmanager_button", "regioncloner_button", "resetevolutionpollution_button",
 "schalloreconversion_button", "shuttle_train_continued_button", "simple_circuit_trains_button", "smartchest_button", "teamcoop_button1", "teamcoop_button2", "trainschedulesignals_button",
 
-"homeworld_redux_button", "mlawfulevil_button", "trashcan_button", "pycoalprocessing_button", "usagedetector_button", "rpg_button", "spawncontrol_button", "spawncontrol_random_button", "whatismissing_button",
+"homeworld_redux_button", "mlawfulevil_button", "trashcan_button", "pycoalprocessing_button", "usagedetector_button", "rpg_button", "spawncontrol_button", "spawncontrol_random_button",
 "advancedlogisticssystemfork_button", "timeline_button", "somezoom_out_button", "somezoom_in_button", "productionmonitor_button", "teleportation_redux_button",
+"newgameplus_button", "nullius_button", "inserterthroughput_on_button", "inserterthroughput_off_button",
 }
 
 for _, i in pairs(sprites) do
@@ -86,7 +87,7 @@ local slot_button_notext = {
 	type = "button_style",
 	parent = "slot_button",
 	default_font_color = nothing,
-	hovered_font_color = nothing,
+  hovered_font_color = nothing,
 	clicked_font_color = nothing,
 	disabled_font_color = nothing,
 	selected_font_color = nothing,
@@ -94,6 +95,8 @@ local slot_button_notext = {
 	selected_clicked_font_color = nothing,
 	strikethrough_color = nothing,
 }
+data.raw["gui-style"].default["slot_button_notext"] = slot_button_notext
+
 local slot_button_whitetext = {
 	type = "button_style",
 	parent = "slot_button",
@@ -106,6 +109,8 @@ local slot_button_whitetext = {
 	selected_clicked_font_color = white,
 	strikethrough_color = white,
 }
+data.raw["gui-style"].default["slot_button_whitetext"] = slot_button_whitetext
+
 local slot_sized_button_notext = {
 	type = "button_style",
 	parent = "slot_sized_button",
@@ -118,6 +123,8 @@ local slot_sized_button_notext = {
 	selected_clicked_font_color = nothing,
 	strikethrough_color = nothing,
 }
+data.raw["gui-style"].default["slot_sized_button_notext"] = slot_sized_button_notext
+
 local slot_sized_button_blacktext = {
 	type = "button_style",
 	parent = "slot_sized_button",
@@ -130,6 +137,7 @@ local slot_sized_button_blacktext = {
 	selected_clicked_font_color = black,
 	strikethrough_color = black,
 }
+data.raw["gui-style"].default["slot_sized_button_blacktext"] = slot_sized_button_blacktext
 
 local slot_button_notext_transparent =
 {
@@ -172,6 +180,19 @@ local slot_button_notext_transparent =
   },
   pie_progress_color = {0.98, 0.66, 0.22, 0.5},
 }
+data.raw["gui-style"].default["slot_button_notext_transparent"] = slot_button_notext_transparent
+
+local slot_button_notext_transparent_selected =
+{
+  type = "button_style",
+  parent = "slot_button_notext_transparent",
+  default_graphical_set =
+  {
+    base = {border = 5, position = {0, 736}, size = 80, opacity = 0.4},
+    shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
+  },
+}
+data.raw["gui-style"].default["slot_button_notext_transparent_selected"] = slot_button_notext_transparent_selected
 
 local function make_button_style(stylename, filename, imgsize, border, opacity)
   data.raw["gui-style"].default[stylename] = {
@@ -180,18 +201,17 @@ local function make_button_style(stylename, filename, imgsize, border, opacity)
     draw_shadow_under_picture = true,
     size = (imgsize / 2),
     padding = 0,
-    default_graphical_set =
-    { base = {type = "composition", filename = filename, border = border, position = {0, 0}, size = imgsize, opacity = opacity}, },
-    hovered_graphical_set =
-    { base = {type = "composition", filename = filename, border = border, position = {imgsize, 0}, size = imgsize, opacity = opacity}, },
-    selected_graphical_set =
-    { base = {type = "composition", filename = filename, border = border, position = {imgsize, 0}, size = imgsize, opacity = opacity}, },
-    selected_hovered_graphical_set =
-    { base = {type = "composition", filename = filename, border = border, position = {imgsize, 0}, size = imgsize, opacity = opacity}, },
-    selected_clicked_graphical_set =
-    { base = {type = "composition", filename = filename, border = border, position = {(imgsize * 2), 0}, size = imgsize, opacity = opacity}, },
-    clicked_graphical_set =
-    { base = {type = "composition", filename = filename, border = border, position = {(imgsize * 2), 0}, size = imgsize, opacity = opacity}, },
+    default_graphical_set =           { base = {type = "composition", filename = filename, border = border, position = {0, 0}, size = imgsize, opacity = opacity}, },
+    hovered_graphical_set =           { base = {type = "composition", filename = filename, border = border, position = {imgsize, 0}, size = imgsize, opacity = opacity}, },
+    selected_graphical_set =          { base = {type = "composition", filename = filename, border = border, position = {imgsize, 0}, size = imgsize, opacity = opacity}, },
+    selected_hovered_graphical_set =  { base = {type = "composition", filename = filename, border = border, position = {imgsize, 0}, size = imgsize, opacity = opacity}, },
+    selected_clicked_graphical_set =  { base = {type = "composition", filename = filename, border = border, position = {(imgsize * 2), 0}, size = imgsize, opacity = opacity}, },
+    clicked_graphical_set =           { base = {type = "composition", filename = filename, border = border, position = {(imgsize * 2), 0}, size = imgsize, opacity = opacity}, },
+  }
+  data.raw["gui-style"].default[stylename .. "_selected"] = {
+    type = "button_style",
+    parent = stylename,
+    default_graphical_set =           { base = {type = "composition", filename = filename, border = border, position = {(imgsize * 2), 0}, size = imgsize, opacity = opacity}, },
   }
 end
 
@@ -205,11 +225,9 @@ make_button_style("gui_unifyer_gui_07", GUIPATH .. "gui_unifyer_gui_07.png", 80,
 make_button_style("gui_unifyer_gui_08", GUIPATH .. "gui_unifyer_gui_08.png", 80, 8, 0.9)
 
 
-data.raw["gui-style"].default["slot_button_notext"] = slot_button_notext
-data.raw["gui-style"].default["slot_button_whitetext"] = slot_button_whitetext
-data.raw["gui-style"].default["slot_button_notext_transparent"] = slot_button_notext_transparent
-data.raw["gui-style"].default["slot_sized_button_notext"] = slot_sized_button_notext
-data.raw["gui-style"].default["slot_sized_button_blacktext"] = slot_sized_button_blacktext
+
+
+
 --data.raw["gui-style"].default["attach-notes-add-button"]
 --data.raw["gui-style"].default["attach-notes-edit-button"]
 --data.raw["gui-style"].default["attach-notes-view-button"]

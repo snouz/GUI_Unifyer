@@ -4,6 +4,10 @@ Date: 2021.09.13
   Changes:
     - 9 new button styles
     - 1 new frame type
+    - Supports Nullius
+    - Supports NewGame+
+    - Supports Inserter Throughput
+    - 4 icon changes
 ---------------------------------------------------------------------------------------------------
 Version: 1.10.4
 Date: 2021.09.08
