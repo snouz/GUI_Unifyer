@@ -123,3 +123,7 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - Teleportation_Redux
 - PersonalTeleporter
 - Schall Endgame Evolution
+- Nullius
+- NewGame+
+- Inserter Throughput
+- YARM - Resource Monitor

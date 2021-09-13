@@ -23,7 +23,7 @@ local sprites = {"placeables_button", "todolist_button", "helmod_button", "facto
 
 "homeworld_redux_button", "mlawfulevil_button", "trashcan_button", "pycoalprocessing_button", "usagedetector_button", "rpg_button", "spawncontrol_button", "spawncontrol_random_button",
 "advancedlogisticssystemfork_button", "timeline_button", "somezoom_out_button", "somezoom_in_button", "productionmonitor_button", "teleportation_redux_button",
-"newgameplus_button", "nullius_button", "inserterthroughput_on_button", "inserterthroughput_off_button",
+"newgameplus_button", "nullius_button", "inserterthroughput_on_button", "inserterthroughput_off_button", "yarm_none_button", "yarm_warnings_button", "yarm_all_button",
 }
 
 for _, i in pairs(sprites) do

@@ -175,6 +175,10 @@ local function fix_buttons(player)
 		--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
 		--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, 												-- can't button name!
 		--{"deleteadjacentchunk_button", ""},																								-- too complex
+		--timeline							timeline				hard
+		--controllinator				["controllinator-toggle"]			button created from
+		--automatic-belt-direction			abdgui						toggle button comment changer images?
+		--RPGsystem						205992
 	}
 
 	for _, k in pairs(iconlist) do
@@ -420,6 +424,39 @@ local function create_new_buttons(player)
 			end
 		end
 	end
+
+	if game.active_mods["YARM"] then
+		if not button_flow["YARM_filter_none"] then --current mode all
+			button_flow.add {
+				type = "sprite-button",
+				name = "YARM_filter_none",
+				style = gu_button_style_setting,
+				sprite = "yarm_all_button",
+				tooltip = {'guiu.yarm_all_button'},
+				visible = false,
+			}
+		end
+		if not button_flow["YARM_filter_warnings"] then --current mode none
+			button_flow.add {
+				type = "sprite-button",
+				name = "YARM_filter_warnings",
+				style = gu_button_style_setting,
+				sprite = "yarm_none_button",
+				tooltip = {'guiu.yarm_none_button'},
+				visible = false,
+			}
+		end
+		if not button_flow["YARM_filter_all"] then --current mode warnings
+			button_flow.add {
+				type = "sprite-button",
+				name = "YARM_filter_all",
+				style = gu_button_style_setting,
+				sprite = "yarm_warnings_button",
+				tooltip = {'guiu.yarm_warnings_button'},
+				visible = true,
+			}
+		end
+	end
 end
 
 --Factorissimo2
@@ -459,14 +496,50 @@ local function update_factorissimo(event)
 	end
 end
 
+local function update_yarm_button(event)
+	--[[if event and event.element and event.element.name == "yarm_button" then
+		local player = game.players[event.player_index]
+		local player_data = global.player_data[player.index]
+
+		if player_data.active_filter then
+			if player_data.active_filter == "none" then
+				player_data.active_filter = "warnings"
+			elseif player_data.active_filter == "warnings" then
+				player_data.active_filter = "all"
+			elseif player_data.active_filter == "all" then
+				player_data.active_filter = "none"
+			end
+		end
+	end]]
+	if event and event.element then
+		if event.element.name == "YARM_filter_all" or event.element.name == "YARM_filter_none" or event.element.name == "YARM_filter_warnings" then
+			local player = game.players[event.player_index]
+			if not player or not player.valid then return end
+			local button_flow = mod_gui.get_button_flow(player)
+			local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+			if button_flow["YARM_filter_all"] and button_flow["YARM_filter_none"] and button_flow["YARM_filter_warnings"] then
+				if button_flow["YARM_filter_all"].visible == true then
+					button_flow["YARM_filter_all"].visible = false
+					button_flow["YARM_filter_none"].visible = true
+				elseif button_flow["YARM_filter_none"].visible == true then
+					button_flow["YARM_filter_none"].visible = false
+					button_flow["YARM_filter_warnings"].visible = true
+				elseif button_flow["YARM_filter_warnings"].visible == true then
+					button_flow["YARM_filter_warnings"].visible = false
+					button_flow["YARM_filter_all"].visible = true
+				end
+			end
+		end
+	end
+end
+
 local function destroy_obsolete_buttons(player)
 	if not player or not player.valid or not player.gui or not player.gui.top then return end
 	local button_flow = mod_gui.get_button_flow(player)
 	local top = player.gui.top
 
-	-- landfilleverythingu
-	if button_flow.le_flow and button_flow.le_flow.le_button then
-		button_flow.le_flow.le_button.destroy()
+	-- landfilleverything
+	if button_flow.le_flow then
 		button_flow.le_flow.destroy()
 	end
 
@@ -477,9 +550,7 @@ local function destroy_obsolete_buttons(player)
 	end
 
 	-- blueprint_flip_and_turn
-	if top.blpflip_flow and top.blpflip_flow.blueprint_flip_horizontal and top.blpflip_flow.blueprint_flip_vertical then
-		top.blpflip_flow.blueprint_flip_horizontal.destroy()
-		top.blpflip_flow.blueprint_flip_vertical.destroy()
+	if top.blpflip_flow then
 		top.blpflip_flow.destroy()
 	end
 
@@ -531,9 +602,7 @@ local function destroy_obsolete_buttons(player)
 	--	top.timeline.destroy()
 	--end
 
-	if top.flw_zoom and top.flw_zoom.but_zoom_zout and top.flw_zoom.but_zoom_zin then
-		top.flw_zoom.but_zoom_zout.destroy()
-		top.flw_zoom.but_zoom_zin.destroy()
+	if top.flw_zoom then
 		top.flw_zoom.destroy()
 	end
 
@@ -579,6 +648,16 @@ local function destroy_obsolete_buttons(player)
 
 	if top["inserter-throughput-toggle"] and top["inserter-throughput-toggle"].visible == true then
 		top["inserter-throughput-toggle"].visible = false
+	end
+
+	if game.active_mods["YARM"] then
+		local ff = mod_gui.get_frame_flow(player)
+		if ff and ff.YARM_root and ff.YARM_root.buttons then
+			local yarmbuttons = ff.YARM_root.buttons
+			if yarmbuttons.YARM_filter_none then yarmbuttons.YARM_filter_none.visible = false end
+			if yarmbuttons.YARM_filter_warnings then yarmbuttons.YARM_filter_warnings.visible = false end
+			if yarmbuttons.YARM_filter_all then yarmbuttons.YARM_filter_all.visible = false end
+		end
 	end
 end
 
@@ -732,7 +811,7 @@ local function on_init()
 		--create_new_buttons(player)
 		fix_buttons(player)
 	end
-	update_factorissimo()
+	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 	checknexttick = true
 end
 
@@ -743,7 +822,7 @@ local function on_configuration_changed()
 		fix_buttons(player)
 		update_frame_style(player)
 	end
-	update_factorissimo()
+	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 	checknexttick = true
 end
 
@@ -760,7 +839,7 @@ local function on_research_finished(event)
 		end
     end
 
-	update_factorissimo()
+	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 end
 
 local function on_rocket_launched()
@@ -806,7 +885,9 @@ local function on_gui_click(event)
 	local player = game.players[event.player_index]
 	destroy_obsolete_buttons(player)
 	fix_buttons(player)
-	update_factorissimo(event)
+	if game.active_mods["Factorissimo2"] then update_factorissimo(event) end
+	if game.active_mods["YARM"] then update_yarm_button(event) end
+
 
 	if activedebug then debug_button(event) end
 end

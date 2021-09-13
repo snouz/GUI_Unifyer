@@ -4,6 +4,7 @@ Date: 2021.09.13
   Changes:
     - 9 new button styles
     - 1 new frame type
+    - Supports YARM - Resource Monitor
     - Supports Nullius
     - Supports NewGame+
     - Supports Inserter Throughput
