@@ -35,40 +35,38 @@ local function set_button_sprite(button, spritepath)
 end
 
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath, windowtocheck)
-	if player and player.valid and sprite and button then
-		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-		if windowtocheck then
-			local windowtocheckpath = player.gui
-			local isselected = true
-			for i, k in pairs(windowtocheck) do
-				if windowtocheckpath[k] and windowtocheckpath[k].visible then
-					windowtocheckpath = windowtocheckpath[k]
-				else
-					isselected = false
-				end
-			end
-			if isselected == true then
-				--gu_button_style_setting = data.raw["gui-style"].default[gu_button_style_setting.."_selected"] and gu_button_style_setting .. "_selected" or gu_button_style_setting
-				gu_button_style_setting = gu_button_style_setting .. "_selected"
+	if not player or not player.valid or not sprite or not button then return end
+	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+	if windowtocheck then
+		local windowtocheckpath = player.gui
+		local isselected = true
+		for i, k in pairs(windowtocheck) do
+			if windowtocheckpath[k] and windowtocheckpath[k].visible then
+				windowtocheckpath = windowtocheckpath[k]
+			else
+				isselected = false
 			end
 		end
-		local button_flow = mod_gui.get_button_flow(player)
-		if buttonpath then
-			for _, k in pairs(buttonpath) do
-				if button_flow[k] then
-					button_flow = button_flow[k]
-				end
+		if isselected == true then
+			gu_button_style_setting = gu_button_style_setting .. "_selected"
+		end
+	end
+	local button_flow = mod_gui.get_button_flow(player)
+	if buttonpath then
+		for _, k in pairs(buttonpath) do
+			if button_flow[k] then
+				button_flow = button_flow[k]
 			end
 		end
-		local modbutton = button_flow[button]
-		if modbutton and modbutton.type == "button" or modbutton and modbutton.type == "sprite-button" then
-			modbutton.style = gu_button_style_setting
-			if not dontreplacesprite then
-				set_button_sprite(modbutton, sprite)
-			end
-			if tooltip then
-				modbutton.tooltip = tooltip
-			end
+	end
+	local modbutton = button_flow[button]
+	if modbutton and modbutton.type == "button" or modbutton and modbutton.type == "sprite-button" then
+		modbutton.style = gu_button_style_setting
+		if not dontreplacesprite then
+			set_button_sprite(modbutton, sprite)
+		end
+		if tooltip then
+			modbutton.tooltip = tooltip
 		end
 	end
 end
@@ -99,7 +97,7 @@ local function fix_buttons(player)
 		{"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}, 	nil,		nil,				nil},
 		{"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}, 	nil,		nil,				nil},
 		{"doingthingsbyhand_button", 	"DoingThingsByHandMainButton", 			{'guiu.doingthingsbyhand_button'},	nil,		nil,				nil},
-		{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	1,			nil,				nil},
+		{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	nil,		nil,				nil},
 		{"killlostbots_button", 		"KillLostBots", 						nil,								nil,		nil,				nil},
 		{"kttrrc_button", 				"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil,				nil},
 		{"kuxcraftingtools_button", 	"CraftNearbyGhostItemsButton", 			nil,								nil,		nil,				nil},
@@ -155,12 +153,12 @@ local function fix_buttons(player)
 		{"logisticmachines_button", 	"lm_default_circuit_button",			{'guiu.logisticmachines_button'},	nil,		nil,				nil},
 		{"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},	nil,	nil,				nil},
 		{"regioncloner_button", 		"region-cloner_main-button",			nil,								nil,		nil,				nil},
-		{"resetevolutionpollution_button","ResetEvolutionPollution",			nil,								nil,		nil,				nil},
-		{"shuttle_train_continued_button","shuttle_lite_button",				nil,								nil,		nil,				nil},
+		{"resetevolpol_button",			"ResetEvolutionPollution",				nil,								nil,		nil,				nil},
+		{"shuttle_train_button",		"shuttle_lite_button",					nil,								nil,		nil,				nil},
 		{"simple_circuit_trains_button","SIMPLE_CLICK_01",						{'guiu.simple_circuit_trains_button'},nil,		nil,				nil},
 		{"teamcoop_button1", 			"spwn_ctrls",							{'guiu.teamcoop_button1'},			nil,		nil,				nil},
 		{"teamcoop_button2", 			"spwn_admin_ctrls",						{'guiu.teamcoop_button2'},			nil,		nil,				nil},
-		{"smartchest_button", 			"sc_button",							nil,								1,			nil,				nil},
+		{"smartchest_button", 			"sc_button",							nil,								nil,		nil,				nil},
 		{"homeworld_redux_button", 		"Homeworld_btn",						{'guiu.homeworld_redux_button'},	nil,		nil,				{"left", "homeworld"}},
 		{"mlawfulevil_button", 			"lawful_evil_button",					{'guiu.mlawfulevil_button'},		nil,		nil,				{"center", "lawful_evil_gui"}},
 		{"trashcan_button", 			"trashbinguibutton",					{'guiu.trashcan_button'},			nil,		nil,				nil},
@@ -170,12 +168,12 @@ local function fix_buttons(player)
 		{"spawncontrol_button", 		"spawn",								{'guiu.spawncontrol_button'},		nil,		nil,				nil},
 		{"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil,				nil},
 		{"whatsmissing_button", 		"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil,				{"left", "what_is_missing"}},
-		{"advancedlogisticssystemfork_button","logistics-view-button",			{'guiu.advancedlogisticssystemfork_button'},nil,nil,				{"center", "logisticsFrame"}},
+		{"logisticssystemfork_button",	"logistics-view-button",				{'guiu.logisticssystemfork_button'},nil,		nil,				{"center", "logisticsFrame"}},
 		{"somezoom_out_button", 		"but_zoom_zout",						{'guiu.somezoom_out_button'},		nil,		nil,				nil},
 		{"somezoom_in_button", 			"but_zoom_zin",							{'guiu.somezoom_in_button'},		nil,		nil,				nil},
 		{"productionmonitor_button", 	"stats_show_settings",					{'guiu.productionmonitor_button'},	nil,		nil,				nil},
-		{"teleportation_redux_button", 	"teleportation_main_button",			{'guiu.teleportation_redux_button'},nil,		nil,				{"left", "teleportation_main_window"}},
-		{"teleportation_redux_button", 	"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_redux_button'},nil,		nil,				{"left", "personlaTeleportWindow"}},
+		{"teleportation_button", 		"teleportation_main_button",			{'guiu.teleportation_button'},		nil,		nil,				{"left", "teleportation_main_window"}},
+		{"teleportation_button", 		"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_button'},	nil,		nil,				{"left", "personlaTeleportWindow"}},
 		{"schallendgameevolution_button","Schall-EE-mod-button",				nil,								1,			nil,				{"screen", "Schall-EE-frame-main"}},
 		{"newgameplus_button",			"new-game-plus-toggle-config",			nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "new-game-plus-config-frame"}},
 		{"nullius_button",				"nullius_mission_button",				nil,								nil,		nil,				{"left", "nullius_mission_panel"}},
@@ -191,6 +189,7 @@ local function fix_buttons(player)
 		--controllinator				["controllinator-toggle"]			button created from
 		--automatic-belt-direction			abdgui						toggle button comment changer images?
 		--RPGsystem						205992
+		--Bluegistics
 	}
 
 	for _, k in pairs(iconlist) do
@@ -337,8 +336,8 @@ local function create_new_buttons(player)
 					type = "sprite-button",
 					name = "logistics-view-button",
 					style = gu_button_style_setting,
-					sprite = "advancedlogisticssystemfork_button",
-					tooltip = {'guiu.advancedlogisticssystemfork_button'},
+					sprite = "logisticssystemfork_button",
+					tooltip = {'guiu.logisticssystemfork_button'},
 				}
 			end
 		end
@@ -395,8 +394,8 @@ local function create_new_buttons(player)
 					type = "sprite-button",
 					name = "teleportation_main_button",
 					style = gu_button_style_setting,
-					sprite = "teleportation_redux_button",
-					tooltip = {'guiu.teleportation_redux_button'},
+					sprite = "teleportation_button",
+					tooltip = {'guiu.teleportation_button'},
 				}
 			end
 		end
@@ -409,8 +408,8 @@ local function create_new_buttons(player)
 					type = "sprite-button",
 					name = "personalTeleporter_PersonalTeleportTool",
 					style = gu_button_style_setting,
-					sprite = "teleportation_redux_button",
-					tooltip = {'guiu.teleportation_redux_button'},
+					sprite = "teleportation_button",
+					tooltip = {'guiu.teleportation_button'},
 				}
 			end
 		end
@@ -665,15 +664,15 @@ local function update_frame_style(player)
 		if gu_frame_style_setting == "snouz_normal_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
-			player.gui.top.mod_gui_top_frame.visible = true
+			--player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "snouz_barebone_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_barebone_frame"
-			player.gui.top.mod_gui_top_frame.visible = true
+			--player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "snouz_large_barebone_frame" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_large_barebone_frame"
-			player.gui.top.mod_gui_top_frame.visible = true
+			--player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "snouz_invisible_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_invisible_frame"
@@ -940,6 +939,7 @@ end
 
 local function on_second_tick()
 	if checknexttick then
+		-- happens on the tick after a function makes checknexttick = true, to be sure to pass after
 		for idx, player in pairs(game.players) do
 			create_new_buttons(player)
 			fix_buttons(player)
