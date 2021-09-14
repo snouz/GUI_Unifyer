@@ -97,6 +97,16 @@ local slot_button_notext = {
 }
 data.raw["gui-style"].default["slot_button_notext"] = slot_button_notext
 
+local slot_button_notext_selected = {
+  type = "button_style",
+  parent = "slot_button_notext",
+  default_graphical_set = {
+    base = {border = 4, position = {160, 736}, size = 80},
+    shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
+  },
+}
+data.raw["gui-style"].default["slot_button_notext_selected"] = slot_button_notext_selected
+
 local slot_button_whitetext = {
 	type = "button_style",
 	parent = "slot_button",
@@ -124,6 +134,16 @@ local slot_sized_button_notext = {
 	strikethrough_color = nothing,
 }
 data.raw["gui-style"].default["slot_sized_button_notext"] = slot_sized_button_notext
+
+local slot_sized_button_notext_selected = {
+  type = "button_style",
+  parent = "slot_sized_button_notext",
+  default_graphical_set = {
+    base = {position = {363, 744}, corner_size = 8},
+    shadow = offset_by_2_default_glow(default_dirt_color, 0.5)
+  },
+}
+data.raw["gui-style"].default["slot_sized_button_notext_selected"] = slot_sized_button_notext_selected
 
 local slot_sized_button_blacktext = {
 	type = "button_style",
@@ -224,10 +244,6 @@ make_button_style("gui_unifyer_gui_06", GUIPATH .. "gui_unifyer_gui_06.png", 80,
 make_button_style("gui_unifyer_gui_07", GUIPATH .. "gui_unifyer_gui_07.png", 80, 5, 1)
 make_button_style("gui_unifyer_gui_08", GUIPATH .. "gui_unifyer_gui_08.png", 80, 8, 0.9)
 
-
-
-
-
 --data.raw["gui-style"].default["attach-notes-add-button"]
 --data.raw["gui-style"].default["attach-notes-edit-button"]
 --data.raw["gui-style"].default["attach-notes-view-button"]
@@ -266,6 +282,8 @@ local snouz_invisible_frame =
   },
 }
 
+data.raw["gui-style"].default["snouz_invisible_frame"] = snouz_invisible_frame
+
 local snouz_barebone_frame =
 {
   type = "frame_style",
@@ -284,6 +302,8 @@ local snouz_barebone_frame =
   },
 }
 
+data.raw["gui-style"].default["snouz_barebone_frame"] = snouz_barebone_frame
+
 local snouz_large_barebone_frame =
 {
   type = "frame_style",
@@ -291,6 +311,4 @@ local snouz_large_barebone_frame =
   padding = 3,
 }
 
-data.raw["gui-style"].default["snouz_invisible_frame"] = snouz_invisible_frame
-data.raw["gui-style"].default["snouz_barebone_frame"] = snouz_barebone_frame
 data.raw["gui-style"].default["snouz_large_barebone_frame"] = snouz_large_barebone_frame

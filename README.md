@@ -17,12 +17,13 @@ Consult with your doctor to see if GUI Unifyer is right for you
 # Extra features
 - Many buttons which didn't have hover text now do.
 ![tooltips](https://i.imgur.com/IXbqUlR.png)
-- Per-player setting to switch to grey square buttons.
+- 11 button styles for each player to choose from.
 ![greybuttons](https://i.imgur.com/kcSHyzX.png)
-- Per-player setting to switch the style of the top left frame.
+- Tweakable top left frame (normal/barebone/invisible)
 ![frame](https://i.imgur.com/fOtkHbr.png)
 ![frame](https://i.imgur.com/linVC4l.png)
 ![frame](https://i.imgur.com/rbWNha5.png)
+- Most buttons stay selected when their window is open
 - Blueprint related buttons only show when one is selected:
 ![blueprint](https://i.imgur.com/jUbwLoX.png)
 
