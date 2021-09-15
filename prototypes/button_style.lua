@@ -92,34 +92,34 @@ local slot_button_notext_transparent =
   padding = 0,
   default_graphical_set =
   {
-    base = {border = 4, position = {0, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {0, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   hovered_graphical_set =
   {
-    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100}),
     glow = offset_by_2_rounded_corners_glow({225, 177, 106, 255})
   },
   clicked_graphical_set =
   {
-    base = {border = 4, position = {160, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {160, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   selected_graphical_set =
   {
-    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   selected_hovered_graphical_set =
   {
-    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100}),
     glow = offset_by_2_rounded_corners_glow({225, 177, 106, 255})
   },
   selected_clicked_graphical_set =
   {
-    base = {border = 4, position = {160, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {160, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   pie_progress_color = {0.98, 0.66, 0.22, 0.5},
@@ -132,7 +132,7 @@ local slot_button_notext_transparent_selected =
   parent = "slot_button_notext_transparent",
   default_graphical_set =
   {
-    base = {border = 4, position = {0, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {0, 736}, size = 80, opacity = 0.5},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
 }

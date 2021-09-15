@@ -5,107 +5,107 @@ local checknexttick = true
 local activedebug = true
 
 local iconlist = {
-	--sprite 						button									tooltip 					dontreplacesprite	buttonpath (array)	windowtocheck (array)
-	{"helmod_button", 				"helmod_planner-command", 				{'guiu.helmod_button'}, 			nil,		nil,				{"screen", "HMProductionPanel"}},
-	{"factoryplanner_button", 		"fp_button_toggle_interface", 			{'guiu.factoryplanner_button'}, 	nil,		nil,				nil},
-	{"moduleinserter_button", 		"module_inserter_config_button", 		{'guiu.moduleinserter_button'}, 	nil,		nil,				nil},
-	{"placeables_button", 			"buttonPlaceablesVisible", 				nil,								nil,		nil,				{"screen", "framePlaceablesOuter"}},
-	{"todolist_button", 			"todo_maximize_button", 				{'guiu.todolist_button'}, 			nil,		nil,				{"screen", "todo_main_frame"}},
-	{"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
-	{"beastfinder_button", 			"beastfinder-menu-button", 				{'guiu.beastfinder_button'}, 		nil,		nil,				{"screen", "frame_BeastFinder_main"}},
-	{"bobclasses_button", 			"bob_avatar_toggle_gui", 				nil,								nil,		nil,				{"left", "bob_avatar_gui"}},
-	{"bobinserters_button", 		"bob_logistics_inserter_button", 		nil,								nil,		nil,				{"left", "bob_logistics_inserter_gui"}},
-	{"cleanmap_button", 			"CleanMap", 							nil,								nil,		nil,				nil},
-	{"cleanmap_button", 			"DeleteEmptyChunks", 					nil,								nil,		nil,				nil},
-	{"deathcounter_button", 		"DeathCounterMainButton", 				{'guiu.deathcounter_button'}, 		nil,		nil,				{"left", "DeathCounterMain"}},
-	{"ingteb_button", 				"ingteb", 								nil,								nil,		nil,				{"screen", "Selector"}},
-	{"outpostplanner_button", 		"OutpostBuilder", 						nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "OutpostBuilderWindow"}},
-	{"rocketsilostats_button", 		"rocket-silo-stats-toggle", 			{'guiu.rocketsilostats_button'}, 	nil,		nil,				{"left", "mod_gui_frame_flow", "rocket-silo-stats"}},
-	{"schall_sc_button", 			"Schall-SC-mod-button", 				nil,								nil,		nil,				{"screen", "Schall-SC-frame-main"}},
-	{"actr_button", 				"ACTR_mod_button", 						nil,								nil,		nil,				{"left", "ACTR_Calculator_Frame"}},
-	{"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}, 	nil,		nil,				{"left", "mod_gui_frame_flow", "betterbots_left"}},
-	{"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}, 	nil,		nil,				{"screen", "change-map-settings-main-flow"}},
-	{"doingthingsbyhand_button", 	"DoingThingsByHandMainButton", 			{'guiu.doingthingsbyhand_button'},	nil,		nil,				{"left", "DoingThingsByHandMain"}},
-	{"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	nil,		nil,				{"screen", "guiFrame", "content_frame", "auto_frame"}},
-	{"killlostbots_button", 		"KillLostBots", 						nil,								nil,		nil,				nil},
-	{"kttrrc_button", 				"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "ttrrc_main_frame"}},
-	{"kuxcraftingtools_button", 	"CraftNearbyGhostItemsButton", 			nil,								nil,		nil,				nil},
-	{"kuxorbitalioncannon_button", 	"ion-cannon-button", 					{'guiu.kuxorbitalioncannon_button'},nil,		nil,				{"left", "ion-cannon-stats"}},
-	{"markers_button", 				"markers_gui_toggle", 					{'guiu.markers_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "markers_gui"}},
-	{"notenoughtodo_button", 		"TODO_CLICK01_", 						{'guiu.notenoughtodo_button'}, 		nil,		nil,				nil},
-	{"oshahotswap_button", 			"hotswap-menu-button", 					{'guiu.oshahotswap_button'}, 		nil,		nil,				{"left", "hotswap-main-container"}},
-	{"pickerinventorytools_button", "filterfill_requests", 					nil,								nil,		nil,				nil},
-	{"poweredentities_button", 		"poweredEntitiesRecalculateButton", 	{'guiu.poweredentities_button'}, 	nil,		nil,				nil},
-	{"researchcounter_button", 		"research-counter-button", 				{'guiu.researchcounter_button'}, 	nil,		nil,				{"screen", "research-counter-base"}},
-	{"richtexthelper_button", 		"RICH_CLICK_20_player01", 				{'guiu.richtexthelper_button'}, 	nil,		nil,				nil},
-	{"ritnteleportation_button", 	"ritn-button-main", 					{'guiu.ritnteleportation_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "menu-flow-common", "main_menu-frame-menu"}},
-	{"solarcalc_button", 			"kaktusbot-sc-open-calc-button", 		{'guiu.solarcalc_button'}, 			nil,		nil,				{"screen", "kaktusbot-sc-main-gui"}},
-	{"solarcalc_button", 			"niet-sr-guibutton", 					nil,								nil,		nil,				{"center", "niet-sr-guiframe"}},
-	{"spacemod_button", 			"space_toggle_button", 					{'guiu.spacemod_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "space_progress_frame"}},
-	{"trainlog_button", 			"train_log", 							nil,								nil,		nil,				nil},
-	{"trainpubsub_button", 			"tm_sprite_button", 					nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "tm_button_frame"}},
-	{"upgradeplannernext_button", 	"upgrade_planner_config_button", 		nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "upgrade_planner_config_frame"}},
-	{"whatsmissing_button", 		"whats-missing-button", 				nil,								nil,		nil,				{"screen", "whats-missing-gui"}},
-	{"picksrocketstats_button", 	"pi_rss_but_toggle", 					{'guiu.picksrocketstats_button'}, 	nil,		nil,				{"left", "mod_gui_frame_flow", "pi_rss_rocket-silo-stats"}},
-	{"schall_rc_button", 			"Schall-RC-mod-button", 				{'guiu.schall_rc_button'}, 			nil,		nil,				{"screen", "Schall-RC-frame-main"}},
-	{"blackmarket1_button", 		"but_blkmkt_main", 						{'guiu.blackmarket1_button'},		nil,		{"flw_blkmkt"},		{"left", "mod_gui_frame_flow", "frm_blkmkt_gen"}},
-	{"blackmarket2_button", 		"but_blkmkt_credits", 					nil,								nil,		{"flw_blkmkt"},		{"left", "mod_gui_frame_flow", "frm_blkmkt_itml"}},
-	{"autotrash_button",			"at_config_button",						nil,								1,			nil,				nil},
-	{"togglepeacefulmode_button",	"tpm-button",							{'guiu.togglepeacefulmode_button'},	1,			nil,				nil},
-	{"wiiuf_button",				"looking-glass",						{'guiu.wiiuf_button'}, 				nil, {"wiiuf_flow", "search_flow"},{"screen", "wiiuf_center_frame"}},
-	{"thefatcontroller_button",		"toggleTrainInfo",						{'guiu.thefatcontroller_button'}, 	nil, {"fatControllerButtons"},	{"left", "fatController", "trainInfo"}},
-	{"quickbarimportexport_button", "qbie_button_show_options", 			nil,								nil, {"qbie_flow_choose_action"},{"left", "mod_gui_frame_flow", "qbie_frame_main_window"}},
-	{"quickbarimport_button", 		"qbie_button_import", 					nil,								nil, {"qbie_flow_choose_action"},nil},
-	{"quickbarexport_button", 		"qbie_button_export", 					nil,								nil, {"qbie_flow_choose_action"},nil},
-	{"informatron_button", 			"informatron_overhead",					nil,								1,			nil,				{"screen", "informatron_main"}},
-	{"se_interstellar_button", 		"se-overhead_interstellar",				nil,								1,			nil,				{"left", "se-remote-view", "system_toggles_table", "map_view_toggles", "show_danger_zones"}},
-	{"se_satellite_button", 		"se-overhead_satellite",				nil,								1,			nil,				{"left", "se-remote-view"}},
-	{"se_explorer_button", 			"se-overhead_explorer",					nil,								1,			nil,				{"screen", "se-zonelist_main"}},
-	{"commuguidemod_guide_button", 	"main_menu_guide_button",				{'guiu.commuguidemod_guide_button'},nil,		nil,				nil},
-	{"commuguidemod_pupil_button", 	"main_menu_player_button",				{'guiu.commuguidemod_pupil_button'},nil,		nil,				nil},
-	{"fjei_toggle_button", 			"fjei_toggle_button",					nil,								1,			nil,				{"left", "fjei_main_window","fjei_main_window_control_table"}}, -- {"", ""}
-	{"togglespeedboost_button", 	"togglespeedboost_button",				nil,								1,			nil,				nil},
-	{"248k_button", 				"top248kbutton",						{'guiu.248k_button'},				nil,		nil,				{"left", "main248kframe"}},
-	{"blueprintalignment_button", 	"BlueprintAlignment_Button",			nil,								nil,		nil,				nil},
-	{"cargotrainmanager_button", 	"ctm_toolbutton",						nil,								nil,		nil,				{"screen", "ctm_main_dialog"}},
-	{"clusterio_button", 			"clusterio-main-config-gui-toggle-button",{'guiu.clusterio_button'},		nil,		nil,				{"top", "clusterio-main-config-gui"}},
-	{"cursedexp_button", 			"openMain",								{'guiu.cursedexp_button'},			nil,		{"openMainFlow"},	{"left", "flowMainOut", "frameMain"}},
-	{"defaultwaitconditions_button","default-wait-conditions-main-button",	nil,								nil,		nil,				{"screen", "default-wait-conditions-main-frame"}},
-	{"diplomacy_button", 			"diplomacy_button",						nil,								nil,		nil,				{"screen", "diplomacy_frame"}},
-	{"electronic_locomotives_button","ELECTRONIC_CLICK01",					{'guiu.electronic_locomotives_button'},nil,		nil,				{"screen", "ELECTRONIC_LOCATION"}},
-	{"forces_button", 				"forcesMenu",							nil,								nil,		nil,				{"center", "inviteDialogue"}},
-	{"hive_mind_button1", 			"join-hive-button",						nil,								nil,		nil,				nil},
-	{"hive_mind_button2", 			"leave-hive-button",					nil,								nil,		nil,				nil},
-	{"howfardiditgo_button", 		"train_distance_button",				{'guiu.howfardiditgo_button'},		nil,		nil,				{"top", "mod_gui_top_frame", "mod_gui_inner_frame", "train_filtertextbox"}},
-	{"kuxblueprinteditor_button", 	"mod-blueprint-editor-toolbar-button",	nil,								nil,		nil,				{"screen", "blueprint-editor-modal"}},
-	{"kuxcraftingtools_button", 	"PlayerGhostCraft",						nil,								nil,		nil,				nil},
-	{"logisticmachines_button", 	"lm_default_circuit_button",			{'guiu.logisticmachines_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "ld_default_circuit_window"}},
-	{"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},nil,		nil,				{"screen", "logistic-request-manager-gui-master"}},
-	{"regioncloner_button", 		"region-cloner_main-button",			nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "region-cloner_control-window"}},
-	{"resetevolpol_button",			"ResetEvolutionPollution",				nil,								nil,		nil,				nil},
-	{"shuttle_train_button",		"shuttle_lite_button",					nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "shuttle_lite_frame"}},
-	{"simple_circuit_trains_button","SIMPLE_CLICK_01",						{'guiu.simple_circuit_trains_button'},nil,		nil,				{"screen", "SIMPLE_LOCATION"}},
-	{"teamcoop_button1", 			"spwn_ctrls",							{'guiu.teamcoop_button1'},			nil,		nil,				{"left", "spwn_ctrl_panel"}},
-	{"teamcoop_button2", 			"spwn_admin_ctrls",						{'guiu.teamcoop_button2'},			nil,		nil,				{"left", "spwn_admin_ctrl_panel"}},
-	{"smartchest_button", 			"sc_button",							nil,								nil,		nil,				{"left", "sc_filter_panel"}},
-	{"homeworld_redux_button", 		"Homeworld_btn",						{'guiu.homeworld_redux_button'},	nil,		nil,				{"left", "homeworld"}},
-	{"mlawfulevil_button", 			"lawful_evil_button",					{'guiu.mlawfulevil_button'},		nil,		nil,				{"center", "lawful_evil_gui"}},
-	{"trashcan_button", 			"trashbinguibutton",					{'guiu.trashcan_button'},			nil,		nil,				nil},
-	{"pycoalprocessing_button", 	"pywiki",								{'guiu.pycoalprocessing_button'},	nil,		nil,				{"screen", "wiki_frame"}},
-	{"usagedetector_button", 		"usage_detector",						{'guiu.usagedetector_button'},		nil,		nil,				{"center", "usage_detector_center"}},
-	{"rpg_button", 					"104",									{'guiu.rpg_button'},				nil,		nil,				{"screen", "105"}},
-	{"spawncontrol_button", 		"spawn",								{'guiu.spawncontrol_button'},		nil,		nil,				nil},
-	{"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil,				nil},
-	{"whatsmissing_button", 		"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil,				{"left", "what_is_missing"}},
-	{"logisticssystemfork_button",	"logistics-view-button",				{'guiu.logisticssystemfork_button'},nil,		nil,				{"center", "logisticsFrame"}},
-	{"somezoom_out_button", 		"but_zoom_zout",						{'guiu.somezoom_out_button'},		nil,		nil,				nil},
-	{"somezoom_in_button", 			"but_zoom_zin",							{'guiu.somezoom_in_button'},		nil,		nil,				nil},
-	{"productionmonitor_button", 	"stats_show_settings",					{'guiu.productionmonitor_button'},	nil,		nil,				{"center", "stats_center"}},
-	{"teleportation_button", 		"teleportation_main_button",			{'guiu.teleportation_button'},		nil,		nil,				{"left", "teleportation_main_window"}},
-	{"teleportation_button", 		"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_button'},	nil,		nil,				{"left", "personlaTeleportWindow"}},
-	{"schallendgameevolution_button","Schall-EE-mod-button",				nil,								1,			nil,				{"screen", "Schall-EE-frame-main"}},
-	{"newgameplus_button",			"new-game-plus-toggle-config",			nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "new-game-plus-config-frame"}},
-	{"nullius_button",				"nullius_mission_button",				nil,								nil,		nil,				{"left", "nullius_mission_panel"}},
+	--modname					--sprite 						button									tooltip 					dontreplacesprite	buttonpath (array)	windowtocheck (array)
+	{"helmod",					"helmod_button", 				"helmod_planner-command", 				{'guiu.helmod_button'}, 			nil,		nil,				{"screen", "HMProductionPanel"}},
+	{"factoryplanner",			"factoryplanner_button", 		"fp_button_toggle_interface", 			{'guiu.factoryplanner_button'}, 	nil,		nil,				nil},
+	{"ModuleInserter",			"moduleinserter_button", 		"module_inserter_config_button", 		{'guiu.moduleinserter_button'}, 	nil,		nil,				nil},
+	{"Placeables",				"placeables_button", 			"buttonPlaceablesVisible", 				nil,								nil,		nil,				{"screen", "framePlaceablesOuter"}},
+	{"Todo-List",				"todolist_button", 				"todo_maximize_button", 				{'guiu.todolist_button'}, 			nil,		nil,				{"screen", "todo_main_frame"}},
+	{"creative-mod",			"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
+	{"BeastFinder",				"beastfinder_button", 			"beastfinder-menu-button", 				{'guiu.beastfinder_button'}, 		nil,		nil,				{"screen", "frame_BeastFinder_main"}},
+	{"bobclasses",				"bobclasses_button", 			"bob_avatar_toggle_gui", 				nil,								nil,		nil,				{"left", "bob_avatar_gui"}},
+	{nil,						"bobinserters_button", 			"bob_logistics_inserter_button", 		nil,								nil,		nil,				{"left", "bob_logistics_inserter_gui"}},
+	{"CleanMap",				"cleanmap_button", 				"CleanMap", 							nil,								nil,		nil,				nil},
+	{"DeleteEmptyChunks",		"cleanmap_button", 				"DeleteEmptyChunks", 					nil,								nil,		nil,				nil},
+	{"Death_Counter",			"deathcounter_button", 			"DeathCounterMainButton", 				{'guiu.deathcounter_button'}, 		nil,		nil,				{"left", "DeathCounterMain"}},
+	{"ingteb",					"ingteb_button", 				"ingteb", 								nil,								nil,		nil,				{"screen", "Selector"}},
+	{"OutpostPlanner",			"outpostplanner_button", 		"OutpostBuilder", 						nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "OutpostBuilderWindow"}},
+	{"rocket-silo-stats",		"rocketsilostats_button", 		"rocket-silo-stats-toggle", 			{'guiu.rocketsilostats_button'}, 	nil,		nil,				{"left", "mod_gui_frame_flow", "rocket-silo-stats"}},
+	{"SchallSatelliteController","schall_sc_button", 			"Schall-SC-mod-button", 				nil,								nil,		nil,				{"screen", "Schall-SC-frame-main"}},
+	{"actual-craft-times-remade","actr_button", 				"ACTR_mod_button", 						nil,								nil,		nil,				{"left", "ACTR_Calculator_Frame"}},
+	{"BetterBotsFixed",			"betterbotsfixed_button", 		"betterbots_top_btn", 					{'guiu.betterbotsfixed_button'}, 	nil,		nil,				{"left", "mod_gui_frame_flow", "betterbots_left"}},
+	{"ChangeMapSettings",		"changemapsettings_button", 	"change-map-settings-toggle-config", 	{'guiu.changemapsettings_button'}, 	nil,		nil,				{"screen", "change-map-settings-main-flow"}},
+	{"DoingThingsByHand",		"doingthingsbyhand_button", 	"DoingThingsByHandMainButton", 			{'guiu.doingthingsbyhand_button'},	nil,		nil,				{"left", "DoingThingsByHandMain"}},
+	{"FacAutoScreenshot",		"facautoscreenshot_button", 	"togglegui", 							{'guiu.facautoscreenshot_button'}, 	nil,		nil,				{"screen", "guiFrame", "content_frame", "auto_frame"}},
+	{"KillLostBots",			"killlostbots_button", 			"KillLostBots", 						nil,								nil,		nil,				nil},
+	{"kraskaska-total-raw-resources-calc","kttrrc_button", 		"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "ttrrc_main_frame"}},
+	{"Kux-CraftingTools",		"kuxcraftingtools_button", 		"CraftNearbyGhostItemsButton", 			nil,								nil,		nil,				nil},
+	{"Kux-OrbitalIonCannon",	"kuxorbitalioncannon_button", 	"ion-cannon-button", 					{'guiu.kuxorbitalioncannon_button'},nil,		nil,				{"left", "ion-cannon-stats"}},
+	{"LandfillEverything",		"markers_button", 				"markers_gui_toggle", 					{'guiu.markers_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "markers_gui"}},
+	{"Not_Enough_Todo",			"notenoughtodo_button", 		"TODO_CLICK01_", 						{'guiu.notenoughtodo_button'}, 		nil,		nil,				nil},
+	{"osha_hot_swap",			"oshahotswap_button", 			"hotswap-menu-button", 					{'guiu.oshahotswap_button'}, 		nil,		nil,				{"left", "hotswap-main-container"}},
+	{"PickerInventoryTools",	"pickerinventorytools_button", 	"filterfill_requests", 					nil,								nil,		nil,				nil},
+	{"Powered_Entities",		"poweredentities_button", 		"poweredEntitiesRecalculateButton", 	{'guiu.poweredentities_button'}, 	nil,		nil,				nil},
+	{"research-counter",		"researchcounter_button", 		"research-counter-button", 				{'guiu.researchcounter_button'}, 	nil,		nil,				{"screen", "research-counter-base"}},
+	{"Rich_Text_Helper",		"richtexthelper_button", 		"RICH_CLICK_20_player01", 				{'guiu.richtexthelper_button'}, 	nil,		nil,				nil},
+	{"RitnTeleportation",		"ritnteleportation_button", 	"ritn-button-main", 					{'guiu.ritnteleportation_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "menu-flow-common", "main_menu-frame-menu"}},
+	{"solar-calc",				"solarcalc_button", 			"kaktusbot-sc-open-calc-button", 		{'guiu.solarcalc_button'}, 			nil,		nil,				{"screen", "kaktusbot-sc-main-gui"}},
+	{"SolarRatio",				"solarcalc_button", 			"niet-sr-guibutton", 					nil,								nil,		nil,				{"center", "niet-sr-guiframe"}},
+	{"SpaceMod",				"spacemod_button", 				"space_toggle_button", 					{'guiu.spacemod_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "space_progress_frame"}},
+	{"train-log",				"trainlog_button", 				"train_log", 							nil,								nil,		nil,				nil},
+	{"train-pubsub",			"trainpubsub_button", 			"tm_sprite_button", 					nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "tm_button_frame"}},
+	{"upgrade-planner-next",	"upgradeplannernext_button", 	"upgrade_planner_config_button", 		nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "upgrade_planner_config_frame"}},
+	{"whats-missing",			"whatsmissing_button", 			"whats-missing-button", 				nil,								nil,		nil,				{"screen", "whats-missing-gui"}},
+	{"PicksRocketStats",		"picksrocketstats_button", 		"pi_rss_but_toggle", 					{'guiu.picksrocketstats_button'}, 	nil,		nil,				{"left", "mod_gui_frame_flow", "pi_rss_rocket-silo-stats"}},
+	{"SchallRailwayController",	"schall_rc_button", 			"Schall-RC-mod-button", 				{'guiu.schall_rc_button'}, 			nil,		nil,				{"screen", "Schall-RC-frame-main"}},
+	{"BlackMarket2",			"blackmarket1_button", 			"but_blkmkt_main", 						{'guiu.blackmarket1_button'},		nil,		{"flw_blkmkt"},		{"left", "mod_gui_frame_flow", "frm_blkmkt_gen"}},
+	{"BlackMarket2",			"blackmarket2_button", 			"but_blkmkt_credits", 					nil,								nil,		{"flw_blkmkt"},		{"left", "mod_gui_frame_flow", "frm_blkmkt_itml"}},
+	{"AutoTrash",				"autotrash_button",				"at_config_button",						nil,								1,			nil,				nil},
+	{"TogglePeacefulMode",		"togglepeacefulmode_button",	"tpm-button",							{'guiu.togglepeacefulmode_button'},	1,			nil,				nil},
+	{"what-is-it-really-used-for","wiiuf_button",				"looking-glass",						{'guiu.wiiuf_button'}, 				nil, {"wiiuf_flow", "search_flow"},{"screen", "wiiuf_center_frame"}},
+	{"TheFatController",		"thefatcontroller_button",		"toggleTrainInfo",						{'guiu.thefatcontroller_button'}, 	nil, {"fatControllerButtons"},	{"left", "fatController", "trainInfo"}},
+	{"quickbarimportexport",	"quickbarimportexport_button", 	"qbie_button_show_options", 			nil,								nil, {"qbie_flow_choose_action"},{"left", "mod_gui_frame_flow", "qbie_frame_main_window"}},
+	{"quickbarimportexport",	"quickbarimport_button", 		"qbie_button_import", 					nil,								nil, {"qbie_flow_choose_action"},nil},
+	{"quickbarimportexport",	"quickbarexport_button", 		"qbie_button_export", 					nil,								nil, {"qbie_flow_choose_action"},nil},
+	{"informatron",				"informatron_button", 			"informatron_overhead",					nil,								1,			nil,				{"screen", "informatron_main"}},
+	{"space-exploration",		"se_interstellar_button", 		"se-overhead_interstellar",				nil,								1,			nil,				{"left", "se-remote-view", "system_toggles_table", "map_view_toggles", "show_danger_zones"}},
+	{"space-exploration",		"se_satellite_button", 			"se-overhead_satellite",				nil,								1,			nil,				{"left", "se-remote-view"}},
+	{"space-exploration",		"se_explorer_button", 			"se-overhead_explorer",					nil,								1,			nil,				{"screen", "se-zonelist_main"}},
+	{"CommuGuideMod",			"commuguidemod_guide_button", 	"main_menu_guide_button",				{'guiu.commuguidemod_guide_button'},nil,		nil,				nil},
+	{"CommuGuideMod",			"commuguidemod_pupil_button", 	"main_menu_player_button",				{'guiu.commuguidemod_pupil_button'},nil,		nil,				nil},
+	{"FJEI",					"fjei_toggle_button", 			"fjei_toggle_button",					nil,								1,			nil,				{"left", "fjei_main_window","fjei_main_window_control_table"}}, -- {"", ""}
+	{"ToggleSpeedBoost",		"togglespeedboost_button", 		"togglespeedboost_button",				nil,								1,			nil,				nil},
+	{"248k",					"248k_button", 					"top248kbutton",						{'guiu.248k_button'},				nil,		nil,				{"left", "main248kframe"}},
+	{"BlueprintAlignment",		"blueprintalignment_button", 	"BlueprintAlignment_Button",			nil,								nil,		nil,				nil},
+	{"CargoTrainManager",		"cargotrainmanager_button", 	"ctm_toolbutton",						nil,								nil,		nil,				{"screen", "ctm_main_dialog"}},
+	{"clusterio",				"clusterio_button", 			"clusterio-main-config-gui-toggle-button",{'guiu.clusterio_button'},		nil,		nil,				{"top", "clusterio-main-config-gui"}},
+	{"Cursed-Exp",				"cursedexp_button", 			"openMain",								{'guiu.cursedexp_button'},			nil,		{"openMainFlow"},	{"left", "flowMainOut", "frameMain"}},
+	{"default-wait-conditions",	"defaultwaitconditions_button",	"default-wait-conditions-main-button",	nil,								nil,		nil,				{"screen", "default-wait-conditions-main-frame"}},
+	{"diplomacy",				"diplomacy_button", 			"diplomacy_button",						nil,								nil,		nil,				{"screen", "diplomacy_frame"}},
+	{"Electronic_Locomotives",	"electronic_locomotives_button","ELECTRONIC_CLICK01",					{'guiu.electronic_locomotives_button'},nil,		nil,				{"screen", "ELECTRONIC_LOCATION"}},
+	{"forces",					"forces_button", 				"forcesMenu",							nil,								nil,		nil,				{"center", "inviteDialogue"}},
+	{nil,						"hive_mind_button1", 			"join-hive-button",						nil,								nil,		nil,				nil},
+	{nil,						"hive_mind_button2", 			"leave-hive-button",					nil,								nil,		nil,				nil},
+	{"howfardiditgo",			"howfardiditgo_button", 		"train_distance_button",				{'guiu.howfardiditgo_button'},		nil,		nil,				{"top", "mod_gui_top_frame", "mod_gui_inner_frame", "train_filtertextbox"}},
+	{"Kux-BlueprintEditor",		"kuxblueprinteditor_button", 	"mod-blueprint-editor-toolbar-button",	nil,								nil,		nil,				{"screen", "blueprint-editor-modal"}},
+	{"Kux-HandcraftGhosts",		"kuxcraftingtools_button", 		"PlayerGhostCraft",						nil,								nil,		nil,				nil},
+	{"Logistic-Machines",		"logisticmachines_button", 		"lm_default_circuit_button",			{'guiu.logisticmachines_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "ld_default_circuit_window"}},
+	{"LogisticRequestManager",	"logisticrequestmanager_button","logistic-request-manager-gui-button",	{'guiu.logisticrequestmanager_button'},nil,		nil,				{"screen", "logistic-request-manager-gui-master"}},
+	{"region-cloner",			"regioncloner_button", 			"region-cloner_main-button",			nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "region-cloner_control-window"}},
+	{"ResetEvolutionPollution",	"resetevolpol_button",			"ResetEvolutionPollution",				nil,								nil,		nil,				nil},
+	{"Shuttle_Train_Continued",	"shuttle_train_button",			"shuttle_lite_button",					nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "shuttle_lite_frame"}},
+	{"Simple_Circuit_Trains",	"simple_circuit_trains_button",	"SIMPLE_CLICK_01",						{'guiu.simple_circuit_trains_button'},nil,		nil,				{"screen", "SIMPLE_LOCATION"}},
+	{"TeamCoop",				"teamcoop_button1", 			"spwn_ctrls",							{'guiu.teamcoop_button1'},			nil,		nil,				{"left", "spwn_ctrl_panel"}},
+	{"TeamCoop",				"teamcoop_button2", 			"spwn_admin_ctrls",						{'guiu.teamcoop_button2'},			nil,		nil,				{"left", "spwn_admin_ctrl_panel"}},
+	{"smartchest",				"smartchest_button", 			"sc_button",							nil,								nil,		nil,				{"left", "sc_filter_panel"}},
+	{"homeworld_redux",			"homeworld_redux_button", 		"Homeworld_btn",						{'guiu.homeworld_redux_button'},	nil,		nil,				{"left", "homeworld"}},
+	{"m-lawful-evil",			"mlawfulevil_button", 			"lawful_evil_button",					{'guiu.mlawfulevil_button'},		nil,		nil,				{"center", "lawful_evil_gui"}},
+	{"Trashcan",				"trashcan_button", 				"trashbinguibutton",					{'guiu.trashcan_button'},			nil,		nil,				nil},
+	{"pycoalprocessing",		"pycoalprocessing_button", 		"pywiki",								{'guiu.pycoalprocessing_button'},	nil,		nil,				{"screen", "wiki_frame"}},
+	{"usage-detector",			"usagedetector_button", 		"usage_detector",						{'guiu.usagedetector_button'},		nil,		nil,				{"center", "usage_detector_center"}},
+	{"RPG",						"rpg_button", 					"104",									{'guiu.rpg_button'},				nil,		nil,				{"screen", "105"}},
+	{nil,						"spawncontrol_button", 			"spawn",								{'guiu.spawncontrol_button'},		nil,		nil,				nil},
+	{"TimedSpawnControl",		"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil,				nil},
+	{"what-is-missing",			"whatsmissing_button", 			"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil,				{"left", "what_is_missing"}},
+	{"advanced-logistics-system-fork","logisticssystemfork_button","logistics-view-button",				{'guiu.logisticssystemfork_button'},nil,		nil,				{"center", "logisticsFrame"}},
+	{"some-zoom",				"somezoom_out_button", 			"but_zoom_zout",						{'guiu.somezoom_out_button'},		nil,		nil,				nil},
+	{"some-zoom",				"somezoom_in_button", 			"but_zoom_zin",							{'guiu.somezoom_in_button'},		nil,		nil,				nil},
+	{"production-monitor",		"productionmonitor_button", 	"stats_show_settings",					{'guiu.productionmonitor_button'},	nil,		nil,				{"center", "stats_center"}},
+	{"Teleportation_Redux",		"teleportation_button", 		"teleportation_main_button",			{'guiu.teleportation_button'},		nil,		nil,				{"left", "teleportation_main_window"}},
+	{"PersonalTeleporter",		"teleportation_button", 		"personalTeleporter_PersonalTeleportTool",{'guiu.teleportation_button'},	nil,		nil,				{"left", "personlaTeleportWindow"}},
+	{"SchallEndgameEvolution",	"schallendgameevolution_button","Schall-EE-mod-button",					nil,								1,			nil,				{"screen", "Schall-EE-frame-main"}},
+	{"NewGamePlus",				"newgameplus_button",			"new-game-plus-toggle-config",			nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "new-game-plus-config-frame"}},
+	{"Nullius",					"nullius_button",				"nullius_mission_button",				nil,								nil,		nil,				{"left", "nullius_mission_panel"}},
 
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -194,7 +194,7 @@ local function fix_buttons(player)
 	--local blackmarketvalue = button_flow.flw_blkmkt and button_flow.flw_blkmkt.but_blkmkt_credits and button_flow.flw_blkmkt.but_blkmkt_credits.caption or ""
 	--"Credit: ".. blackmarketvalue,
 	for _, k in pairs(iconlist) do
-		change_one_icon(player, k[1], k[2], k[3], k[4], k[5], k[6])
+		change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
 	end
 
 	-- AttilaZoomMod
@@ -228,6 +228,8 @@ local function create_new_buttons(player)
 				tooltip = {'guiu.fjei_button'},
 			}
 		end
+	elseif button_flow["fjei_toggle_button"] then
+		button_flow["fjei_toggle_button"].destroy()
 	end
 
 	if game.active_mods["homeworld_redux"] then
@@ -239,6 +241,8 @@ local function create_new_buttons(player)
 				sprite = "homeworld_redux_button",
 			}
 		end
+	elseif button_flow["Homeworld_btn"] then
+		button_flow["Homeworld_btn"].destroy()
 	end
 
 	if game.active_mods["m-lawful-evil"] then
@@ -250,6 +254,8 @@ local function create_new_buttons(player)
 				sprite = "mlawfulevil_button",
 			}
 		end
+	elseif button_flow["lawful_evil_button"] then
+		button_flow["lawful_evil_button"].destroy()
 	end
 
 	if game.active_mods["Trashcan"] then
@@ -261,6 +267,8 @@ local function create_new_buttons(player)
 				sprite = "trashcan_button",
 			}
 		end
+	elseif button_flow["trashbinguibutton"] then
+		button_flow["trashbinguibutton"].destroy()
 	end
 
 	if game.active_mods["pycoalprocessing"] then
@@ -272,6 +280,8 @@ local function create_new_buttons(player)
 				sprite = "pycoalprocessing_button",
 			}
 		end
+	elseif button_flow["pywiki"] then
+		button_flow["pywiki"].destroy()
 	end
 
 	if game.active_mods["usage-detector"] then
@@ -283,6 +293,8 @@ local function create_new_buttons(player)
 				sprite = "usagedetector_button",
 			}
 		end
+	elseif button_flow["usage_detector"] then
+		button_flow["usage_detector"].destroy()
 	end
 
 	if game.active_mods["RPG"] then
@@ -294,6 +306,8 @@ local function create_new_buttons(player)
 				sprite = "rpg_button",
 			}
 		end
+	elseif button_flow["104"] then
+		button_flow["104"].destroy()
 	end
 
 	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
@@ -305,6 +319,8 @@ local function create_new_buttons(player)
 				sprite = "spawncontrol_button",
 			}
 		end
+	elseif button_flow["spawn"] then
+		button_flow["spawn"].destroy()
 	end
 
 	if game.active_mods["TimedSpawnControl"] then
@@ -316,6 +332,8 @@ local function create_new_buttons(player)
 				sprite = "spawncontrol_random_button",
 			}
 		end
+	elseif button_flow["random"] then
+		button_flow["random"].destroy()
 	end
 
 	if game.active_mods["what-is-missing"] then
@@ -327,6 +345,8 @@ local function create_new_buttons(player)
 				sprite = "whatsmissing_button",
 			}
 		end
+	elseif button_flow["what_is_missing"] then
+		button_flow["what_is_missing"].destroy()
 	end
 
 
@@ -342,6 +362,8 @@ local function create_new_buttons(player)
 				}
 			end
 		end
+	elseif button_flow["logistics-view-button"] then
+		button_flow["logistics-view-button"].destroy()
 	end
 
 	--[[if game.active_mods["timeline"] then
@@ -374,6 +396,13 @@ local function create_new_buttons(player)
 				tooltip = {'guiu.somezoom_in_button'},
 			}
 		end
+	else
+		if button_flow["but_zoom_zout"] then
+			button_flow["but_zoom_zout"].destroy()
+		end
+		if button_flow["but_zoom_zin"] then
+			button_flow["but_zoom_zin"].destroy()
+		end
 	end
 
 	if game.active_mods["production-monitor"] then
@@ -386,6 +415,8 @@ local function create_new_buttons(player)
 				tooltip = {'guiu.productionmonitor_button'},
 			}
 		end
+	elseif button_flow["stats_show_settings"] then
+		button_flow["stats_show_settings"].destroy()
 	end
 
 	if game.active_mods["Teleportation_Redux"] then
@@ -400,6 +431,8 @@ local function create_new_buttons(player)
 				}
 			end
 		end
+	elseif button_flow["teleportation_main_button"] then
+		button_flow["teleportation_main_button"].destroy()
 	end
 
 	if game.active_mods["PersonalTeleporter"] then
@@ -414,6 +447,8 @@ local function create_new_buttons(player)
 				}
 			end
 		end
+	elseif button_flow["personalTeleporter_PersonalTeleportTool"] then
+		button_flow["personalTeleporter_PersonalTeleportTool"].destroy()
 	end
 
 	if game.active_mods["inserter-throughput"] then
@@ -435,6 +470,8 @@ local function create_new_buttons(player)
 				button_flow["inserter-throughput-toggle"].tooltip = {'guiu.inserterthroughput_off_button'}
 			end
 		end
+	elseif button_flow["inserter-throughput-toggle"] then
+		button_flow["inserter-throughput-toggle"].destroy()
 	end
 
 	if game.active_mods["YARM"] then
@@ -467,6 +504,16 @@ local function create_new_buttons(player)
 				tooltip = {'guiu.yarm_warnings_button'},
 				visible = true,
 			}
+		end
+	else
+		if button_flow["YARM_filter_none"] then
+			button_flow["YARM_filter_none"].destroy()
+		end
+		if button_flow["YARM_filter_warnings"] then
+			button_flow["YARM_filter_warnings"].destroy()
+		end
+		if button_flow["YARM_filter_all"] then
+			button_flow["YARM_filter_all"].destroy()
 		end
 	end
 end
@@ -832,6 +879,10 @@ local function debug_button(event)
 	--debug
 	if event and event.element then
 		local player = game.players[event.player_index]
+		--player.print(game.active_mods["usage-detector"])
+		for name, version in pairs(game.active_mods) do
+		  player.print(name .. " version " .. version)
+		end
 		player.print(event.element.name)
 		if event.element.parent then
 			player.print("parent1: " .. event.element.parent.name)
@@ -855,6 +906,7 @@ local function debug_button(event)
 			end
 		end
 	end
+
 end
 
 local function on_gui_click(event)

@@ -2,9 +2,10 @@
 Version: 1.11.0
 Date: 2021.09.13
   Changes:
-    - Most buttons display as selected when their windows are open
-    - 9 new button styles
-    - 1 new frame type
+    - Most buttons are displayed as selected when their windows are open
+    - 9 new button styles in options
+    - 1 new frame type in options
+    - Fixed some zombie buttons after unistalling mods
     - Supports YARM - Resource Monitor
     - Supports Nullius
     - Supports NewGame+
