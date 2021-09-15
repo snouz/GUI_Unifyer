@@ -59,7 +59,7 @@ if data.raw["sprite"]["autotrash_trash"] and data.raw["sprite"]["autotrash_trash
     flags = {"icon"},
     layers = {
       {filename = ICONPATH .. "autotrash_button.png", size = 64},
-      {filename = ICONPATH .. "autotrash_both_button.png", size = 64}
+      {filename = ICONPATH .. "autotrash_redyellow_button.png", size = 64}
     },
   }
 end

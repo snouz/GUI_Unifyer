@@ -2,7 +2,7 @@
 Version: 1.11.0
 Date: 2021.09.13
   Changes:
-    - Buttons display as selected when their window is open
+    - Most buttons display as selected when their windows are open
     - 9 new button styles
     - 1 new frame type
     - Supports YARM - Resource Monitor

@@ -92,34 +92,34 @@ local slot_button_notext_transparent =
   padding = 0,
   default_graphical_set =
   {
-    base = {border = 5, position = {0, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {0, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   hovered_graphical_set =
   {
-    base = {border = 5, position = {80, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100}),
     glow = offset_by_2_rounded_corners_glow({225, 177, 106, 255})
   },
   clicked_graphical_set =
   {
-    base = {border = 5, position = {160, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {160, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   selected_graphical_set =
   {
-    base = {border = 5, position = {80, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   selected_hovered_graphical_set =
   {
-    base = {border = 5, position = {80, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {80, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100}),
     glow = offset_by_2_rounded_corners_glow({225, 177, 106, 255})
   },
   selected_clicked_graphical_set =
   {
-    base = {border = 5, position = {160, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {160, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
   pie_progress_color = {0.98, 0.66, 0.22, 0.5},
@@ -132,7 +132,7 @@ local slot_button_notext_transparent_selected =
   parent = "slot_button_notext_transparent",
   default_graphical_set =
   {
-    base = {border = 5, position = {0, 736}, size = 80, opacity = 0.4},
+    base = {border = 4, position = {0, 736}, size = 80, opacity = 0.4},
     shadow = offset_by_2_rounded_corners_glow({15, 7, 3, 100})
   },
 }
@@ -159,14 +159,14 @@ local function make_button_style(stylename, filename, imgsize, border, opacity)
   }
 end
 
-make_button_style("gui_unifyer_gui_01", GUIPATH .. "gui_unifyer_gui_01.png", 80, 5, 1)
-make_button_style("gui_unifyer_gui_02", GUIPATH .. "gui_unifyer_gui_02.png", 80, 5, 1)
-make_button_style("gui_unifyer_gui_03", GUIPATH .. "gui_unifyer_gui_03.png", 80, 5, 0.9)
-make_button_style("gui_unifyer_gui_04", GUIPATH .. "gui_unifyer_gui_04.png", 80, 5, 0.9)
-make_button_style("gui_unifyer_gui_05", GUIPATH .. "gui_unifyer_gui_05.png", 80, 5, 0.8)
-make_button_style("gui_unifyer_gui_06", GUIPATH .. "gui_unifyer_gui_06.png", 80, 7, 0.8)
-make_button_style("gui_unifyer_gui_07", GUIPATH .. "gui_unifyer_gui_07.png", 80, 5, 1)
-make_button_style("gui_unifyer_gui_08", GUIPATH .. "gui_unifyer_gui_08.png", 80, 8, 0.9)
+make_button_style("gui_unifyer_gui_01", GUIPATH .. "gui_unifyer_gui_01.png", 80, 4, 1)
+make_button_style("gui_unifyer_gui_02", GUIPATH .. "gui_unifyer_gui_02.png", 80, 4, 1)
+make_button_style("gui_unifyer_gui_03", GUIPATH .. "gui_unifyer_gui_03.png", 80, 4, 0.9)
+make_button_style("gui_unifyer_gui_04", GUIPATH .. "gui_unifyer_gui_04.png", 80, 4, 0.9)
+make_button_style("gui_unifyer_gui_05", GUIPATH .. "gui_unifyer_gui_05.png", 80, 4, 0.8)
+make_button_style("gui_unifyer_gui_06", GUIPATH .. "gui_unifyer_gui_06.png", 80, 4, 0.8)
+make_button_style("gui_unifyer_gui_07", GUIPATH .. "gui_unifyer_gui_07.png", 80, 4, 1)
+make_button_style("gui_unifyer_gui_08", GUIPATH .. "gui_unifyer_gui_08.png", 80, 4, 0.9)
 
 --data.raw["gui-style"].default["attach-notes-add-button"]
 --data.raw["gui-style"].default["attach-notes-edit-button"]

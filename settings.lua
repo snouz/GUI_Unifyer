@@ -7,7 +7,7 @@ data:extend({
         allowed_values = {
             "snouz_normal_frame_style",
             "snouz_barebone_frame_style",
-            "snouz_large_barebone_frame",
+            "snouz_large_barebone_frame_style",
             "snouz_invisible_frame_style",
         },
         order = "a"
