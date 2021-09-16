@@ -191,6 +191,7 @@ end
 local function fix_buttons(player)
 	if not player or not player.valid then return end
 	local button_flow = mod_gui.get_button_flow(player)
+
 	for _, k in pairs(iconlist) do
 		change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
 	end
@@ -226,96 +227,47 @@ local function create_new_buttons(player)
 	local button_flow = mod_gui.get_button_flow(player)
 	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 
-	if game.active_mods["FJEI"] then
-		if not button_flow.fjei_toggle_button then
-			button_flow.add {
-				type = "sprite-button",
-				name = "fjei_toggle_button",
-				sprite = "fjei_button",
-				style = gu_button_style_setting,
-				tooltip = {'guiu.fjei_button'},
-			}
+	local function create_buttons_from_list(mod, button, sprite, tooltip)
+		if game.active_mods[mod] then
+			if not button_flow.fjei_toggle_button then
+				button_flow.add {
+					type = "sprite-button",
+					name = button,
+					sprite = sprite,
+					style = gu_button_style_setting,
+					tooltip = tooltip,
+				}
+				if button == "YARM_filter_none" then button_flow.YARM_filter_none.visible = false end
+				if button == "YARM_filter_warnings" then button_flow.YARM_filter_warnings.visible = false end
+			end
+		elseif button_flow[button] then
+			button_flow[button].destroy()
 		end
-	elseif button_flow["fjei_toggle_button"] then
-		button_flow["fjei_toggle_button"].destroy()
 	end
 
-	if game.active_mods["homeworld_redux"] then
-		if not button_flow.Homeworld_btn then
-			button_flow.add {
-				type = "sprite-button",
-				name = "Homeworld_btn",
-				style = gu_button_style_setting,
-				sprite = "homeworld_redux_button",
-			}
-		end
-	elseif button_flow["Homeworld_btn"] then
-		button_flow["Homeworld_btn"].destroy()
-	end
+	local newbuttonlist = {
+		{"FJEI",				"fjei_toggle_button",						"fjei_button",					{'guiu.fjei_button'}},
+		{"homeworld_redux",		"Homeworld_btn",							"homeworld_redux_button",		{'guiu.homeworld_redux_button'}},
+		{"m-lawful-evil",		"lawful_evil_button",						"mlawfulevil_button",			{'guiu.mlawfulevil_button'}},
+		{"Trashcan",			"trashbinguibutton",						"trashcan_button",				{'guiu.trashcan_button'}},
+		{"pycoalprocessing",	"pywiki",									"pycoalprocessing_button",		{'guiu.pycoalprocessing_button'}},
+		{"usage-detector",		"usage_detector",							"usagedetector_button",			{'guiu.usagedetector_button'}},
+		{"RPG",					"104",										"rpg_button",					{'guiu.rpg_button'}},
+		{"TimedSpawnControl",	"random",									"spawncontrol_random_button",	{'guiu.spawncontrol_random_button'}},
+		{"what-is-missing",		"what_is_missing",							"whatsmissing_button",			{'guiu.whatsmissing_button'}},
+		{"some-zoom",			"but_zoom_zout",							"somezoom_out_button",			{'guiu.somezoom_out_button'}},
+		{"some-zoom",			"but_zoom_zin",								"somezoom_in_button",			{'guiu.somezoom_in_button'}},
+		{"production-monitor",	"stats_show_settings",						"productionmonitor_button",		{'guiu.productionmonitor_button'}},
+		{"Teleportation_Redux",	"teleportation_main_button",				"teleportation_button",			{'guiu.teleportation_button'}},
+		{"PersonalTeleporter",	"personalTeleporter_PersonalTeleportTool",	"teleportation_button",			{'guiu.teleportation_button'}},
+		{"inserter-throughput",	"inserter-throughput-toggle",				"inserterthroughput_off_button",{'guiu.inserterthroughput_off_button'}},
+		{"YARM",				"YARM_filter_none",							"yarm_all_button",				{'guiu.yarm_all_button'}},
+		{"YARM",				"YARM_filter_warnings",						"yarm_none_button",				{'guiu.yarm_none_button'}},
+		{"YARM",				"YARM_filter_all",							"yarm_warnings_button",			{'guiu.yarm_warnings_button'}},
+	}
 
-	if game.active_mods["m-lawful-evil"] then
-		if not button_flow.lawful_evil_button then
-			button_flow.add {
-				type = "sprite-button",
-				name = "lawful_evil_button",
-				style = gu_button_style_setting,
-				sprite = "mlawfulevil_button",
-			}
-		end
-	elseif button_flow["lawful_evil_button"] then
-		button_flow["lawful_evil_button"].destroy()
-	end
-
-	if game.active_mods["Trashcan"] then
-		if not button_flow.trashbinguibutton then
-			button_flow.add {
-				type = "sprite-button",
-				name = "trashbinguibutton",
-				style = gu_button_style_setting,
-				sprite = "trashcan_button",
-			}
-		end
-	elseif button_flow["trashbinguibutton"] then
-		button_flow["trashbinguibutton"].destroy()
-	end
-
-	if game.active_mods["pycoalprocessing"] then
-		if not button_flow.pywiki then
-			button_flow.add {
-				type = "sprite-button",
-				name = "pywiki",
-				style = gu_button_style_setting,
-				sprite = "pycoalprocessing_button",
-			}
-		end
-	elseif button_flow["pywiki"] then
-		button_flow["pywiki"].destroy()
-	end
-
-	if game.active_mods["usage-detector"] then
-		if not button_flow.usage_detector then
-			button_flow.add {
-				type = "sprite-button",
-				name = "usage_detector",
-				style = gu_button_style_setting,
-				sprite = "usagedetector_button",
-			}
-		end
-	elseif button_flow["usage_detector"] then
-		button_flow["usage_detector"].destroy()
-	end
-
-	if game.active_mods["RPG"] then
-		if not button_flow["104"] then
-			button_flow.add {
-				type = "sprite-button",
-				name = "104",
-				style = gu_button_style_setting,
-				sprite = "rpg_button",
-			}
-		end
-	elseif button_flow["104"] then
-		button_flow["104"].destroy()
+	for _, k in pairs(newbuttonlist) do
+		create_buttons_from_list(k[1], k[2], k[3], k[4])
 	end
 
 	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
@@ -331,144 +283,11 @@ local function create_new_buttons(player)
 		button_flow["spawn"].destroy()
 	end
 
-	if game.active_mods["TimedSpawnControl"] then
-		if not button_flow.random then
-			button_flow.add {
-				type = "sprite-button",
-				name = "random",
-				style = gu_button_style_setting,
-				sprite = "spawncontrol_random_button",
-			}
-		end
-	elseif button_flow["random"] then
-		button_flow["random"].destroy()
-	end
-
-	if game.active_mods["what-is-missing"] then
-		if not button_flow.what_is_missing then
-			button_flow.add {
-				type = "sprite-button",
-				name = "what_is_missing",
-				style = gu_button_style_setting,
-				sprite = "whatsmissing_button",
-			}
-		end
-	elseif button_flow["what_is_missing"] then
-		button_flow["what_is_missing"].destroy()
-	end
-
-
-	if game.active_mods["advanced-logistics-system-fork"] then
-		if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
-			if not button_flow["logistics-view-button"] then
-				button_flow.add {
-					type = "sprite-button",
-					name = "logistics-view-button",
-					style = gu_button_style_setting,
-					sprite = "logisticssystemfork_button",
-					tooltip = {'guiu.logisticssystemfork_button'},
-				}
-			end
-		end
-	elseif button_flow["logistics-view-button"] then
-		button_flow["logistics-view-button"].destroy()
-	end
-
-	--[[if game.active_mods["timeline"] then
-		if not button_flow["timeline"] then
-			button_flow.add {
-				type = "sprite-button",
-				name = "timeline",
-				style = gu_button_style_setting,
-				sprite = "timeline_button",
-			}
-		end
-	end]]
-
-	if game.active_mods["some-zoom"] then
-		if not button_flow.but_zoom_zout then
-			button_flow.add {
-				type = "sprite-button",
-				name = "but_zoom_zout",
-				style = gu_button_style_setting,
-				sprite = "somezoom_out_button",
-				tooltip = {'guiu.somezoom_out_button'},
-			}
-		end
-		if not button_flow.but_zoom_zin then
-			button_flow.add {
-				type = "sprite-button",
-				name = "but_zoom_zin",
-				style = gu_button_style_setting,
-				sprite = "somezoom_in_button",
-				tooltip = {'guiu.somezoom_in_button'},
-			}
-		end
-	else
-		if button_flow["but_zoom_zout"] then
-			button_flow["but_zoom_zout"].destroy()
-		end
-		if button_flow["but_zoom_zin"] then
-			button_flow["but_zoom_zin"].destroy()
-		end
-	end
-
-	if game.active_mods["production-monitor"] then
-		if not button_flow.stats_show_settings then
-			button_flow.add {
-				type = "sprite-button",
-				name = "stats_show_settings",
-				style = gu_button_style_setting,
-				sprite = "productionmonitor_button",
-				tooltip = {'guiu.productionmonitor_button'},
-			}
-		end
-	elseif button_flow["stats_show_settings"] then
-		button_flow["stats_show_settings"].destroy()
-	end
-
-	if game.active_mods["Teleportation_Redux"] then
-		if global.Teleportation_Redux_built then
-			if not button_flow.teleportation_main_button then
-				button_flow.add {
-					type = "sprite-button",
-					name = "teleportation_main_button",
-					style = gu_button_style_setting,
-					sprite = "teleportation_button",
-					tooltip = {'guiu.teleportation_button'},
-				}
-			end
-		end
-	elseif button_flow["teleportation_main_button"] then
-		button_flow["teleportation_main_button"].destroy()
-	end
-
-	if game.active_mods["PersonalTeleporter"] then
-		if global.PersonalTeleporter_built then
-			if not button_flow.personalTeleporter_PersonalTeleportTool then
-				button_flow.add {
-					type = "sprite-button",
-					name = "personalTeleporter_PersonalTeleportTool",
-					style = gu_button_style_setting,
-					sprite = "teleportation_button",
-					tooltip = {'guiu.teleportation_button'},
-				}
-			end
-		end
-	elseif button_flow["personalTeleporter_PersonalTeleportTool"] then
-		button_flow["personalTeleporter_PersonalTeleportTool"].destroy()
+	if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
+		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'})
 	end
 
 	if game.active_mods["inserter-throughput"] then
-		if not button_flow["inserter-throughput-toggle"] then
-			button_flow.add {
-				type = "sprite-button",
-				name = "inserter-throughput-toggle",
-				style = gu_button_style_setting,
-				sprite = "inserterthroughput_off_button",
-				tooltip = {'guiu.inserterthroughput_off_button'},
-			}
-		end
 		if button_flow["inserter-throughput-toggle"] and settings.get_player_settings(player)["inserter-throughput-enabled"] then
 			if settings.get_player_settings(player)["inserter-throughput-enabled"].value == true then
 				button_flow["inserter-throughput-toggle"].sprite = "inserterthroughput_on_button"
@@ -477,51 +296,6 @@ local function create_new_buttons(player)
 				button_flow["inserter-throughput-toggle"].sprite = "inserterthroughput_off_button"
 				button_flow["inserter-throughput-toggle"].tooltip = {'guiu.inserterthroughput_off_button'}
 			end
-		end
-	elseif button_flow["inserter-throughput-toggle"] then
-		button_flow["inserter-throughput-toggle"].destroy()
-	end
-
-	if game.active_mods["YARM"] then
-		if not button_flow["YARM_filter_none"] then --current mode all
-			button_flow.add {
-				type = "sprite-button",
-				name = "YARM_filter_none",
-				style = gu_button_style_setting,
-				sprite = "yarm_all_button",
-				tooltip = {'guiu.yarm_all_button'},
-				visible = false,
-			}
-		end
-		if not button_flow["YARM_filter_warnings"] then --current mode none
-			button_flow.add {
-				type = "sprite-button",
-				name = "YARM_filter_warnings",
-				style = gu_button_style_setting,
-				sprite = "yarm_none_button",
-				tooltip = {'guiu.yarm_none_button'},
-				visible = false,
-			}
-		end
-		if not button_flow["YARM_filter_all"] then --current mode warnings
-			button_flow.add {
-				type = "sprite-button",
-				name = "YARM_filter_all",
-				style = gu_button_style_setting,
-				sprite = "yarm_warnings_button",
-				tooltip = {'guiu.yarm_warnings_button'},
-				visible = true,
-			}
-		end
-	else
-		if button_flow["YARM_filter_none"] then
-			button_flow["YARM_filter_none"].destroy()
-		end
-		if button_flow["YARM_filter_warnings"] then
-			button_flow["YARM_filter_warnings"].destroy()
-		end
-		if button_flow["YARM_filter_all"] then
-			button_flow["YARM_filter_all"].destroy()
 		end
 	end
 end
@@ -964,8 +738,8 @@ local function on_built(event)
 							type = "sprite-button",
 							name = "teleportation_main_button",
 							style = gu_button_style_setting,
-							sprite = "teleportation_redux_button",
-							tooltip = {'guiu.teleportation_redux_button'},
+							sprite = "teleportation_button",
+							tooltip = {'guiu.teleportation_button'},
 						}
 					end
 				end
@@ -986,8 +760,8 @@ local function on_built(event)
 							type = "sprite-button",
 							name = "personalTeleporter_PersonalTeleportTool",
 							style = gu_button_style_setting,
-							sprite = "teleportation_redux_button",
-							tooltip = {'guiu.teleportation_redux_button'},
+							sprite = "teleportation_button",
+							tooltip = {'guiu.teleportation_button'},
 						}
 					end
 				end
