@@ -2,7 +2,7 @@ local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local checknexttick = true
-local activedebug = true
+local activedebug = false
 
 local iconlist = {
 	--modname					--sprite 						button									tooltip 					dontreplacesprite	buttonpath (array)	windowtocheck (array)

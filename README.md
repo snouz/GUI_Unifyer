@@ -18,12 +18,12 @@ Consult with your doctor to see if GUI Unifyer is right for you
 - Many buttons which didn't have hover text now do.
 ![tooltips](https://i.imgur.com/IXbqUlR.png)
 - 11 button styles for each player to choose from.
-![greybuttons](https://i.imgur.com/kcSHyzX.png)
+![butt](https://i.imgur.com/PgrDvmK.png) ![butt](https://i.imgur.com/vHc719U.png) ![butt](https://i.imgur.com/VsLSNcu.png) ![butt](https://i.imgur.com/kr7xCK3.png) ![butt](https://i.imgur.com/Usx5HX5.png) ![butt](https://i.imgur.com/ilOvyF6.png)
+![butt](https://i.imgur.com/4g3JbpD.png) ![butt](https://i.imgur.com/A42SceU.png) ![butt](https://i.imgur.com/Xg1Vsu5.png) ![butt](https://i.imgur.com/qIsdTUG.png) ![butt](https://i.imgur.com/3n5vluJ.png)
 - Tweakable top left frame (normal/barebone/invisible)
-![frame](https://i.imgur.com/fOtkHbr.png)
-![frame](https://i.imgur.com/linVC4l.png)
-![frame](https://i.imgur.com/rbWNha5.png)
+![frame](https://i.imgur.com/fOtkHbr.png) | ![frame](https://i.imgur.com/linVC4l.png) | ![frame](https://i.imgur.com/rbWNha5.png)
 - Most buttons stay selected when their window is open
+![shiny](https://i.imgur.com/Cof4F6v.png)
 - Blueprint related buttons only show when one is selected:
 ![blueprint](https://i.imgur.com/jUbwLoX.png)
 
