@@ -3,6 +3,8 @@ Version: 1.11.2
 Date: 2021.09.15
   Changes:
     - Fixed crash when placing teleporters (Teleporter Redux and Personal Teleporter)
+    - Supports Recipe Explorer
+    - Supports The Blueprint Designer Lab
     - Re-added Black Market 2 hover credit
 ---------------------------------------------------------------------------------------------------
 Version: 1.11.1

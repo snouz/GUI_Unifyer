@@ -128,3 +128,5 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - NewGame+
 - Inserter Throughput
 - YARM - Resource Monitor
+- Recipe Explorer
+- The Blueprint Designer Lab

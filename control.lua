@@ -106,6 +106,8 @@ local iconlist = {
 	{"SchallEndgameEvolution",	"schallendgameevolution_button","Schall-EE-mod-button",					nil,								1,			nil,				{"screen", "Schall-EE-frame-main"}},
 	{"NewGamePlus",				"newgameplus_button",			"new-game-plus-toggle-config",			nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "new-game-plus-config-frame"}},
 	{"Nullius",					"nullius_button",				"nullius_mission_button",				nil,								nil,		nil,				{"left", "nullius_mission_panel"}},
+	{"RecExplo",				"recexplo_button",				"b_recexplo",							{'guiu.recexplo_button'},			nil,		nil,				{"left", "recexplo_flow", "recexplo_gui_frame", "recexplo_gui_table"}},
+	{"BlueprintLab_design",		"blueprintlabdesign_button",	"BPL_LabButton",						{'guiu.blueprintlabdesign_button'},	nil,		nil,				{"left", "BPL_Flow", "BPL_ClearButton"}},
 
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -229,7 +231,7 @@ local function create_new_buttons(player)
 
 	local function create_buttons_from_list(mod, button, sprite, tooltip)
 		if game.active_mods[mod] then
-			if not button_flow.fjei_toggle_button then
+			if not button_flow[button] then
 				button_flow.add {
 					type = "sprite-button",
 					name = button,
@@ -264,6 +266,8 @@ local function create_new_buttons(player)
 		{"YARM",				"YARM_filter_none",							"yarm_all_button",				{'guiu.yarm_all_button'}},
 		{"YARM",				"YARM_filter_warnings",						"yarm_none_button",				{'guiu.yarm_none_button'}},
 		{"YARM",				"YARM_filter_all",							"yarm_warnings_button",			{'guiu.yarm_warnings_button'}},
+		{"RecExplo",			"b_recexplo",								"recexplo_button",				{'guiu.recexplo_button'}},
+		{"BlueprintLab_design",	"BPL_LabButton",							"blueprintlabdesign_button",	{'guiu.blueprintlabdesign_button'}},
 	}
 
 	for _, k in pairs(newbuttonlist) do
@@ -486,6 +490,14 @@ local function destroy_obsolete_buttons(player)
 			if yarmbuttons.YARM_filter_all then yarmbuttons.YARM_filter_all.visible = false end
 		end
 	end
+
+	if top.b_recexplo and top.b_recexplo.visible == true then
+		top.b_recexplo.visible = false
+	end
+
+	if player.gui.left.BPL_Flow and player.gui.left.BPL_Flow.BPL_LabButton and player.gui.left.BPL_Flow.BPL_LabButton.visible == true then
+		player.gui.left.BPL_Flow.BPL_LabButton.visible = false
+	end
 end
 
 local function update_frame_style(player)
@@ -662,9 +674,9 @@ local function debug_button(event)
 	if event and event.element then
 		local player = game.players[event.player_index]
 		--player.print(game.active_mods["usage-detector"])
-		for name, version in pairs(game.active_mods) do
-		  player.print(name .. " version " .. version)
-		end
+		--for name, version in pairs(game.active_mods) do
+		--  player.print(name .. " version " .. version)
+		--end
 		player.print(event.element.name)
 		if event.element.parent then
 			player.print("parent1: " .. event.element.parent.name)
