@@ -191,10 +191,18 @@ end
 local function fix_buttons(player)
 	if not player or not player.valid then return end
 	local button_flow = mod_gui.get_button_flow(player)
-	--local blackmarketvalue = button_flow.flw_blkmkt and button_flow.flw_blkmkt.but_blkmkt_credits and button_flow.flw_blkmkt.but_blkmkt_credits.caption or ""
-	--"Credit: ".. blackmarketvalue,
 	for _, k in pairs(iconlist) do
 		change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
+	end
+
+	--BlackMarket2 tooltip fix
+	if game.active_mods["BlackMarket2"] then
+		if button_flow.flw_blkmkt and button_flow.flw_blkmkt.but_blkmkt_credits then
+			local blackmarketvalue = button_flow.flw_blkmkt.but_blkmkt_credits.caption
+			if blackmarketvalue then
+				button_flow.flw_blkmkt.but_blkmkt_credits.tooltip = "Credit: ".. blackmarketvalue
+			end
+		end
 	end
 
 	-- AttilaZoomMod
