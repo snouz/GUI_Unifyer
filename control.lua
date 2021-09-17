@@ -10,7 +10,7 @@ local iconlist = {
 	{"factoryplanner",			"factoryplanner_button", 		"fp_button_toggle_interface", 			{'guiu.factoryplanner_button'}, 	nil,		nil,				nil},
 	{"ModuleInserter",			"moduleinserter_button", 		"module_inserter_config_button", 		{'guiu.moduleinserter_button'}, 	nil,		nil,				nil},
 	{"Placeables",				"placeables_button", 			"buttonPlaceablesVisible", 				nil,								nil,		nil,				{"screen", "framePlaceablesOuter"}},
-	{"Todo-List",				"todolist_button", 				"todo_maximize_button", 				{'guiu.todolist_button'}, 			nil,		nil,				{"screen", "todo_main_frame"}},
+	--{"Todo-List",				"todolist_button", 				"todo_maximize_button", 				{'guiu.todolist_button'}, 			nil,		nil,				{"screen", "todo_main_frame"}},
 	{"creative-mod",			"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
 	{"BeastFinder",				"beastfinder_button", 			"beastfinder-menu-button", 				{'guiu.beastfinder_button'}, 		nil,		nil,				{"screen", "frame_BeastFinder_main"}},
 	{"bobclasses",				"bobclasses_button", 			"bob_avatar_toggle_gui", 				nil,								nil,		nil,				{"left", "bob_avatar_gui"}},
@@ -221,6 +221,35 @@ local function fix_buttons(player)
 				set_button_sprite(attilazoommod_button, "attilazoommod_button")
 			end
 		end
+	end
+
+	if game.active_mods["Todo-List"] then
+		settings.get_player_settings(player)["gu_todolist_style_setting"].hidden = false
+		local todolist_button = button_flow.todo_maximize_button
+		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+		if todolist_button then
+			if settings.get_player_settings(player)["gu_todolist_style_setting"].value == "icon" then
+				set_button_sprite(todolist_button, "todolist_button")
+				if todolist_button.caption then
+					todolist_button.tooltip = todolist_button.caption
+				end
+			elseif settings.get_player_settings(player)["gu_todolist_style_setting"].value == "longtext" then
+				set_button_sprite(todolist_button)
+				gu_button_style_setting = "todo_button_default_snouz"
+				if todolist_button.caption then
+					todolist_button.tooltip = todolist_button.caption
+					--if todolist_button.caption[4] and todolist_button.caption[3] == ": " then
+					--	todolist_button.caption = todolist_button.caption[4]
+					--end
+				end
+			end
+		end
+		if player.gui.screen.todo_main_frame and player.gui.screen.todo_main_frame.visible == true then
+			gu_button_style_setting = gu_button_style_setting .. "_selected"
+		end
+		todolist_button.style = gu_button_style_setting
+	else
+		settings.get_player_settings(player)["gu_todolist_style_setting"].hidden = true
 	end
 end
 

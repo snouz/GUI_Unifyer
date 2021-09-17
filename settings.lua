@@ -1,3 +1,8 @@
+local gu_todolist_style_setting_hidden = true
+if mods["Todo-List"] then
+    gu_todolist_style_setting_hidden = false
+end
+
 data:extend({
     {
         type = "string-setting",
@@ -31,5 +36,17 @@ data:extend({
             "gui_unifyer_gui_08",
         },
         order = "b"
+    },
+    {
+        type = "string-setting",
+        name = "gu_todolist_style_setting",
+        setting_type = "runtime-per-user",
+        default_value = "icon",
+        allowed_values = {
+            "icon",
+            "longtext",
+        },
+        order = "c",
+        hidden = gu_todolist_style_setting_hidden,
     },
 })
