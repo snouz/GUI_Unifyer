@@ -130,3 +130,11 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - YARM - Resource Monitor
 - Recipe Explorer
 - The Blueprint Designer Lab
+- Dana: crafting tree/graph explorer
+- Factorio Tweaks by billbo99
+- Remote Switch
+- Spider sentinel
+- TSM Outpost Builder Addon
+- Credo Time Lapse Mod 1.1
+- Non-Wave Defense 2
+- Sky Wave Defense 3

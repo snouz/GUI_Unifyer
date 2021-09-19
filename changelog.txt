@@ -1,6 +1,24 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.11.4
+Date: 2021.09.19
+  Changes:
+    - Fixed a potential crash with 1.11.3
+    - Supports Dana: crafting tree/graph explorer
+    - Supports Factorio Tweaks by billbo99
+    - Supports Remote Switch
+    - Supports Spider sentinel
+    - Supports TSM Outpost Builder Addon
+    - Supports Credo Time Lapse Mod 1.1
+    - Supports Non-Wave Defense 2
+    - Supports Sky Wave Defense 3
+---------------------------------------------------------------------------------------------------
+Version: 1.11.3
+Date: 2021.09.17
+  Changes:
+    - Better support for Todo-List (dynamic hover text + option to use full text button)
+---------------------------------------------------------------------------------------------------
 Version: 1.11.2
-Date: 2021.09.15
+Date: 2021.09.16
   Changes:
     - Fixed crash when placing teleporters (Teleporter Redux and Personal Teleporter)
     - Supports Recipe Explorer

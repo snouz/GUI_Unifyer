@@ -108,13 +108,21 @@ local iconlist = {
 	{"Nullius",					"nullius_button",				"nullius_mission_button",				nil,								nil,		nil,				{"left", "nullius_mission_panel"}},
 	{"RecExplo",				"recexplo_button",				"b_recexplo",							{'guiu.recexplo_button'},			nil,		nil,				{"left", "recexplo_flow", "recexplo_gui_frame", "recexplo_gui_table"}},
 	{"BlueprintLab_design",		"blueprintlabdesign_button",	"BPL_LabButton",						{'guiu.blueprintlabdesign_button'},	nil,		nil,				{"left", "BPL_Flow", "BPL_ClearButton"}},
+	{"NonWaveDefense2",			"nonwavedefense2_button",		"nwd2_main_gui_button",					{'guiu.nonwavedefense2_button'},	nil,		nil,				nil},
+	{"SkyWaveDefense",			"nonwavedefense2_button",		"swd3_main_gui_button",					nil,								nil,		nil,				nil},
+	{"dana",					"dana_button",					"dana_main_gui_button",					nil,								nil,		nil,				nil},
+	{"billbo99_factorio_tweaks","factorio_tweaks_button",		"admin_button",							{'guiu.factorio_tweaks_button'},	nil,		nil,				{"left", "admin_panel", "tabbed_pane"}},
+	{"remote-switch",			"remoteswitch_button",			"toggle_remote_switch_popup",			{'guiu.remoteswitch_button'},		nil,		nil,				{"screen", "switch_gui_panel", "mainframe"}},
+	{"TSM-outpost-builder",		"tsmoutpostbuilder_button",		"crane_sprite_button",					{'guiu.tsmoutpostbuilder_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "crane_button_frame"}},
+	{"CredoTimeLapseModByGalapagon","credotimelapse_button",	"CTLM_mainbutton",						{'guiu.credotimelapse_button'},		nil,		nil,				{"center", "CTLM_settings_main"}},
+	{"spidersentinel",			"spidersentinel_button",		"spidersentinel_onoff",					nil,								nil,		nil,				{"left", "spidersentinel_frame"}},
 
+	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
 	--{"avatars_button", ""},																												??
 	--{"modmashsplinterboom_button", "landmine-toggle-button"},																				??
 	--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
-	--{"dana_button", 				"dana-shortcut",				nil, nil,		nil}, 												-- can't button name!
 	--{"deleteadjacentchunk_button", ""},																								-- too complex
 	--timeline							timeline				hard
 	--controllinator				["controllinator-toggle"]			button created from
@@ -243,11 +251,12 @@ local function fix_buttons(player)
 					--end
 				end
 			end
+			if player.gui.screen.todo_main_frame and player.gui.screen.todo_main_frame.visible == true then
+				gu_button_style_setting = gu_button_style_setting .. "_selected"
+			end
+			todolist_button.style = gu_button_style_setting
 		end
-		if player.gui.screen.todo_main_frame and player.gui.screen.todo_main_frame.visible == true then
-			gu_button_style_setting = gu_button_style_setting .. "_selected"
-		end
-		todolist_button.style = gu_button_style_setting
+
 	else
 		settings.get_player_settings(player)["gu_todolist_style_setting"].hidden = true
 	end
@@ -297,6 +306,7 @@ local function create_new_buttons(player)
 		{"YARM",				"YARM_filter_all",							"yarm_warnings_button",			{'guiu.yarm_warnings_button'}},
 		{"RecExplo",			"b_recexplo",								"recexplo_button",				{'guiu.recexplo_button'}},
 		{"BlueprintLab_design",	"BPL_LabButton",							"blueprintlabdesign_button",	{'guiu.blueprintlabdesign_button'}},
+		{"CredoTimeLapseModByGalapagon","CTLM_mainbutton",					"credotimelapse_button",		{'guiu.credotimelapse_button'}},
 	}
 
 	for _, k in pairs(newbuttonlist) do
@@ -527,6 +537,9 @@ local function destroy_obsolete_buttons(player)
 	if player.gui.left.BPL_Flow and player.gui.left.BPL_Flow.BPL_LabButton and player.gui.left.BPL_Flow.BPL_LabButton.visible == true then
 		player.gui.left.BPL_Flow.BPL_LabButton.visible = false
 	end
+	if top.CTLM_mainbutton and top.CTLM_mainbutton.visible == true then
+		top.CTLM_mainbutton.visible = false
+	end
 end
 
 local function update_frame_style(player)
@@ -651,11 +664,34 @@ local function on_gui_opened(event)
 	end
 end
 
+local function cycle_buttons_to_rename(player)
+	if game.active_mods["NonWaveDefense2"] or game.active_mods["SkyWaveDefense"] or game.active_mods["dana"] then
+		local button_flow = mod_gui.get_button_flow(player)
+		if button_flow.children then
+			for i, k in pairs(button_flow.children) do
+				if k.caption and k.caption[1] and k.caption[1] == "nwd2.upgrade-button" then
+					k.name = "nwd2_main_gui_button"
+					player.print(serpent.block(k.name))
+				end
+				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "upgrade-button-tooltip" then
+					k.name = "swd3_main_gui_button"
+					player.print(serpent.block(k.name))
+				end
+				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "dana.longName" then
+					k.name = "dana_main_gui_button"
+					player.print(serpent.block(k.name))
+				end
+			end
+		end
+	end
+end
+
 local function on_init()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
 		--create_new_buttons(player)
 		fix_buttons(player)
+		cycle_buttons_to_rename(player)
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 	checknexttick = true
@@ -664,6 +700,7 @@ end
 local function on_configuration_changed()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
+		cycle_buttons_to_rename(player)
 		--create_new_buttons(player)
 		fix_buttons(player)
 		update_frame_style(player)
@@ -706,6 +743,19 @@ local function debug_button(event)
 		--for name, version in pairs(game.active_mods) do
 		--  player.print(name .. " version " .. version)
 		--end
+		--player.print(game.active_mods["usage-detector"])
+		local button_flow = mod_gui.get_button_flow(player)
+		player.print(serpent.block(button_flow.children_names))
+		--[[for i, k in pairs(button_flow.childen_names) do
+			if k == "" then
+				player.print(serpent.block(button_flow[k]))
+			end
+		end]]
+		--game.write_file("C:/output.json", game.table_to_json(button_flow), _append)
+
+		--local j_son = game.table_to_json(game)
+
+		player.print("------------------------")
 		player.print(event.element.name)
 		if event.element.parent then
 			player.print("parent1: " .. event.element.parent.name)
@@ -721,6 +771,12 @@ local function debug_button(event)
 								player.print("parent6: " .. event.element.parent.parent.parent.parent.parent.parent.name)
 								if event.element.parent.parent.parent.parent.parent.parent.parent then
 									player.print("parent7: " .. event.element.parent.parent.parent.parent.parent.parent.parent.name)
+									if event.element.parent.parent.parent.parent.parent.parent.parent.parent then
+										player.print("parent8: " .. event.element.parent.parent.parent.parent.parent.parent.parent.parent.name)
+										if event.element.parent.parent.parent.parent.parent.parent.parent.parent.parent then
+											player.print("parent9: " .. event.element.parent.parent.parent.parent.parent.parent.parent.parent.parent.name)
+										end
+									end
 								end
 							end
 						end
@@ -728,6 +784,7 @@ local function debug_button(event)
 				end
 			end
 		end
+		player.print("------------------------")
 	end
 
 end
@@ -742,6 +799,7 @@ local function on_gui_click(event)
 	checknexttick = true
 
 	if activedebug then debug_button(event) end
+	--cycle_buttons_to_rename(game.players[event.player_index])
 end
 
 local function on_gui_closed(event)
@@ -751,6 +809,7 @@ end
 local function on_player_created(event)
 	local player = game.players[event.player_index]
 	destroy_obsolete_buttons(player)
+	cycle_buttons_to_rename(player)
 	--create_new_buttons(player)
 	fix_buttons(player)
 	checknexttick = true
