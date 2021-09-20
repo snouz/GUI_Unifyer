@@ -138,3 +138,9 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - Credo Time Lapse Mod 1.1
 - Non-Wave Defense 2
 - Sky Wave Defense 3
+- base scenarios (PVP, Supply Challenge, Team Production...)
+- Cities Of Earth
+- Oarc Multiplayer Spawn
+- Decu
+- Rd's Space Exploration Multiplayer Compat
+- Spiderissmo

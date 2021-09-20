@@ -116,6 +116,18 @@ local iconlist = {
 	{"TSM-outpost-builder",		"tsmoutpostbuilder_button",		"crane_sprite_button",					{'guiu.tsmoutpostbuilder_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "crane_button_frame"}},
 	{"CredoTimeLapseModByGalapagon","credotimelapse_button",	"CTLM_mainbutton",						{'guiu.credotimelapse_button'},		nil,		nil,				{"center", "CTLM_settings_main"}},
 	{"spidersentinel",			"spidersentinel_button",		"spidersentinel_onoff",					nil,								nil,		nil,				{"left", "spidersentinel_frame"}},
+	{"CitiesOfEarth",			"citiesofearth_button",			"coe_button_show_targets",				{'guiu.citiesofearth_button'},		nil,		nil,				{"center", "coe_choose_target"}},
+	{"enemyracemanager",		"enemyracemanager_button",		"erm_toggle",							{'guiu.enemyracemanager_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "races_manager"}},
+	{"oarc-mod",				"oarcmod_button",				"oarc_button",							{'guiu.oarcmod_button'},			nil,		nil,				{"left", "mod_gui_frame_flow", "oarc_gui"}},
+	{"Decu",					"decu_button",					"market_button",						{'guiu.decu_button'},				nil,		nil,				{"center", "market"}},
+	{"rd-se-multiplayer-compat","forces_button",				"toggle_forces",						{'guiu.compatforce_button'},		nil,		nil,				{"screen", "rd_forces_ui"}},
+	{"rd-se-multiplayer-compat","spawncontrol_button",			"toggle_spawn_gui",						{'guiu.compatspawn_button'},		nil,		nil,				{"screen", "spawn_gui"}},
+	{"base",					"leaderboard_button",			"toggle_leaderboard_button",			{'guiu.leaderboard_button'},		nil,		nil,				{"screen", "leaderboard", "inner"}},
+	{"base",					"teamcoop_button1",				"base_pvp_teams_button",				{'guiu.base_pvp_teams_button'},		nil,		nil,				nil},
+	{"base",					"picksrocketstats_button",		"base_pvp_space_race_button",			{'guiu.base_pvp_space_race_button'},nil,		nil,				nil},
+	{"base",					"factorio_tweaks_button",		"base_pvp_admin_button",				{'guiu.base_pvp_admin_button'},		nil,		nil,				nil},
+	{"Spiderissmo",				"item/spidertron",				"108",									{'guiu.Spiderissmo_spider_button'},	nil,		nil,				{"screen", "105"}},
+	{"Spiderissmo",				"credotimelapse_button",		"minimap_button",						{'guiu.Spiderissmo_minimap_button'},nil,		nil,				{"left", "minimap_toggle_frame"}},
 
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
@@ -307,6 +319,13 @@ local function create_new_buttons(player)
 		{"RecExplo",			"b_recexplo",								"recexplo_button",				{'guiu.recexplo_button'}},
 		{"BlueprintLab_design",	"BPL_LabButton",							"blueprintlabdesign_button",	{'guiu.blueprintlabdesign_button'}},
 		{"CredoTimeLapseModByGalapagon","CTLM_mainbutton",					"credotimelapse_button",		{'guiu.credotimelapse_button'}},
+		{"Decu",				"market_button",							"decu_button",					{'guiu.decu_button'}},
+		{"rd-se-multiplayer-compat","toggle_forces",						"forces_button",				{'guiu.compatforce_button'}},
+		{"rd-se-multiplayer-compat","toggle_spawn_gui",						"spawncontrol_button",			{'guiu.compatspawn_button'}},
+		{"Spiderissmo",			"108",										"item/spidertron",				{'guiu.Spiderissmo_spider_button'}},
+		{"Spiderissmo",			"minimap_button",							"credotimelapse_button",		{'guiu.Spiderissmo_minimap_button'}},
+		--{"warptorio2",			"warptorio_warpbutton",						"credotimelapse_button",	{'guiu.credotimelapse_button'}},
+
 	}
 
 	for _, k in pairs(newbuttonlist) do
@@ -537,9 +556,43 @@ local function destroy_obsolete_buttons(player)
 	if player.gui.left.BPL_Flow and player.gui.left.BPL_Flow.BPL_LabButton and player.gui.left.BPL_Flow.BPL_LabButton.visible == true then
 		player.gui.left.BPL_Flow.BPL_LabButton.visible = false
 	end
+
 	if top.CTLM_mainbutton and top.CTLM_mainbutton.visible == true then
 		top.CTLM_mainbutton.visible = false
 	end
+
+	if top.market_button and top.market_button.visible == true then
+		top.market_button.visible = false
+	end
+
+	if top.rd_container and top.rd_container.visible == true then
+		top.rd_container.visible = false
+	end
+
+	if game.active_mods["Spiderissmo"] then
+		if top.minimap_button and top.minimap_button.visible == true then
+			top.minimap_button.visible = false
+		end
+		if top["108"] and top["108"].visible == true then
+			top["108"].visible = false
+		end
+		if player.surface and player.surface.name and player.surface.name == "nauvis" then
+			if button_flow.minimap_button then button_flow.minimap_button.visible = false end
+			if button_flow["108"] then button_flow["108"].visible = false end
+		else
+			if button_flow.minimap_button then button_flow.minimap_button.visible = true end
+			if button_flow["108"] then button_flow["108"].visible = true end
+		end
+	end
+
+
+
+
+
+		--	if button_flow.minimap_button then button_flow.minimap_button.visible = true end
+	--elseif not top.minimap_button then
+	--	if button_flow.minimap_button then button_flow.minimap_button.visible = false end
+
 end
 
 local function update_frame_style(player)
@@ -665,25 +718,33 @@ local function on_gui_opened(event)
 end
 
 local function cycle_buttons_to_rename(player)
-	if game.active_mods["NonWaveDefense2"] or game.active_mods["SkyWaveDefense"] or game.active_mods["dana"] then
-		local button_flow = mod_gui.get_button_flow(player)
-		if button_flow.children then
-			for i, k in pairs(button_flow.children) do
+	--if game.active_mods["NonWaveDefense2"] or game.active_mods["SkyWaveDefense"] or game.active_mods["dana"] then
+	local button_flow = mod_gui.get_button_flow(player)
+	if button_flow.children then
+		for i, k in pairs(button_flow.children) do
+			if not k.name or k.name == "" then
 				if k.caption and k.caption[1] and k.caption[1] == "nwd2.upgrade-button" then
 					k.name = "nwd2_main_gui_button"
-					player.print(serpent.block(k.name))
 				end
 				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "upgrade-button-tooltip" then
 					k.name = "swd3_main_gui_button"
-					player.print(serpent.block(k.name))
 				end
 				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "dana.longName" then
 					k.name = "dana_main_gui_button"
-					player.print(serpent.block(k.name))
+				end
+				if k.caption and k.caption[1] and k.caption[1] == "teams" then
+					k.name = "base_pvp_teams_button"
+				end
+				if k.caption and k.caption[1] and k.caption[1] == "space_race" then
+					k.name = "base_pvp_space_race_button"
+				end
+				if k.caption and k.caption[1] and k.caption[1] == "admin" then
+					k.name = "base_pvp_admin_button"
 				end
 			end
 		end
 	end
+	--end
 end
 
 local function on_init()
@@ -691,7 +752,7 @@ local function on_init()
 		destroy_obsolete_buttons(player)
 		--create_new_buttons(player)
 		fix_buttons(player)
-		cycle_buttons_to_rename(player)
+		--cycle_buttons_to_rename(player)
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 	checknexttick = true
@@ -700,7 +761,7 @@ end
 local function on_configuration_changed()
 	for idx, player in pairs(game.players) do
 		destroy_obsolete_buttons(player)
-		cycle_buttons_to_rename(player)
+		--cycle_buttons_to_rename(player)
 		--create_new_buttons(player)
 		fix_buttons(player)
 		update_frame_style(player)
@@ -739,13 +800,19 @@ local function debug_button(event)
 	--debug
 	if event and event.element then
 		local player = game.players[event.player_index]
+		local button_flow = mod_gui.get_button_flow(player)
+		game.print("_________________________________________")
 		--player.print(game.active_mods["usage-detector"])
 		--for name, version in pairs(game.active_mods) do
 		--  player.print(name .. " version " .. version)
 		--end
 		--player.print(game.active_mods["usage-detector"])
-		local button_flow = mod_gui.get_button_flow(player)
-		player.print(serpent.block(button_flow.children_names))
+
+
+		--player.print(serpent.block(button_flow.children_names))
+		--game.print("__________________________________________")
+
+
 		--[[for i, k in pairs(button_flow.childen_names) do
 			if k == "" then
 				player.print(serpent.block(button_flow[k]))
@@ -755,8 +822,26 @@ local function debug_button(event)
 
 		--local j_son = game.table_to_json(game)
 
-		player.print("------------------------")
-		player.print(event.element.name)
+
+
+		local guiparams = { "type", "name", "caption", "tooltip", "enabled", "visible", "ignored_by_interaction", "style", "tags", "index", "children_names"}
+		local butt = event.element
+		for _,j in pairs(guiparams) do
+			if butt[j] then
+				player.print(j .. " = " .. serpent.block(butt[j]))
+			end
+		end
+		if butt.type and butt.type == "sprite-button" then
+			player.print("sprite = " .. serpent.block(butt.sprite))
+		end
+
+		local getmod = butt and butt.get_mod() or "nothing"
+		player.print("mod = " .. getmod)
+
+
+		--game.print("__________________________________________")
+
+		--player.print(event.element.name)
 		if event.element.parent then
 			player.print("parent1: " .. event.element.parent.name)
 			if event.element.parent.parent then
@@ -784,7 +869,8 @@ local function debug_button(event)
 				end
 			end
 		end
-		player.print("------------------------")
+		game.print("___________________________________________")
+		player.print("surface = " .. player.surface.name)
 	end
 
 end
@@ -809,14 +895,17 @@ end
 local function on_player_created(event)
 	local player = game.players[event.player_index]
 	destroy_obsolete_buttons(player)
-	cycle_buttons_to_rename(player)
+	--cycle_buttons_to_rename(player)
 	--create_new_buttons(player)
 	fix_buttons(player)
 	checknexttick = true
 end
 
 local function on_player_changed_surface(event)
-	fix_buttons(game.players[event.player_index])
+	local player = game.players[event.player_index]
+	--cycle_buttons_to_rename(player)
+	fix_buttons(player)
+	checknexttick = true
 end
 
 local function on_hivemindchange(event)
@@ -876,6 +965,7 @@ local function on_second_tick()
 	if checknexttick then
 		-- happens on the tick after a function makes checknexttick = true, to be sure to pass after
 		for idx, player in pairs(game.players) do
+			cycle_buttons_to_rename(player)
 			create_new_buttons(player)
 			fix_buttons(player)
 			destroy_obsolete_buttons(player)
