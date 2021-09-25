@@ -49,4 +49,12 @@ data:extend({
         order = "c",
         hidden = gu_todolist_style_setting_hidden,
     },
+    {
+        type = "bool-setting",
+        name = "gu_mod_enabled_perplayer",
+        setting_type = "runtime-per-user",
+        default_value = true,
+        hidden = true,
+        order = "d",
+    },
 })

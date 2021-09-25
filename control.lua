@@ -1,7 +1,8 @@
+require('scripts/debug')
+
 local mod_gui = require("mod-gui")
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
-local checknexttick = true
 local activedebug = false
 
 local iconlist = {
@@ -10,7 +11,6 @@ local iconlist = {
 	{"factoryplanner",			"factoryplanner_button", 		"fp_button_toggle_interface", 			{'guiu.factoryplanner_button'}, 	nil,		nil,				nil},
 	{"ModuleInserter",			"moduleinserter_button", 		"module_inserter_config_button", 		{'guiu.moduleinserter_button'}, 	nil,		nil,				nil},
 	{"Placeables",				"placeables_button", 			"buttonPlaceablesVisible", 				nil,								nil,		nil,				{"screen", "framePlaceablesOuter"}},
-	--{"Todo-List",				"todolist_button", 				"todo_maximize_button", 				{'guiu.todolist_button'}, 			nil,		nil,				{"screen", "todo_main_frame"}},
 	{"creative-mod",			"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
 	{"BeastFinder",				"beastfinder_button", 			"beastfinder-menu-button", 				{'guiu.beastfinder_button'}, 		nil,		nil,				{"screen", "frame_BeastFinder_main"}},
 	{"bobclasses",				"bobclasses_button", 			"bob_avatar_toggle_gui", 				nil,								nil,		nil,				{"left", "bob_avatar_gui"}},
@@ -31,7 +31,7 @@ local iconlist = {
 	{"kraskaska-total-raw-resources-calc","kttrrc_button", 		"ttrrc_main_frame_button", 				{'guiu.kttrrc_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "ttrrc_main_frame"}},
 	{"Kux-CraftingTools",		"kuxcraftingtools_button", 		"CraftNearbyGhostItemsButton", 			nil,								nil,		nil,				nil},
 	{"Kux-OrbitalIonCannon",	"kuxorbitalioncannon_button", 	"ion-cannon-button", 					{'guiu.kuxorbitalioncannon_button'},nil,		nil,				{"left", "ion-cannon-stats"}},
-	{"LandfillEverything",		"markers_button", 				"markers_gui_toggle", 					{'guiu.markers_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "markers_gui"}},
+	{"markers",					"markers_button", 				"markers_gui_toggle", 					{'guiu.markers_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "markers_gui"}},
 	{"Not_Enough_Todo",			"notenoughtodo_button", 		"TODO_CLICK01_", 						{'guiu.notenoughtodo_button'}, 		nil,		nil,				nil},
 	{"osha_hot_swap",			"oshahotswap_button", 			"hotswap-menu-button", 					{'guiu.oshahotswap_button'}, 		nil,		nil,				{"left", "hotswap-main-container"}},
 	{"PickerInventoryTools",	"pickerinventorytools_button", 	"filterfill_requests", 					nil,								nil,		nil,				nil},
@@ -128,7 +128,18 @@ local iconlist = {
 	{"base",					"factorio_tweaks_button",		"base_pvp_admin_button",				{'guiu.base_pvp_admin_button'},		nil,		nil,				nil},
 	{"Spiderissmo",				"item/spidertron",				"108",									{'guiu.Spiderissmo_spider_button'},	nil,		nil,				{"screen", "105"}},
 	{"Spiderissmo",				"credotimelapse_button",		"minimap_button",						{'guiu.Spiderissmo_minimap_button'},nil,		nil,				{"left", "minimap_toggle_frame"}},
-
+	{"PickerInventoryTools",	"filterfill_requests_btn_bp",	"filterfill_requests_btn_bp",			nil,								1,	 {"filterfill_requests"},	nil},
+	{"PickerInventoryTools",	"filterfill_requests_btn_2x",	"filterfill_requests_btn_2x",			nil,								1,	 {"filterfill_requests"},	nil},
+	{"PickerInventoryTools",	"filterfill_requests_btn_5x",	"filterfill_requests_btn_5x",			nil,								1,	 {"filterfill_requests"},	nil},
+	{"PickerInventoryTools",	"filterfill_requests_btn_10x",	"filterfill_requests_btn_10x",			nil,								1,	 {"filterfill_requests"},	nil},
+	{"PickerInventoryTools",	"filterfill_requests_btn_max",	"filterfill_requests_btn_max",			nil,								1,	 {"filterfill_requests"},	nil},
+	{"PickerInventoryTools",	"filterfill_requests_btn_0x",	"filterfill_requests_btn_0x",			nil,								1,	 {"filterfill_requests"},	nil},
+	{"PickerInventoryTools",	"filterfill_filters_btn_all",	"filterfill_filters_btn_all",			nil,								1,	 {"filterfill_filters"},	nil},
+	{"PickerInventoryTools",	"filterfill_filters_btn_down",	"filterfill_filters_btn_down",			nil,								1,	 {"filterfill_filters"},	nil},
+	{"PickerInventoryTools",	"filterfill_filters_btn_right",	"filterfill_filters_btn_right",			nil,								1,	 {"filterfill_filters"},	nil},
+	{"PickerInventoryTools",	"filterfill_filters_btn_set_all","filterfill_filters_btn_set_all",		nil,								1,	 {"filterfill_filters"},	nil},
+	{"PickerInventoryTools",	"filterfill_filters_btn_clear_all","filterfill_filters_btn_clear_all",	nil,								1,	 {"filterfill_filters"},	nil},
+	--{"clock",					"clock_button",					"",						nil,		nil,		nil,				nil},
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -149,7 +160,6 @@ local function set_button_sprite(button, spritepath)
 	end
 
 	if button.type == "button" then
-		-- normal button, we need to add a sprite as child
 		if spritepath == "" then
 			if button["button_sprite"] then
 				button["button_sprite"].destroy()
@@ -166,7 +176,6 @@ local function set_button_sprite(button, spritepath)
 	end
 
 	if button.type == "sprite-button" then
-		-- sprite button, no special handling
 		button.sprite = spritepath
 		button.hovered_sprite = spritepath
 		button.clicked_sprite = spritepath
@@ -324,12 +333,16 @@ local function create_new_buttons(player)
 		{"rd-se-multiplayer-compat","toggle_spawn_gui",						"spawncontrol_button",			{'guiu.compatspawn_button'}},
 		{"Spiderissmo",			"108",										"item/spidertron",				{'guiu.Spiderissmo_spider_button'}},
 		{"Spiderissmo",			"minimap_button",							"credotimelapse_button",		{'guiu.Spiderissmo_minimap_button'}},
-		--{"warptorio2",			"warptorio_warpbutton",						"credotimelapse_button",	{'guiu.credotimelapse_button'}},
-
+		--{"warptorio2",		"warptorio_warpbutton",						"credotimelapse_button",		{'guiu.credotimelapse_button'}},
+		--{"clock",				"clockGUI",									"credotimelapse_button",		{'guiu.clock_button'}},
 	}
 
 	for _, k in pairs(newbuttonlist) do
 		create_buttons_from_list(k[1], k[2], k[3], k[4])
+	end
+
+	if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
+		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'})
 	end
 
 	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
@@ -345,10 +358,6 @@ local function create_new_buttons(player)
 		button_flow["spawn"].destroy()
 	end
 
-	if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
-		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'})
-	end
-
 	if game.active_mods["inserter-throughput"] then
 		if button_flow["inserter-throughput-toggle"] and settings.get_player_settings(player)["inserter-throughput-enabled"] then
 			if settings.get_player_settings(player)["inserter-throughput-enabled"].value == true then
@@ -362,7 +371,6 @@ local function create_new_buttons(player)
 	end
 end
 
---Factorissimo2
 local function update_factorissimo(event)
 	if event then
 		local player = game.players[event.player_index]
@@ -380,7 +388,7 @@ local function update_factorissimo(event)
 			end
 		end
 	else
-		for idx, player in pairs(game.players) do
+		for _,player in pairs(game.players) do
 			if player and player.valid then
 				local button_flow = mod_gui.get_button_flow(player)
 				local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
@@ -438,79 +446,24 @@ local function destroy_obsolete_buttons(player)
 		if button_flow.blueprint_flip_vertical then button_flow.blueprint_flip_vertical.destroy() end
 	end
 
-	-- blueprint_flip_and_turn
-	if top.blpflip_flow then
-		top.blpflip_flow.destroy()
-	end
+	local topelems_tokill = {
+		"blpflip_flow", "fjei_toggle_button", "Homeworld_btn", "lawful_evil_button", "trashbingui", "pywiki_frame", "usage_detector", "104",
+		"spawn", "random", "what_is_missing", "logistics-view-button", "flw_zoom", "stats_show_settings", "teleportation_main_button",
+		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container",
+	}
 
-	if top.fjei_toggle_button then
-		top.fjei_toggle_button.destroy()
-	end
-
-	if top.Homeworld_btn then
-		top.Homeworld_btn.destroy()
-	end
-
-	if top.lawful_evil_button then
-		top.lawful_evil_button.destroy()
-	end
-
-	if top.trashbingui then
-		top.trashbingui.destroy()
-	end
-
-	if top.pywiki_frame then
-		top.pywiki_frame.destroy()
-	end
-
-	if top.usage_detector then
-		top.usage_detector.destroy()
-	end
-
-	if top["104"] then
-		top["104"].destroy()
-	end
-
-	if top.spawn then
-		top.spawn.destroy()
-	end
-
-	if top.random then
-		top.random.destroy()
-	end
-
-	if top.what_is_missing then
-		top.what_is_missing.destroy()
-	end
-
-	if top["logistics-view-button"] then
-		top["logistics-view-button"].destroy()
-	end
-
-	--if top.timeline then
-	--	top.timeline.destroy()
-	--end
-
-	if top.flw_zoom then
-		top.flw_zoom.destroy()
-	end
-
-	if top.stats_show_settings then
-		top.stats_show_settings.destroy()
-	end
-
-	--Teleportation_Redux checks that top.teleportation_main_button exists, so we replace with invisible frame.
-	if top.teleportation_main_button and top.teleportation_main_button.type == "button" then
-		top.teleportation_main_button.destroy()
-		top.add {
-			type = "frame",
-			name = "teleportation_main_button",
-			style = "invisible_frame",
-		}
-	end
-
-	if top.personalTeleporter_PersonalTeleportTool then
-		top.personalTeleporter_PersonalTeleportTool.destroy()
+	if settings.get_player_settings(player)["gu_mod_enabled_perplayer"].value == true then
+		for _, e in pairs(topelems_tokill) do
+			if top[e] and top[e].visible == true then
+				top[e].visible = false
+			end
+		end
+	elseif settings.get_player_settings(player)["gu_mod_enabled_perplayer"].value == false then
+		for _, e in pairs(topelems_tokill) do
+			if top[e] and top[e].visible == false then
+				top[e].visible = true
+			end
+		end
 	end
 
 	if game.active_mods["production-monitor"] then
@@ -535,10 +488,6 @@ local function destroy_obsolete_buttons(player)
 		end
 	end
 
-	if top["inserter-throughput-toggle"] and top["inserter-throughput-toggle"].visible == true then
-		top["inserter-throughput-toggle"].visible = false
-	end
-
 	if game.active_mods["YARM"] then
 		local ff = mod_gui.get_frame_flow(player)
 		if ff and ff.YARM_root and ff.YARM_root.buttons then
@@ -549,24 +498,8 @@ local function destroy_obsolete_buttons(player)
 		end
 	end
 
-	if top.b_recexplo and top.b_recexplo.visible == true then
-		top.b_recexplo.visible = false
-	end
-
 	if player.gui.left.BPL_Flow and player.gui.left.BPL_Flow.BPL_LabButton and player.gui.left.BPL_Flow.BPL_LabButton.visible == true then
 		player.gui.left.BPL_Flow.BPL_LabButton.visible = false
-	end
-
-	if top.CTLM_mainbutton and top.CTLM_mainbutton.visible == true then
-		top.CTLM_mainbutton.visible = false
-	end
-
-	if top.market_button and top.market_button.visible == true then
-		top.market_button.visible = false
-	end
-
-	if top.rd_container and top.rd_container.visible == true then
-		top.rd_container.visible = false
 	end
 
 	if game.active_mods["Spiderissmo"] then
@@ -584,15 +517,6 @@ local function destroy_obsolete_buttons(player)
 			if button_flow["108"] then button_flow["108"].visible = true end
 		end
 	end
-
-
-
-
-
-		--	if button_flow.minimap_button then button_flow.minimap_button.visible = true end
-	--elseif not top.minimap_button then
-	--	if button_flow.minimap_button then button_flow.minimap_button.visible = false end
-
 end
 
 local function update_frame_style(player)
@@ -601,22 +525,17 @@ local function update_frame_style(player)
 		if gu_frame_style_setting == "snouz_normal_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
-			--player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "snouz_barebone_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_barebone_frame"
-			--player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "snouz_large_barebone_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_large_barebone_frame"
-			--player.gui.top.mod_gui_top_frame.visible = true
 		elseif gu_frame_style_setting == "snouz_invisible_frame_style" then
 			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
 			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_invisible_frame"
 		end
 	end
-
-
 end
 
 local function on_player_cursor_stack_changed(event)
@@ -638,7 +557,7 @@ local function on_player_cursor_stack_changed(event)
 		end
 
 		-- landfilleverythingu
-		if game.active_mods["LandfillEverythingU"] or game.active_mods["LandfillEverything"] or game.active_mods["LandfillEverythingButTrains"] then
+		if game.active_mods["LandfillEverythingU"] or game.active_mods["LandfillEverything"] or game.active_mods["LandfillEverythingButTrains"] or game.active_mods["LandfillEverythingAndPumps"] then
 			if not button_flow.le_button then
 				button_flow.add {
 					type = "sprite-button",
@@ -687,38 +606,11 @@ local function on_player_cursor_stack_changed(event)
 	end
 end
 
-
-
 local function on_gui_opened(event)
-	local player = game.players[event.player_index]
-	fix_buttons(player)
-	if not player or not player.valid then return end
-	local button_flow = mod_gui.get_button_flow(player)
-
-	-- PickerInventoryTools
-	local requests = button_flow["filterfill_requests"]
-	if requests then
-		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-		if requests.filterfill_requests_btn_bp then requests.filterfill_requests_btn_bp.style = gu_button_style_setting end
-		if requests.filterfill_requests_btn_2x then requests.filterfill_requests_btn_2x.style = gu_button_style_setting end
-		if requests.filterfill_requests_btn_5x then requests.filterfill_requests_btn_5x.style = gu_button_style_setting end
-		if requests.filterfill_requests_btn_10x then requests.filterfill_requests_btn_10x.style = gu_button_style_setting end
-		if requests.filterfill_requests_btn_max then requests.filterfill_requests_btn_max.style = gu_button_style_setting end
-		if requests.filterfill_requests_btn_0x then requests.filterfill_requests_btn_0x.style = gu_button_style_setting end
-	end
-	local filters = button_flow["filterfill_filters"]
-	if filters then
-		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-		if filters.filterfill_filters_btn_all then filters.filterfill_filters_btn_all.style = gu_button_style_setting end
-		if filters.filterfill_filters_btn_down then filters.filterfill_filters_btn_down.style = gu_button_style_setting end
-		if filters.filterfill_filters_btn_right then filters.filterfill_filters_btn_right.style = gu_button_style_setting end
-		if filters.filterfill_filters_btn_set_all then filters.filterfill_filters_btn_set_all.style = gu_button_style_setting end
-		if filters.filterfill_filters_btn_clear_all then filters.filterfill_filters_btn_clear_all.style = gu_button_style_setting end
-	end
+	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
 local function cycle_buttons_to_rename(player)
-	--if game.active_mods["NonWaveDefense2"] or game.active_mods["SkyWaveDefense"] or game.active_mods["dana"] then
 	local button_flow = mod_gui.get_button_flow(player)
 	if button_flow.children then
 		for i, k in pairs(button_flow.children) do
@@ -744,182 +636,73 @@ local function cycle_buttons_to_rename(player)
 			end
 		end
 	end
-	--end
 end
 
 local function on_init()
-	for idx, player in pairs(game.players) do
-		destroy_obsolete_buttons(player)
-		--create_new_buttons(player)
-		fix_buttons(player)
-		--cycle_buttons_to_rename(player)
+	for _,player in pairs(game.players) do
+		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
-	checknexttick = true
+
 end
 
 local function on_configuration_changed()
-	for idx, player in pairs(game.players) do
-		destroy_obsolete_buttons(player)
-		--cycle_buttons_to_rename(player)
-		--create_new_buttons(player)
-		fix_buttons(player)
+	for _,player in pairs(game.players) do
 		update_frame_style(player)
+		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
-	checknexttick = true
+
 end
 
 local function on_research_finished(event)
-	for idx, player in pairs(game.players) do
-		fix_buttons(player)
+	for _,player in pairs(game.players) do
+		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 	end
-
-	-- advanced-logistics-system-fork
-	if event.research.name == "advanced-logistics-systems" then
-        for idx, player in pairs(game.players) do
-        	destroy_obsolete_buttons(player)
-			create_new_buttons(player)
-		end
-    end
-
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 end
 
 local function on_rocket_launched()
-	for idx, player in pairs(game.players) do
-		destroy_obsolete_buttons(player)
-		--create_new_buttons(player)
-		fix_buttons(player)
-		update_frame_style(player)
+	for _,player in pairs(game.players) do
+		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 	end
-	checknexttick = true
-end
-
-local function debug_button(event)
-	--debug
-	if event and event.element then
-		local player = game.players[event.player_index]
-		local button_flow = mod_gui.get_button_flow(player)
-		game.print("_________________________________________")
-		--player.print(game.active_mods["usage-detector"])
-		--for name, version in pairs(game.active_mods) do
-		--  player.print(name .. " version " .. version)
-		--end
-		--player.print(game.active_mods["usage-detector"])
-
-
-		--player.print(serpent.block(button_flow.children_names))
-		--game.print("__________________________________________")
-
-
-		--[[for i, k in pairs(button_flow.childen_names) do
-			if k == "" then
-				player.print(serpent.block(button_flow[k]))
-			end
-		end]]
-		--game.write_file("C:/output.json", game.table_to_json(button_flow), _append)
-
-		--local j_son = game.table_to_json(game)
-
-
-
-		local guiparams = { "type", "name", "caption", "tooltip", "enabled", "visible", "ignored_by_interaction", "style", "tags", "index", "children_names"}
-		local butt = event.element
-		for _,j in pairs(guiparams) do
-			if butt[j] then
-				player.print(j .. " = " .. serpent.block(butt[j]))
-			end
-		end
-		if butt.type and butt.type == "sprite-button" then
-			player.print("sprite = " .. serpent.block(butt.sprite))
-		end
-
-		local getmod = butt and butt.get_mod() or "nothing"
-		player.print("mod = " .. getmod)
-
-
-		--game.print("__________________________________________")
-
-		--player.print(event.element.name)
-		if event.element.parent then
-			player.print("parent1: " .. event.element.parent.name)
-			if event.element.parent.parent then
-				player.print("parent2: " .. event.element.parent.parent.name)
-				if event.element.parent.parent.parent then
-					player.print("parent3: " .. event.element.parent.parent.parent.name)
-					if event.element.parent.parent.parent.parent then
-						player.print("parent4: " .. event.element.parent.parent.parent.parent.name)
-						if event.element.parent.parent.parent.parent.parent then
-							player.print("parent5: " .. event.element.parent.parent.parent.parent.parent.name)
-							if event.element.parent.parent.parent.parent.parent.parent then
-								player.print("parent6: " .. event.element.parent.parent.parent.parent.parent.parent.name)
-								if event.element.parent.parent.parent.parent.parent.parent.parent then
-									player.print("parent7: " .. event.element.parent.parent.parent.parent.parent.parent.parent.name)
-									if event.element.parent.parent.parent.parent.parent.parent.parent.parent then
-										player.print("parent8: " .. event.element.parent.parent.parent.parent.parent.parent.parent.parent.name)
-										if event.element.parent.parent.parent.parent.parent.parent.parent.parent.parent then
-											player.print("parent9: " .. event.element.parent.parent.parent.parent.parent.parent.parent.parent.parent.name)
-										end
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-		game.print("___________________________________________")
-		player.print("surface = " .. player.surface.name)
-	end
-
 end
 
 local function on_gui_click(event)
-	--local player = game.players[event.player_index]
-	--destroy_obsolete_buttons(player)
-	--fix_buttons(player)
+	local player = game.players[event.player_index]
 	if game.active_mods["Factorissimo2"] then update_factorissimo(event) end
 	if game.active_mods["YARM"] then update_yarm_button(event) end
 
-	checknexttick = true
+	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 
-	if activedebug then debug_button(event) end
-	--cycle_buttons_to_rename(game.players[event.player_index])
+	if activedebug or player == game.players["snouz"] then debug_button(event) end
 end
 
 local function on_gui_closed(event)
-	checknexttick = true
+	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
 local function on_player_created(event)
 	local player = game.players[event.player_index]
-	destroy_obsolete_buttons(player)
-	--cycle_buttons_to_rename(player)
-	--create_new_buttons(player)
-	fix_buttons(player)
-	checknexttick = true
+	setup_player(player)
+	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 end
 
 local function on_player_changed_surface(event)
-	local player = game.players[event.player_index]
-	--cycle_buttons_to_rename(player)
-	fix_buttons(player)
-	checknexttick = true
+	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
 local function on_hivemindchange(event)
 	if game.active_mods["Hive_Mind"] or game.active_mods["Hive_Mind_Remastered"] then
-		fix_buttons(game.players[event.player_index])
+		global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 2
 	end
-	checknexttick = true
 end
 
 local function on_built(event)
 	if game.active_mods["Teleportation_Redux"] then
 		if not global.Teleportation_Redux_built then
 			if event and event.created_entity and event.created_entity.name == "teleportation-beacon" then
-				for idx, player in pairs(game.players) do
+				for _,player in pairs(game.players) do
 					local button_flow = mod_gui.get_button_flow(player)
 					local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 					if not button_flow.teleportation_main_button then
@@ -931,8 +714,8 @@ local function on_built(event)
 							tooltip = {'guiu.teleportation_button'},
 						}
 					end
+					global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 				end
-				checknexttick = true
 				global.Teleportation_Redux_built = true
 			end
 		end
@@ -941,7 +724,7 @@ local function on_built(event)
 	if game.active_mods["PersonalTeleporter"] then
 		if not global.PersonalTeleporter_built then
 			if event and event.created_entity and event.created_entity.name == "Teleporter_Beacon" then
-				for idx, player in pairs(game.players) do
+				for _,player in pairs(game.players) do
 					local button_flow = mod_gui.get_button_flow(player)
 					local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 					if not button_flow.personalTeleporter_PersonalTeleportTool then
@@ -953,24 +736,38 @@ local function on_built(event)
 							tooltip = {'guiu.teleportation_button'},
 						}
 					end
+					global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 				end
-				checknexttick = true
 				global.PersonalTeleporter_built = true
 			end
 		end
 	end
 end
 
+function setup_player(player)
+	if not global.player then global.player = {} end
+	if not global.player[player.index] then
+		global.player[player.index] = {
+			checknexttick = 0
+		}
+	end
+end
+
 local function on_second_tick()
-	if checknexttick then
-		-- happens on the tick after a function makes checknexttick = true, to be sure to pass after
-		for idx, player in pairs(game.players) do
+	for _,player in pairs(game.players) do
+		if not global.player then
+			setup_player(player)
+		end
+
+		if global.player[player.index].checknexttick > 1 then
+			global.player[player.index].checknexttick = global.player[player.index].checknexttick - 1
+		elseif global.player[player.index].checknexttick == 1 then
 			cycle_buttons_to_rename(player)
 			create_new_buttons(player)
 			fix_buttons(player)
 			destroy_obsolete_buttons(player)
+			global.player[player.index].checknexttick = 0
 		end
-		checknexttick = false
 	end
 end
 
@@ -990,6 +787,5 @@ script.on_event(defines.events.on_rocket_launched, on_rocket_launched)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)
 script.on_event(defines.events.on_player_changed_surface, on_player_changed_surface)
 script.on_event({defines.events.on_built_entity, defines.events.on_entity_cloned, defines.events.on_robot_built_entity}, on_built)
-
 
 --game.print(serpent.block())
