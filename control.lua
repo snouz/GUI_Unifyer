@@ -14,7 +14,8 @@ local iconlist = {
 	{"creative-mod",			"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
 	{"BeastFinder",				"beastfinder_button", 			"beastfinder-menu-button", 				{'guiu.beastfinder_button'}, 		nil,		nil,				{"screen", "frame_BeastFinder_main"}},
 	{"bobclasses",				"bobclasses_button", 			"bob_avatar_toggle_gui", 				nil,								nil,		nil,				{"left", "bob_avatar_gui"}},
-	{nil,						"bobinserters_button", 			"bob_logistics_inserter_button", 		nil,								nil,		nil,				{"left", "bob_logistics_inserter_gui"}},
+	{"bobinserters",			"bobinserters_button", 			"bob_logistics_inserter_button", 		nil,								nil,		nil,				{"left", "bob_logistics_inserter_gui"}},
+	{"boblogistics",			"bobinserters_button", 			"bob_logistics_inserter_button", 		nil,								nil,		nil,				{"left", "bob_logistics_inserter_gui"}},
 	{"CleanMap",				"cleanmap_button", 				"CleanMap", 							nil,								nil,		nil,				nil},
 	{"DeleteEmptyChunks",		"cleanmap_button", 				"DeleteEmptyChunks", 					nil,								nil,		nil,				nil},
 	{"Death_Counter",			"deathcounter_button", 			"DeathCounterMainButton", 				{'guiu.deathcounter_button'}, 		nil,		nil,				{"left", "DeathCounterMain"}},
@@ -74,8 +75,10 @@ local iconlist = {
 	{"diplomacy",				"diplomacy_button", 			"diplomacy_button",						nil,								nil,		nil,				{"screen", "diplomacy_frame"}},
 	{"Electronic_Locomotives",	"electronic_locomotives_button","ELECTRONIC_CLICK01",					{'guiu.electronic_locomotives_button'},nil,		nil,				{"screen", "ELECTRONIC_LOCATION"}},
 	{"forces",					"forces_button", 				"forcesMenu",							nil,								nil,		nil,				{"center", "inviteDialogue"}},
-	{nil,						"hive_mind_button1", 			"join-hive-button",						nil,								nil,		nil,				nil},
-	{nil,						"hive_mind_button2", 			"leave-hive-button",					nil,								nil,		nil,				nil},
+	{"Hive_Mind",				"hive_mind_button1", 			"join-hive-button",						nil,								nil,		nil,				nil},
+	{"Hive_Mind",				"hive_mind_button2", 			"leave-hive-button",					nil,								nil,		nil,				nil},
+	{"Hive_Mind_Remastered",	"hive_mind_button1", 			"join-hive-button",						nil,								nil,		nil,				nil},
+	{"Hive_Mind_Remastered",	"hive_mind_button2", 			"leave-hive-button",					nil,								nil,		nil,				nil},
 	{"howfardiditgo",			"howfardiditgo_button", 		"train_distance_button",				{'guiu.howfardiditgo_button'},		nil,		nil,				{"top", "mod_gui_top_frame", "mod_gui_inner_frame", "train_filtertextbox"}},
 	{"Kux-BlueprintEditor",		"kuxblueprinteditor_button", 	"mod-blueprint-editor-toolbar-button",	nil,								nil,		nil,				{"screen", "blueprint-editor-modal"}},
 	{"Kux-HandcraftGhosts",		"kuxcraftingtools_button", 		"PlayerGhostCraft",						nil,								nil,		nil,				nil},
@@ -94,7 +97,8 @@ local iconlist = {
 	{"pycoalprocessing",		"pycoalprocessing_button", 		"pywiki",								{'guiu.pycoalprocessing_button'},	nil,		nil,				{"screen", "wiki_frame"}},
 	{"usage-detector",			"usagedetector_button", 		"usage_detector",						{'guiu.usagedetector_button'},		nil,		nil,				{"center", "usage_detector_center"}},
 	{"RPG",						"rpg_button", 					"104",									{'guiu.rpg_button'},				nil,		nil,				{"screen", "105"}},
-	{nil,						"spawncontrol_button", 			"spawn",								{'guiu.spawncontrol_button'},		nil,		nil,				nil},
+	{"SpawnControl",			"spawncontrol_button", 			"spawn",								{'guiu.spawncontrol_button'},		nil,		nil,				nil},
+	{"TimedSpawnControl",		"spawncontrol_button", 			"spawn",								{'guiu.spawncontrol_button'},		nil,		nil,				nil},
 	{"TimedSpawnControl",		"spawncontrol_random_button", 	"random",								{'guiu.spawncontrol_random_button'},nil,		nil,				nil},
 	{"what-is-missing",			"whatsmissing_button", 			"what_is_missing",						{'guiu.whatismissing_button'},		nil,		nil,				{"left", "what_is_missing"}},
 	{"advanced-logistics-system-fork","logisticssystemfork_button","logistics-view-button",				{'guiu.logisticssystemfork_button'},nil,		nil,				{"center", "logisticsFrame"}},
@@ -185,9 +189,9 @@ end
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath, windowtocheck)
 	if not player or not player.valid or not sprite or not button then return end
 	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+	local isselected = true
 	if windowtocheck then
 		local windowtocheckpath = player.gui
-		local isselected = true
 		for i, k in pairs(windowtocheck) do
 			if windowtocheckpath[k] and windowtocheckpath[k].visible then
 				windowtocheckpath = windowtocheckpath[k]
@@ -224,7 +228,9 @@ local function fix_buttons(player)
 	local button_flow = mod_gui.get_button_flow(player)
 
 	for _, k in pairs(iconlist) do
-		change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
+		if k[1] == nil or game.active_mods[k[1]] then
+			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
+		end
 	end
 
 	--BlackMarket2 tooltip fix
@@ -538,6 +544,34 @@ local function update_frame_style(player)
 	end
 end
 
+local function cycle_buttons_to_rename(player)
+	local button_flow = mod_gui.get_button_flow(player)
+	if button_flow.children then
+		for i, k in pairs(button_flow.children) do
+			if not k.name or k.name == "" then
+				if k.caption and k.caption[1] and k.caption[1] == "nwd2.upgrade-button" then
+					k.name = "nwd2_main_gui_button"
+				end
+				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "upgrade-button-tooltip" then
+					k.name = "swd3_main_gui_button"
+				end
+				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "dana.longName" then
+					k.name = "dana_main_gui_button"
+				end
+				if k.caption and k.caption[1] and k.caption[1] == "teams" then
+					k.name = "base_pvp_teams_button"
+				end
+				if k.caption and k.caption[1] and k.caption[1] == "space_race" then
+					k.name = "base_pvp_space_race_button"
+				end
+				if k.caption and k.caption[1] and k.caption[1] == "admin" then
+					k.name = "base_pvp_admin_button"
+				end
+			end
+		end
+	end
+end
+
 local function on_player_cursor_stack_changed(event)
 	local player = game.players[event.player_index]
 	if not player or not player.valid then return end
@@ -610,33 +644,6 @@ local function on_gui_opened(event)
 	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
-local function cycle_buttons_to_rename(player)
-	local button_flow = mod_gui.get_button_flow(player)
-	if button_flow.children then
-		for i, k in pairs(button_flow.children) do
-			if not k.name or k.name == "" then
-				if k.caption and k.caption[1] and k.caption[1] == "nwd2.upgrade-button" then
-					k.name = "nwd2_main_gui_button"
-				end
-				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "upgrade-button-tooltip" then
-					k.name = "swd3_main_gui_button"
-				end
-				if k.tooltip and k.tooltip[1] and k.tooltip[1] == "dana.longName" then
-					k.name = "dana_main_gui_button"
-				end
-				if k.caption and k.caption[1] and k.caption[1] == "teams" then
-					k.name = "base_pvp_teams_button"
-				end
-				if k.caption and k.caption[1] and k.caption[1] == "space_race" then
-					k.name = "base_pvp_space_race_button"
-				end
-				if k.caption and k.caption[1] and k.caption[1] == "admin" then
-					k.name = "base_pvp_admin_button"
-				end
-			end
-		end
-	end
-end
 
 local function on_init()
 	for _,player in pairs(game.players) do
@@ -670,12 +677,30 @@ end
 
 local function on_gui_click(event)
 	local player = game.players[event.player_index]
+	if not player or not player.valid then return end
 	if game.active_mods["Factorissimo2"] then update_factorissimo(event) end
 	if game.active_mods["YARM"] then update_yarm_button(event) end
 
-	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 
 	if activedebug or player == game.players["snouz"] then debug_button(event) end
+
+	--force closed if button clicked
+	if game.active_mods["pycoalprocessing"] then
+		if event.element and event.element.name and event.element.name == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+			player.gui.screen.wiki_frame.destroy()
+		end
+	end
+	if game.active_mods["SolarRatio"] then
+		if event.element and event.element.name and event.element.name == "niet-sr-guibutton" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+			player.gui.center["niet-sr-guiframe"].destroy()
+		end
+	end
+	if game.active_mods["CitiesOfEarth"] then
+		if event.element and event.element.name and event.element.name == "coe_button_show_targets" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+			player.gui.center["coe_choose_target"].destroy()
+		end
+	end
 end
 
 local function on_gui_closed(event)
