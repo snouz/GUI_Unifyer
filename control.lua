@@ -8,8 +8,8 @@ local activedebug = false
 local iconlist = {
 	--modname					--sprite 						button									tooltip 					dontreplacesprite	buttonpath (array)	windowtocheck (array)
 	{"helmod",					"helmod_button", 				"helmod_planner-command", 				{'guiu.helmod_button'}, 			nil,		nil,				{"screen", "HMProductionPanel"}},
-	{"factoryplanner",			"factoryplanner_button", 		"fp_button_toggle_interface", 			{'guiu.factoryplanner_button'}, 	nil,		nil,				nil},
-	{"ModuleInserter",			"moduleinserter_button", 		"module_inserter_config_button", 		{'guiu.moduleinserter_button'}, 	nil,		nil,				nil},
+	{"factoryplanner",			"factoryplanner_button", 		"fp_button_toggle_interface", 			{'guiu.factoryplanner_button'}, 	nil,		nil,				{"screen", "factoryplanner_mainframe"}},
+	{"ModuleInserter",			"moduleinserter_button", 		"module_inserter_config_button", 		{'guiu.moduleinserter_button'}, 	nil,		nil,				{"screen", "moduleinserter_mainframe"}},
 	{"Placeables",				"placeables_button", 			"buttonPlaceablesVisible", 				nil,								nil,		nil,				{"screen", "framePlaceablesOuter"}},
 	{"creative-mod",			"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
 	{"BeastFinder",				"beastfinder_button", 			"beastfinder-menu-button", 				{'guiu.beastfinder_button'}, 		nil,		nil,				{"screen", "frame_BeastFinder_main"}},
@@ -33,17 +33,17 @@ local iconlist = {
 	{"Kux-CraftingTools",		"kuxcraftingtools_button", 		"CraftNearbyGhostItemsButton", 			nil,								nil,		nil,				nil},
 	{"Kux-OrbitalIonCannon",	"kuxorbitalioncannon_button", 	"ion-cannon-button", 					{'guiu.kuxorbitalioncannon_button'},nil,		nil,				{"left", "ion-cannon-stats"}},
 	{"markers",					"markers_button", 				"markers_gui_toggle", 					{'guiu.markers_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "markers_gui"}},
-	{"Not_Enough_Todo",			"notenoughtodo_button", 		"TODO_CLICK01_", 						{'guiu.notenoughtodo_button'}, 		nil,		nil,				nil},
+	{"Not_Enough_Todo",			"notenoughtodo_button", 		"TODO_CLICK01_", 						{'guiu.notenoughtodo_button'}, 		nil,		nil,				{"screen", "notenoughtodo_mainframe"}},
 	{"osha_hot_swap",			"oshahotswap_button", 			"hotswap-menu-button", 					{'guiu.oshahotswap_button'}, 		nil,		nil,				{"left", "hotswap-main-container"}},
 	{"PickerInventoryTools",	"pickerinventorytools_button", 	"filterfill_requests", 					nil,								nil,		nil,				nil},
 	{"Powered_Entities",		"poweredentities_button", 		"poweredEntitiesRecalculateButton", 	{'guiu.poweredentities_button'}, 	nil,		nil,				nil},
 	{"research-counter",		"researchcounter_button", 		"research-counter-button", 				{'guiu.researchcounter_button'}, 	nil,		nil,				{"screen", "research-counter-base"}},
-	{"Rich_Text_Helper",		"richtexthelper_button", 		"RICH_CLICK_20_player01", 				{'guiu.richtexthelper_button'}, 	nil,		nil,				nil},
+	{"Rich_Text_Helper",		"richtexthelper_button", 		"RICH_CLICK_20_player01", 				{'guiu.richtexthelper_button'}, 	nil,		nil,				{"screen", "richtexthelper_mainframe"}},
 	{"RitnTeleportation",		"ritnteleportation_button", 	"ritn-button-main", 					{'guiu.ritnteleportation_button'},	nil,		nil,				{"left", "mod_gui_frame_flow", "menu-flow-common", "main_menu-frame-menu"}},
 	{"solar-calc",				"solarcalc_button", 			"kaktusbot-sc-open-calc-button", 		{'guiu.solarcalc_button'}, 			nil,		nil,				{"screen", "kaktusbot-sc-main-gui"}},
 	{"SolarRatio",				"solarcalc_button", 			"niet-sr-guibutton", 					nil,								nil,		nil,				{"center", "niet-sr-guiframe"}},
 	{"SpaceMod",				"spacemod_button", 				"space_toggle_button", 					{'guiu.spacemod_button'}, 			nil,		nil,				{"left", "mod_gui_frame_flow", "space_progress_frame"}},
-	{"train-log",				"trainlog_button", 				"train_log", 							nil,								nil,		nil,				nil},
+	{"train-log",				"trainlog_button", 				"train_log", 							nil,								nil,		nil,				{"screen", "trainlog_mainframe"}},
 	{"train-pubsub",			"trainpubsub_button", 			"tm_sprite_button", 					nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "tm_button_frame"}},
 	{"upgrade-planner-next",	"upgradeplannernext_button", 	"upgrade_planner_config_button", 		nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "upgrade_planner_config_frame"}},
 	{"whats-missing",			"whatsmissing_button", 			"whats-missing-button", 				nil,								nil,		nil,				{"screen", "whats-missing-gui"}},
@@ -580,6 +580,24 @@ local function cycle_buttons_to_rename(player)
 	end
 end
 
+local function cycle_frames_to_rename(player)
+	if player.gui.screen.children then
+		for i, k in pairs(player.gui.screen.children) do
+			if game.active_mods["factoryplanner"] and k.tags and k.tags.mod and k.tags.mod == "fp" and not player.gui.screen.factoryplanner_mainframe then
+				k.name = "factoryplanner_mainframe"
+			elseif game.active_mods["train-log"] and k.tags and k.tags["train-log"] and not player.gui.screen.trainlog_mainframe then
+				k.name = "trainlog_mainframe"
+			elseif game.active_mods["ModuleInserter"] and k.tags and k.tags.ModuleInserter and not player.gui.screen.moduleinserter_mainframe then
+				k.name = "moduleinserter_mainframe"
+			elseif game.active_mods["Rich_Text_Helper"] and k.name and k.name == "RICH_LOCATION_23_player01" and not player.gui.screen.richtexthelper_mainframe then
+				k.name = "richtexthelper_mainframe"
+			elseif game.active_mods["Not_Enough_Todo"] and k.children and k.children[1] and k.children[1].children and k.children[1].children[1] and k.children[1].children[1].children and k.children[1].children[1].children[1] and k.children[1].children[1].children[1].caption and k.children[1].children[1].children[1].caption[1] and k.children[1].children[1].children[1].caption[1] == "Todo.GuiTitle" and not player.gui.screen.notenoughtodo_mainframe then
+				k.name = "notenoughtodo_mainframe"
+			end
+		end
+	end
+end
+
 local function on_player_cursor_stack_changed(event)
 	local player = game.players[event.player_index]
 	if not player or not player.valid then return end
@@ -655,6 +673,7 @@ end
 
 local function on_init()
 	for _,player in pairs(game.players) do
+		if not global.player or not global.player[player.index] then setup_player(player) end
 		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
@@ -663,8 +682,8 @@ end
 
 local function on_configuration_changed()
 	for _,player in pairs(game.players) do
-		if not global.player then setup_player(player) end
 		if player and player.valid then
+			if not global.player or not global.player[player.index] then setup_player(player) end
 			update_frame_style(player)
 			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 		end
@@ -676,6 +695,7 @@ end
 local function on_research_finished(event)
 	for _,player in pairs(game.players) do
 		if player and player.valid then
+			if not global.player or not global.player[player.index] then setup_player(player) end
 			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 		end
 	end
@@ -685,6 +705,7 @@ end
 local function on_rocket_launched()
 	for _,player in pairs(game.players) do
 		if player and player.valid then
+			if not global.player or not global.player[player.index] then setup_player(player) end
 			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 		end
 	end
@@ -742,11 +763,13 @@ local function on_player_created(event)
 end
 
 local function on_player_changed_surface(event)
+	if not global.player or not global.player[player.index] then setup_player(player) end
 	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
 local function on_hivemindchange(event)
 	if game.active_mods["Hive_Mind"] or game.active_mods["Hive_Mind_Remastered"] then
+		if not global.player or not global.player[player.index] then setup_player(player) end
 		global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 2
 	end
 end
@@ -816,6 +839,7 @@ local function on_second_tick()
 			global.player[player.index].checknexttick = global.player[player.index].checknexttick - 1
 		elseif global.player[player.index].checknexttick == 1 then
 			cycle_buttons_to_rename(player)
+			cycle_frames_to_rename(player)
 			create_new_buttons(player)
 			fix_buttons(player)
 			destroy_obsolete_buttons(player)

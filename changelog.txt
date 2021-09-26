@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.11.9
+Date: 2021.09.26
+  Changes:
+    - Fixed a crash
+---------------------------------------------------------------------------------------------------
+Version: 1.11.8
+Date: 2021.09.26
+  Changes:
+    - Fixed a crash with new games
+    - Buttons of: Module Inserter, Factory Planner, Rich Text Helper, Not Enough Todo and Train Log are now underlined when their window is open
+---------------------------------------------------------------------------------------------------
 Version: 1.11.7
 Date: 2021.09.26
   Changes:
@@ -10,7 +21,7 @@ Date: 2021.09.26
     - Code cleaned and improved (uses less resources)
     - Supports LandfillEverythingAndPumps
     - Supports Automatic Belt Direction
-    - Buttons of Pyanodon, "Solar Ratio" and "Cities of Earth" now close their main window
+    - Buttons of Pyanodon, Solar Ratio and Cities of Earth now close their main window
 ---------------------------------------------------------------------------------------------------
 Version: 1.11.5
 Date: 2021.09.20
