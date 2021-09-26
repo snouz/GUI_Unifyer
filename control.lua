@@ -312,6 +312,8 @@ local function create_new_buttons(player)
 		end
 	end
 
+	local abdshowgui = settings.get_player_settings(player)["abd-showgui"] and settings.get_player_settings(player)["abd-showgui"].value or false
+
 	local newbuttonlist = {
 		{"FJEI",				"fjei_toggle_button",						"fjei_button",					{'guiu.fjei_button'},						true},
 		{"homeworld_redux",		"Homeworld_btn",							"homeworld_redux_button",		{'guiu.homeworld_redux_button'},			true},
@@ -339,7 +341,7 @@ local function create_new_buttons(player)
 		{"rd-se-multiplayer-compat","toggle_spawn_gui",						"spawncontrol_button",			{'guiu.compatspawn_button'},				true},
 		{"Spiderissmo",			"108",										"item/spidertron",				{'guiu.Spiderissmo_spider_button'},			true},
 		{"Spiderissmo",			"minimap_button",							"credotimelapse_button",		{'guiu.Spiderissmo_minimap_button'},		true},
-		{"automatic-belt-direction","abdgui",								"abd_on_button",				{'guiu.abd_on_button'},						settings.get_player_settings(player)["abd-showgui"].value},
+		{"automatic-belt-direction","abdgui",								"abd_on_button",				{'guiu.abd_on_button'},						abdshowgui},
 		--automatic-belt-direction
 		--{"warptorio2",		"warptorio_warpbutton",						"credotimelapse_button",		{'guiu.credotimelapse_button'}},
 		--{"clock",				"clockGUI",									"credotimelapse_button",		{'guiu.clock_button'}},
@@ -661,8 +663,11 @@ end
 
 local function on_configuration_changed()
 	for _,player in pairs(game.players) do
-		update_frame_style(player)
-		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
+		if not global.player then setup_player(player) end
+		if player and player.valid then
+			update_frame_style(player)
+			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
+		end
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 
@@ -670,14 +675,18 @@ end
 
 local function on_research_finished(event)
 	for _,player in pairs(game.players) do
-		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+		if player and player.valid then
+			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+		end
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
 end
 
 local function on_rocket_launched()
 	for _,player in pairs(game.players) do
-		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+		if player and player.valid then
+			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+		end
 	end
 end
 
