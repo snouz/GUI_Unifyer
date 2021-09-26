@@ -4,6 +4,7 @@ Date: 2021.09.26
   Changes:
     - Code cleaned and improved (uses less resources)
     - Supports LandfillEverythingAndPumps
+    - Supports Automatic Belt Direction
     - Buttons of Pyanodon, "Solar Ratio" and "Cities of Earth" now close their main window
 ---------------------------------------------------------------------------------------------------
 Version: 1.11.5

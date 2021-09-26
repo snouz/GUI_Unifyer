@@ -143,6 +143,7 @@ local iconlist = {
 	{"PickerInventoryTools",	"filterfill_filters_btn_right",	"filterfill_filters_btn_right",			nil,								1,	 {"filterfill_filters"},	nil},
 	{"PickerInventoryTools",	"filterfill_filters_btn_set_all","filterfill_filters_btn_set_all",		nil,								1,	 {"filterfill_filters"},	nil},
 	{"PickerInventoryTools",	"filterfill_filters_btn_clear_all","filterfill_filters_btn_clear_all",	nil,								1,	 {"filterfill_filters"},	nil},
+	{"automatic-belt-direction","abd_on_button",				"abdgui",								nil,								1,			nil,				nil},
 	--{"clock",					"clock_button",					"",						nil,		nil,		nil,				nil},
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
@@ -153,7 +154,6 @@ local iconlist = {
 	--{"deleteadjacentchunk_button", ""},																								-- too complex
 	--timeline							timeline				hard
 	--controllinator				["controllinator-toggle"]			button created from
-	--automatic-belt-direction			abdgui						toggle button comment changer images?
 	--RPGsystem						205992
 	--Bluegistics
 }
@@ -294,8 +294,8 @@ local function create_new_buttons(player)
 	local button_flow = mod_gui.get_button_flow(player)
 	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 
-	local function create_buttons_from_list(mod, button, sprite, tooltip)
-		if game.active_mods[mod] then
+	local function create_buttons_from_list(mod, button, sprite, tooltip, optionon)
+		if game.active_mods[mod] and optionon then
 			if not button_flow[button] then
 				button_flow.add {
 					type = "sprite-button",
@@ -313,42 +313,44 @@ local function create_new_buttons(player)
 	end
 
 	local newbuttonlist = {
-		{"FJEI",				"fjei_toggle_button",						"fjei_button",					{'guiu.fjei_button'}},
-		{"homeworld_redux",		"Homeworld_btn",							"homeworld_redux_button",		{'guiu.homeworld_redux_button'}},
-		{"m-lawful-evil",		"lawful_evil_button",						"mlawfulevil_button",			{'guiu.mlawfulevil_button'}},
-		{"Trashcan",			"trashbinguibutton",						"trashcan_button",				{'guiu.trashcan_button'}},
-		{"pycoalprocessing",	"pywiki",									"pycoalprocessing_button",		{'guiu.pycoalprocessing_button'}},
-		{"usage-detector",		"usage_detector",							"usagedetector_button",			{'guiu.usagedetector_button'}},
-		{"RPG",					"104",										"rpg_button",					{'guiu.rpg_button'}},
-		{"TimedSpawnControl",	"random",									"spawncontrol_random_button",	{'guiu.spawncontrol_random_button'}},
-		{"what-is-missing",		"what_is_missing",							"whatsmissing_button",			{'guiu.whatsmissing_button'}},
-		{"some-zoom",			"but_zoom_zout",							"somezoom_out_button",			{'guiu.somezoom_out_button'}},
-		{"some-zoom",			"but_zoom_zin",								"somezoom_in_button",			{'guiu.somezoom_in_button'}},
-		{"production-monitor",	"stats_show_settings",						"productionmonitor_button",		{'guiu.productionmonitor_button'}},
-		{"Teleportation_Redux",	"teleportation_main_button",				"teleportation_button",			{'guiu.teleportation_button'}},
-		{"PersonalTeleporter",	"personalTeleporter_PersonalTeleportTool",	"teleportation_button",			{'guiu.teleportation_button'}},
-		{"inserter-throughput",	"inserter-throughput-toggle",				"inserterthroughput_off_button",{'guiu.inserterthroughput_off_button'}},
-		{"YARM",				"YARM_filter_none",							"yarm_all_button",				{'guiu.yarm_all_button'}},
-		{"YARM",				"YARM_filter_warnings",						"yarm_none_button",				{'guiu.yarm_none_button'}},
-		{"YARM",				"YARM_filter_all",							"yarm_warnings_button",			{'guiu.yarm_warnings_button'}},
-		{"RecExplo",			"b_recexplo",								"recexplo_button",				{'guiu.recexplo_button'}},
-		{"BlueprintLab_design",	"BPL_LabButton",							"blueprintlabdesign_button",	{'guiu.blueprintlabdesign_button'}},
-		{"CredoTimeLapseModByGalapagon","CTLM_mainbutton",					"credotimelapse_button",		{'guiu.credotimelapse_button'}},
-		{"Decu",				"market_button",							"decu_button",					{'guiu.decu_button'}},
-		{"rd-se-multiplayer-compat","toggle_forces",						"forces_button",				{'guiu.compatforce_button'}},
-		{"rd-se-multiplayer-compat","toggle_spawn_gui",						"spawncontrol_button",			{'guiu.compatspawn_button'}},
-		{"Spiderissmo",			"108",										"item/spidertron",				{'guiu.Spiderissmo_spider_button'}},
-		{"Spiderissmo",			"minimap_button",							"credotimelapse_button",		{'guiu.Spiderissmo_minimap_button'}},
+		{"FJEI",				"fjei_toggle_button",						"fjei_button",					{'guiu.fjei_button'},						true},
+		{"homeworld_redux",		"Homeworld_btn",							"homeworld_redux_button",		{'guiu.homeworld_redux_button'},			true},
+		{"m-lawful-evil",		"lawful_evil_button",						"mlawfulevil_button",			{'guiu.mlawfulevil_button'},				true},
+		{"Trashcan",			"trashbinguibutton",						"trashcan_button",				{'guiu.trashcan_button'},					true},
+		{"pycoalprocessing",	"pywiki",									"pycoalprocessing_button",		{'guiu.pycoalprocessing_button'},			true},
+		{"usage-detector",		"usage_detector",							"usagedetector_button",			{'guiu.usagedetector_button'},				true},
+		{"RPG",					"104",										"rpg_button",					{'guiu.rpg_button'},						true},
+		{"TimedSpawnControl",	"random",									"spawncontrol_random_button",	{'guiu.spawncontrol_random_button'},		true},
+		{"what-is-missing",		"what_is_missing",							"whatsmissing_button",			{'guiu.whatsmissing_button'},				true},
+		{"some-zoom",			"but_zoom_zout",							"somezoom_out_button",			{'guiu.somezoom_out_button'},				true},
+		{"some-zoom",			"but_zoom_zin",								"somezoom_in_button",			{'guiu.somezoom_in_button'},				true},
+		{"production-monitor",	"stats_show_settings",						"productionmonitor_button",		{'guiu.productionmonitor_button'},			true},
+		{"Teleportation_Redux",	"teleportation_main_button",				"teleportation_button",			{'guiu.teleportation_button'},				true},
+		{"PersonalTeleporter",	"personalTeleporter_PersonalTeleportTool",	"teleportation_button",			{'guiu.teleportation_button'},				true},
+		{"inserter-throughput",	"inserter-throughput-toggle",				"inserterthroughput_off_button",{'guiu.inserterthroughput_off_button'},		true},
+		{"YARM",				"YARM_filter_none",							"yarm_all_button",				{'guiu.yarm_all_button'},					true},
+		{"YARM",				"YARM_filter_warnings",						"yarm_none_button",				{'guiu.yarm_none_button'},					true},
+		{"YARM",				"YARM_filter_all",							"yarm_warnings_button",			{'guiu.yarm_warnings_button'},				true},
+		{"RecExplo",			"b_recexplo",								"recexplo_button",				{'guiu.recexplo_button'},					true},
+		{"BlueprintLab_design",	"BPL_LabButton",							"blueprintlabdesign_button",	{'guiu.blueprintlabdesign_button'},			true},
+		{"CredoTimeLapseModByGalapagon","CTLM_mainbutton",					"credotimelapse_button",		{'guiu.credotimelapse_button'},				true},
+		{"Decu",				"market_button",							"decu_button",					{'guiu.decu_button'},						true},
+		{"rd-se-multiplayer-compat","toggle_forces",						"forces_button",				{'guiu.compatforce_button'},				true},
+		{"rd-se-multiplayer-compat","toggle_spawn_gui",						"spawncontrol_button",			{'guiu.compatspawn_button'},				true},
+		{"Spiderissmo",			"108",										"item/spidertron",				{'guiu.Spiderissmo_spider_button'},			true},
+		{"Spiderissmo",			"minimap_button",							"credotimelapse_button",		{'guiu.Spiderissmo_minimap_button'},		true},
+		{"automatic-belt-direction","abdgui",								"abd_on_button",				{'guiu.abd_on_button'},						settings.get_player_settings(player)["abd-showgui"].value},
+		--automatic-belt-direction
 		--{"warptorio2",		"warptorio_warpbutton",						"credotimelapse_button",		{'guiu.credotimelapse_button'}},
 		--{"clock",				"clockGUI",									"credotimelapse_button",		{'guiu.clock_button'}},
 	}
 
 	for _, k in pairs(newbuttonlist) do
-		create_buttons_from_list(k[1], k[2], k[3], k[4])
+		create_buttons_from_list(k[1], k[2], k[3], k[4], k[5])
 	end
 
 	if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
-		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'})
+		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'}, true)
 	end
 
 	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
@@ -452,10 +454,14 @@ local function destroy_obsolete_buttons(player)
 		if button_flow.blueprint_flip_vertical then button_flow.blueprint_flip_vertical.destroy() end
 	end
 
+	if game.active_mods["automatic-belt-direction"] and button_flow.abdgui and settings.get_player_settings(player)["abd-showgui"] and settings.get_player_settings(player)["abd-showgui"].value == false then
+		button_flow.abdgui.destroy()
+	end
+
 	local topelems_tokill = {
 		"blpflip_flow", "fjei_toggle_button", "Homeworld_btn", "lawful_evil_button", "trashbingui", "pywiki_frame", "usage_detector", "104",
 		"spawn", "random", "what_is_missing", "logistics-view-button", "flw_zoom", "stats_show_settings", "teleportation_main_button",
-		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container",
+		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container", "abdgui",
 	}
 
 	if settings.get_player_settings(player)["gu_mod_enabled_perplayer"].value == true then
@@ -683,8 +689,6 @@ local function on_gui_click(event)
 
 	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 
-	if activedebug or player == game.players["snouz"] then debug_button(event) end
-
 	--force closed if button clicked
 	if game.active_mods["pycoalprocessing"] then
 		if event.element and event.element.name and event.element.name == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
@@ -701,6 +705,21 @@ local function on_gui_click(event)
 			player.gui.center["coe_choose_target"].destroy()
 		end
 	end
+
+	if game.active_mods["automatic-belt-direction"] then
+		if event.element and event.element.name and event.element.name == "abdgui" then
+			--local button_flow = mod_gui.get_button_flow(player)
+			if player.gui.top.abdgui and player.gui.top.abdgui.sprite == "abd-gui-on" then
+				event.element.sprite = "abd_on_button"
+				event.element.tooltip = {'guiu.abd_on_button'}
+			else
+				event.element.sprite = "abd_off_button"
+				event.element.tooltip = {'guiu.abd_off_button'}
+			end
+		end
+	end
+
+	if activedebug or player == game.players["snouz"] then debug_button(event) end
 end
 
 local function on_gui_closed(event)
