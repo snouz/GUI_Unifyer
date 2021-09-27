@@ -243,3 +243,10 @@ data.raw["gui-style"].default["todo_button_default_snouz_selected"] = {
     base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5},
   },
 }
+
+data.raw["gui-style"].default["adjacentchunks_button"] = {
+  type = "button_style",
+  parent = "todo_button_default_snouz",
+  minimal_width = 20,
+  height = 13,
+}

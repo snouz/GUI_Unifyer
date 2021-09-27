@@ -146,3 +146,4 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - Spiderissmo
 - Automatic Belt Direction
 - Clock
+- Delete Adjacent Chunk

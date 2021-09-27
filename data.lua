@@ -92,6 +92,18 @@ if mods["SchallEndgameEvolution"] then
 	end
 end
 
+data:extend({
+	{
+    type = "sprite",
+    name = "DeleteAdjacentChunk_player",
+    filename = "__GUI_Unifyer__/graphics/gui/deleteadjacentchunks_center.png",
+    priority = "extra-high-no-scale",
+    width = 40,
+    height = 26,
+    scale = 0.5,
+	},
+})
+
 require('prototypes/button_style')
 require('prototypes/frame_style')
 

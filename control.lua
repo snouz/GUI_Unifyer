@@ -144,14 +144,13 @@ local iconlist = {
 	{"PickerInventoryTools",	"filterfill_filters_btn_set_all","filterfill_filters_btn_set_all",		nil,								1,	 {"filterfill_filters"},	nil},
 	{"PickerInventoryTools",	"filterfill_filters_btn_clear_all","filterfill_filters_btn_clear_all",	nil,								1,	 {"filterfill_filters"},	nil},
 	{"automatic-belt-direction","abd_on_button",				"abdgui",								nil,								1,			nil,				nil},
-	--{"clock",					"clock_button",					"",						nil,		nil,		nil,				nil},
+	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
 	--{"avatars_button", ""},																												??
 	--{"modmashsplinterboom_button", "landmine-toggle-button"},																				??
 	--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
-	--{"deleteadjacentchunk_button", ""},																								-- too complex
 	--timeline							timeline				hard
 	--controllinator				["controllinator-toggle"]			button created from
 	--RPGsystem						205992
@@ -283,9 +282,18 @@ local function fix_buttons(player)
 			end
 			todolist_button.style = gu_button_style_setting
 		end
-
 	else
 		settings.get_player_settings(player)["gu_todolist_style_setting"].hidden = true
+	end
+
+	if game.active_mods["DeleteAdjacentChunk"] and button_flow.DeleteAdjacentChunk_table then
+		local dac_buttons_list = {"DeleteAdjacentChunk_nw", "DeleteAdjacentChunk_n", "DeleteAdjacentChunk_ne", "DeleteAdjacentChunk_w", "DeleteAdjacentChunk_e", "DeleteAdjacentChunk_sw", "DeleteAdjacentChunk_s", "DeleteAdjacentChunk_se"}
+		for _,k in pairs(dac_buttons_list) do
+			if button_flow.DeleteAdjacentChunk_table[k] then
+				button_flow.DeleteAdjacentChunk_table[k].style = "adjacentchunks_button"
+				button_flow.DeleteAdjacentChunk_table[k].sprite = nil
+			end
+		end
 	end
 end
 
