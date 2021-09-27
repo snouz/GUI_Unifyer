@@ -763,13 +763,12 @@ local function on_player_created(event)
 end
 
 local function on_player_changed_surface(event)
-	if not global.player or not global.player[player.index] then setup_player(player) end
 	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
 local function on_hivemindchange(event)
 	if game.active_mods["Hive_Mind"] or game.active_mods["Hive_Mind_Remastered"] then
-		if not global.player or not global.player[player.index] then setup_player(player) end
+		if not global.player or not global.player[event.player_index] then setup_player(game.players[event.player_index]) end
 		global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 2
 	end
 end
