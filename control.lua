@@ -144,7 +144,7 @@ local iconlist = {
 	{"PickerInventoryTools",	"filterfill_filters_btn_set_all","filterfill_filters_btn_set_all",		nil,								1,	 {"filterfill_filters"},	nil},
 	{"PickerInventoryTools",	"filterfill_filters_btn_clear_all","filterfill_filters_btn_clear_all",	nil,								1,	 {"filterfill_filters"},	nil},
 	{"automatic-belt-direction","abd_on_button",				"abdgui",								nil,								1,			nil,				nil},
-	--{"",		"",	"",						nil,		nil,		nil,				nil},
+	{"Bluegistics",		"bluegistics_button",	"toggle_saved_logistics_layouts",						nil,		1,		nil,				nil},
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -156,6 +156,15 @@ local iconlist = {
 	--RPGsystem						205992
 	--Bluegistics
 }
+
+local function setup_player(player)
+	if not global.player then global.player = {} end
+	if not global.player[player.index] then
+		global.player[player.index] = {
+			checknexttick = 0
+		}
+	end
+end
 
 local function set_button_sprite(button, spritepath)
 	if spritepath == nil then
@@ -687,18 +696,13 @@ local function on_player_cursor_stack_changed(event)
 	end
 end
 
-local function on_gui_opened(event)
-	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
-end
-
-
 local function on_init()
 	for _,player in pairs(game.players) do
 		if not global.player or not global.player[player.index] then setup_player(player) end
 		global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
+		local button_flow = mod_gui.get_button_flow(player)
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
-
 end
 
 local function on_configuration_changed()
@@ -710,7 +714,6 @@ local function on_configuration_changed()
 		end
 	end
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
-
 end
 
 local function on_research_finished(event)
@@ -772,17 +775,19 @@ local function on_gui_click(event)
 	end
 
 	if game.active_mods["clock"] then
-		if button_flow.clockGUI and player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
-			button_flow.clockGUI.style = "todo_button_default_snouz_selected"
-		else
-			button_flow.clockGUI.style = "todo_button_default_snouz"
+		if button_flow.clockGUI then
+			if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
+				button_flow.clockGUI.style = "todo_button_default_snouz_selected"
+			else
+				button_flow.clockGUI.style = "todo_button_default_snouz"
+			end
 		end
 	end
 
 	if activedebug or player == game.players["snouz"] then debug_button(event) end
 end
 
-local function on_gui_closed(event)
+local function on_gui_opened(event)
 	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 end
 
@@ -849,15 +854,6 @@ local function on_built(event)
 	end
 end
 
-function setup_player(player)
-	if not global.player then global.player = {} end
-	if not global.player[player.index] then
-		global.player[player.index] = {
-			checknexttick = 0
-		}
-	end
-end
-
 local function on_tick()
 	for _,player in pairs(game.players) do
 		if not global.player then
@@ -892,9 +888,8 @@ script.on_event(defines.events.on_game_created_from_scenario, on_init)
 script.on_event({defines.events.on_player_created, defines.events.on_player_joined_game}, on_player_created)
 script.on_event({defines.events.on_player_gun_inventory_changed, defines.events.on_player_died}, on_hivemindchange)
 script.on_event(defines.events.on_gui_click, on_gui_click)
-script.on_event({defines.events.on_gui_closed, defines.events.on_gui_confirmed}, on_gui_closed)
+script.on_event({defines.events.on_gui_closed, defines.events.on_gui_confirmed, defines.events.on_gui_opened}, on_gui_opened)
 script.on_event(defines.events.on_player_cursor_stack_changed, on_player_cursor_stack_changed)
-script.on_event(defines.events.on_gui_opened, on_gui_opened)
 script.on_event(defines.events.on_research_finished, on_research_finished)
 script.on_event(defines.events.on_rocket_launched, on_rocket_launched)
 script.on_event(defines.events.on_player_display_resolution_changed, on_gui_click)

@@ -247,6 +247,8 @@ data.raw["gui-style"].default["todo_button_default_snouz_selected"] = {
 data.raw["gui-style"].default["adjacentchunks_button"] = {
   type = "button_style",
   parent = "todo_button_default_snouz",
-  minimal_width = 20,
+  width = 20,
   height = 13,
+  left_padding = 0,
+  right_padding = 0,
 }
