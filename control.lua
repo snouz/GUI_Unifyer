@@ -355,6 +355,19 @@ local function create_new_buttons(player)
 		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'}, true)
 	end
 
+	if game.active_mods["clock"] then
+		if not button_flow.clockGUI then
+			button_flow.add {
+				type = "button",
+				name = "clockGUI",
+				style = "todo_button_default_snouz",
+				caption = "",
+			}
+		end
+	elseif button_flow.clockGUI then
+		button_flow.clockGUI.destroy()
+	end
+
 	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
 		if not button_flow.spawn then
 			button_flow.add {
@@ -463,7 +476,7 @@ local function destroy_obsolete_buttons(player)
 	local topelems_tokill = {
 		"blpflip_flow", "fjei_toggle_button", "Homeworld_btn", "lawful_evil_button", "trashbingui", "pywiki_frame", "usage_detector", "104",
 		"spawn", "random", "what_is_missing", "logistics-view-button", "flw_zoom", "stats_show_settings", "teleportation_main_button",
-		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container", "abdgui",
+		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container", "abdgui", "clockGUI",
 	}
 
 	if settings.get_player_settings(player)["gu_mod_enabled_perplayer"].value == true then
@@ -714,6 +727,7 @@ end
 local function on_gui_click(event)
 	local player = game.players[event.player_index]
 	if not player or not player.valid then return end
+	local button_flow = mod_gui.get_button_flow(player)
 	if game.active_mods["Factorissimo2"] then update_factorissimo(event) end
 	if game.active_mods["YARM"] then update_yarm_button(event) end
 
@@ -746,6 +760,14 @@ local function on_gui_click(event)
 				event.element.sprite = "abd_off_button"
 				event.element.tooltip = {'guiu.abd_off_button'}
 			end
+		end
+	end
+
+	if game.active_mods["clock"] then
+		if button_flow.clockGUI and player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
+			button_flow.clockGUI.style = "todo_button_default_snouz_selected"
+		else
+			button_flow.clockGUI.style = "todo_button_default_snouz"
 		end
 	end
 
@@ -828,7 +850,7 @@ function setup_player(player)
 	end
 end
 
-local function on_second_tick()
+local function on_tick()
 	for _,player in pairs(game.players) do
 		if not global.player then
 			setup_player(player)
@@ -844,12 +866,19 @@ local function on_second_tick()
 			destroy_obsolete_buttons(player)
 			global.player[player.index].checknexttick = 0
 		end
+
+		if game.active_mods["clock"] then
+			local button_flow = mod_gui.get_button_flow(player)
+			if player.gui.top.clockGUI and button_flow.clockGUI then
+				button_flow.clockGUI.caption = player.gui.top.clockGUI.caption
+			end
+		end
 	end
 end
 
 script.on_init(on_init)
 script.on_configuration_changed(on_configuration_changed)
-script.on_event(defines.events.on_tick, on_second_tick)
+script.on_event(defines.events.on_tick, on_tick)
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_configuration_changed)
 script.on_event(defines.events.on_game_created_from_scenario, on_init)
 script.on_event({defines.events.on_player_created, defines.events.on_player_joined_game}, on_player_created)

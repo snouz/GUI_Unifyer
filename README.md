@@ -63,7 +63,7 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - Kraskaska's Technology Total Raw Resources Calc
 - Crafting Tools
 - Orbital Ion Cannon (SE Edition)
-- Landfill Everything
+- Landfill Everything + variations
 - Not Enough Todo
 - OSHA Hot Swap
 - Picker Inventory Tools
@@ -144,3 +144,5 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - Decu
 - Rd's Space Exploration Multiplayer Compat
 - Spiderissmo
+- Automatic Belt Direction
+- Clock
