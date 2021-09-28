@@ -361,7 +361,6 @@ local function create_new_buttons(player)
 		{"automatic-belt-direction","abdgui",								"abd_on_button",				{'guiu.abd_on_button'},						abdshowgui},
 		--automatic-belt-direction
 		--{"warptorio2",		"warptorio_warpbutton",						"credotimelapse_button",		{'guiu.credotimelapse_button'}},
-		--{"clock",				"clockGUI",									"credotimelapse_button",		{'guiu.clock_button'}},
 	}
 
 	for _, k in pairs(newbuttonlist) do
@@ -709,11 +708,20 @@ local function on_configuration_changed()
 	for _,player in pairs(game.players) do
 		if player and player.valid then
 			if not global.player or not global.player[player.index] then setup_player(player) end
+			--destroy evoGUI to let it recreate and display on the right of main gui.
+			if game.active_mods["EvoGUI"] then
+				if player.gui.top.evogui_root then
+					player.gui.top.evogui_root.destroy()
+				end
+			end
 			update_frame_style(player)
 			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 		end
 	end
+
 	if game.active_mods["Factorissimo2"] then update_factorissimo() end
+
+
 end
 
 local function on_research_finished(event)
@@ -794,6 +802,15 @@ end
 local function on_player_created(event)
 	local player = game.players[event.player_index]
 	setup_player(player)
+	local button_flow = mod_gui.get_button_flow(player)
+
+	--destroy evoGUI to let it recreate and display on the right of main gui.
+	if game.active_mods["EvoGUI"] then
+		if player.gui.top.evogui_root then
+			player.gui.top.evogui_root.destroy()
+		end
+	end
+
 	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 2
 end
 
