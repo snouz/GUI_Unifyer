@@ -3,8 +3,10 @@ Version: 1.11.12
 Date: 2021.09.28
   Changes:
     - Supports Clock
+    - Supports Avatars
     - Supports Delete Adjacent Chunk
     - Made EvoGUI display on the right of the main buttons
+    - Better Creative Mod support
 ---------------------------------------------------------------------------------------------------
 Version: 1.11.11
 Date: 2021.09.27

@@ -144,7 +144,18 @@ local iconlist = {
 	{"PickerInventoryTools",	"filterfill_filters_btn_set_all","filterfill_filters_btn_set_all",		nil,								1,	 {"filterfill_filters"},	nil},
 	{"PickerInventoryTools",	"filterfill_filters_btn_clear_all","filterfill_filters_btn_clear_all",	nil,								1,	 {"filterfill_filters"},	nil},
 	{"automatic-belt-direction","abd_on_button",				"abdgui",								nil,								1,			nil,				nil},
-	{"Bluegistics",		"bluegistics_button",	"toggle_saved_logistics_layouts",						nil,		1,		nil,				nil},
+	{"Bluegistics",				"bluegistics_button",			"toggle_saved_logistics_layouts",		nil,								1,			nil,				nil},
+	{"Avatars",					"avatars_button",				"avatar_disc",							nil,								nil,		nil,				nil},
+	{"creative-mod",			"creativemod_button",			"creative-mod_creative-chest-open-button",nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame"}},
+	{"creative-mod",			"creativemod_button",			"creative-mod_duplicating-chest-open-button",nil,							1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame"}},
+	{"creative-mod",			"creativemod_button",			"creative-mod_configurable-super-boiler-open-button",nil,					1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame"}},
+	{"creative-mod",			"creativemod_button",			"creative-mod_item-source-open-button",	nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame-container"}},
+	{"creative-mod",			"creativemod_button",			"creative-mod_duplicator-open-button",	nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame-container"}},
+	{"creative-mod",			"creativemod_button",			"creative-mod_item-void-open-button",	nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame-container"}},
+
+
+
+
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
 	--{"trainschedulesignals_button", "TSS=open-close",						nil,								nil,		nil}, 		??
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
@@ -894,7 +905,25 @@ local function on_tick()
 				button_flow.clockGUI.caption = player.gui.top.clockGUI.caption
 			end
 		end
+
+		if game.active_mods["Avatars"] then
+			local button_flow = mod_gui.get_button_flow(player)
+			if button_flow.avatar_disc and not button_flow.avatar_disc["button_sprite"] then
+				fix_buttons(player)
+			end
+		end
+
+		if game.active_mods["creative-mod"] then
+			local button_flow = mod_gui.get_button_flow(player)
+			if button_flow["creative-mod_main-menu-open-button"] and not button_flow["creative-mod_main-menu-open-button"]["button_sprite"] then
+				fix_buttons(player)
+			end
+		end
 	end
+end
+
+local function on_entity_destroyed(event)
+	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 2
 end
 
 script.on_init(on_init)

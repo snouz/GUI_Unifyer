@@ -147,3 +147,5 @@ https://mods.factorio.com/mod/ToggleSpeedBoost
 - Automatic Belt Direction
 - Clock
 - Delete Adjacent Chunk
+- EvoGUI
+- Avatars
