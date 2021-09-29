@@ -2,6 +2,7 @@
 Version: 1.11.13
 Date: 2021.09.29
   Changes:
+    - Supports ModMash Splinter, New Worlds
     - Optimized code
 ---------------------------------------------------------------------------------------------------
 Version: 1.11.12

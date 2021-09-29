@@ -133,8 +133,7 @@ local iconlist = {
 	{"automatic-belt-direction","abd_on_button",				"abdgui",								nil,								1,			nil,				nil},
 	{"Bluegistics",				"bluegistics_button",			"toggle_saved_logistics_layouts",		nil,								1,			nil,				nil},
 	{"Avatars",					"avatars_button",				"avatar_disc",							nil,								nil,		nil,				nil},
-
-
+	{"modmashsplinternewworlds","newworlds_button",				"planets-toggle-button",				nil,								nil,		nil,				{"screen", "planets-main-frame"}},
 
 
 	--{"",		"",	"",						nil,		nil,		nil,				nil},
@@ -142,7 +141,6 @@ local iconlist = {
 	--{"attachnotes_button", 			"attach-note-button",					nil,								1,			nil} 	-- too complex
 	--{"avatars_button", ""},																												??
 	--{"modmashsplinterboom_button", "landmine-toggle-button"},																				??
-	--{"modmashsplinternewworlds_button", "planets-toggle-button"},																			??
 	--timeline							timeline				hard
 	--controllinator				["controllinator-toggle"]			button created from
 	--RPGsystem						205992
@@ -692,15 +690,6 @@ local function on_player_cursor_stack_changed(event)
 	end
 end
 
-local function on_configuration_changed()
-	general_update()
-end
-
-local function on_player_configuration_changed(event)
-	general_update_event(event)
-	update_frame_style(event)
-end
-
 local function general_update()
 	for _,player in pairs(game.players) do
 		if player and player.valid then
@@ -712,6 +701,15 @@ end
 
 local function general_update_event(event)
 	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 2
+end
+
+local function on_configuration_changed()
+	general_update()
+end
+
+local function on_player_configuration_changed(event)
+	general_update_event(event)
+	update_frame_style(event)
 end
 
 local function on_player_joined(event)
@@ -726,6 +724,7 @@ local function on_player_joined(event)
 		end
 	end
 end
+
 
 local function on_gui_click(event)
 	local player = game.players[event.player_index]
