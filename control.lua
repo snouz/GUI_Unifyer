@@ -260,6 +260,7 @@ local function create_new_buttons(player)
 	local abdshowgui = settings.get_player_settings(player)["abd-showgui"] and settings.get_player_settings(player)["abd-showgui"].value or false
 
 	local newbuttonlist = {
+		--mod					button name 								sprite 							tooltip 									show button (for some there's already a setting to toggle button)
 		{"FJEI",				"fjei_toggle_button",						"fjei_button",					{'guiu.fjei_button'},						true},
 		{"homeworld_redux",		"Homeworld_btn",							"homeworld_redux_button",		{'guiu.homeworld_redux_button'},			true},
 		{"m-lawful-evil",		"lawful_evil_button",						"mlawfulevil_button",			{'guiu.mlawfulevil_button'},				true},
@@ -293,6 +294,14 @@ local function create_new_buttons(player)
 	for _, k in pairs(newbuttonlist) do
 		create_buttons_from_list(k[1], k[2], k[3], k[4], k[5])
 	end
+
+	--[[local buttons_for_shortcuts = {
+		{"LtnManager", 			"gu_ltnm-toggle-gui", 							"forces_button", 				{'guiu.ltnmanager'}, 						true},
+	}
+
+	for _, k in pairs(buttons_for_shortcuts) do
+		create_buttons_from_list(k[1], k[2], k[3], k[4], k[5])
+	end]]
 
 	if player.force and player.force.technologies["advanced-logistics-systems"] and player.force.technologies["advanced-logistics-systems"].researched then
 		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'}, true)
@@ -522,7 +531,6 @@ local function check_buttons_disabled(event)
 	if not player or not player.valid then return end
 
 	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-
 end
 
 local function on_player_cursor_stack_changed(event)
@@ -631,7 +639,6 @@ local function on_player_joined(event)
 	end
 end
 
-
 local function on_gui_click(event)
 	local player = game.players[event.player_index]
 	if not player or not player.valid then return end
@@ -640,25 +647,40 @@ local function on_gui_click(event)
 
 	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 
+	if game.active_mods["clock"] and button_flow.clockGUI then
+		if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
+			button_flow.clockGUI.style = "todo_button_default_snouz_selected"
+		else
+			button_flow.clockGUI.style = "todo_button_default_snouz"
+		end
+	end
+
+	local buttname = ""
+	if event.element and event.element.name then
+		buttname = event.element.name
+	else
+		return
+	end
+
 		--force closed if button clicked
 	if game.active_mods["pycoalprocessing"] then
-		if event.element and event.element.name and event.element.name == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+		if buttname == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
 			player.gui.screen.wiki_frame.destroy()
 		end
 	end
 	if game.active_mods["SolarRatio"] then
-		if event.element and event.element.name and event.element.name == "niet-sr-guibutton" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+		if buttname == "niet-sr-guibutton" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
 			player.gui.center["niet-sr-guiframe"].destroy()
 		end
 	end
 	if game.active_mods["CitiesOfEarth"] then
-		if event.element and event.element.name and event.element.name == "coe_button_show_targets" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+		if buttname == "coe_button_show_targets" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
 			player.gui.center["coe_choose_target"].destroy()
 		end
 	end
 
 	if game.active_mods["automatic-belt-direction"] then
-		if event.element and event.element.name and event.element.name == "abdgui" then
+		if buttname == "abdgui" then
 			if player.gui.top.abdgui and player.gui.top.abdgui.sprite == "abd-gui-on" then
 				event.element.sprite = "abd_on_button"
 				event.element.tooltip = {'guiu.abd_on_button'}
@@ -669,15 +691,13 @@ local function on_gui_click(event)
 		end
 	end
 
-	if game.active_mods["clock"] then
-		if button_flow.clockGUI then
-			if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
-				button_flow.clockGUI.style = "todo_button_default_snouz_selected"
-			else
-				button_flow.clockGUI.style = "todo_button_default_snouz"
-			end
+	--[[if buttname == "gu_ltnm-toggle-gui" then
+		--game.print("11111111")
+		if game.shortcut_prototypes["ltnm-toggle-gui"] then
+			--game.print(game.shortcut_prototypes["ltnm-toggle-gui"])
+			player.set_shortcut_toggled("ltnm-toggle-gui", not player.is_shortcut_toggled("ltnm-toggle-gui"))
 		end
-	end
+	end]]
 
 	if activedebug or player == game.players["snouz"] then debug_button(event) end
 end
