@@ -13,6 +13,7 @@ return {
     {"Death_Counter",           "deathcounter_button",          "DeathCounterMainButton",               {'guiu.deathcounter_button'},       nil,        nil,                {"left", "DeathCounterMain"}},
     {"ingteb",                  "ingteb_button",                "ingteb",                               nil,                                nil,        nil,                {"screen", "Selector"}},
     {"OutpostPlanner",          "outpostplanner_button",        "OutpostBuilder",                       nil,                                nil,        nil,                {"left", "mod_gui_frame_flow", "OutpostBuilderWindow"}},
+    {"OutpostPlanner1-1",       "outpostplanner_button",        "OutpostBuilder",                       nil,                                nil,        nil,                {"left", "mod_gui_frame_flow", "OutpostBuilderWindow"}},
     {"rocket-silo-stats",       "rocketsilostats_button",       "rocket-silo-stats-toggle",             {'guiu.rocketsilostats_button'},    nil,        nil,                {"left", "mod_gui_frame_flow", "rocket-silo-stats"}},
     {"SchallSatelliteController","schall_sc_button",            "Schall-SC-mod-button",                 nil,                                nil,        nil,                {"screen", "Schall-SC-frame-main"}},
     {"actual-craft-times-remade","actr_button",                 "ACTR_mod_button",                      nil,                                nil,        nil,                {"left", "ACTR_Calculator_Frame"}},
