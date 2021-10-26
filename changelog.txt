@@ -3,6 +3,7 @@ Version: 1.12.0
 Date: 2021.10.10
   Changes:
     - Most buttons can be hidden in the settings
+    - Fixed crash with LTN's shortcut "CTRL-MAJ-D"
     - Improved performances (only check buttons from installed mod)
 ---------------------------------------------------------------------------------------------------
 Version: 1.11.15

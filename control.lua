@@ -349,7 +349,7 @@ end
 local function update_yarm_button(event)
 	if event and event.element then
 		if event.element.name == "YARM_filter_all" or event.element.name == "YARM_filter_none" or event.element.name == "YARM_filter_warnings" then
-			local player = game.players[event.player_index]
+			local player = event.player_index and game.players[event.player_index]
 			if not player or not player.valid then return end
 			local button_flow = mod_gui.get_button_flow(player)
 			local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
@@ -461,7 +461,8 @@ local function destroy_obsolete_buttons(player)
 end
 
 local function update_frame_style(event)
-	local player = game.players[event.player_index]
+	local player = event.player_index and game.players[event.player_index]
+	if not player or not player.valid then return end
 	local gu_frame_style_setting = settings.get_player_settings(player)["gu_frame_style_setting"].value or "normal_frame_style"
 	if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
 		if gu_frame_style_setting == "snouz_normal_frame_style" then
@@ -527,14 +528,14 @@ local function cycle_frames_to_rename(player)
 end
 
 local function check_buttons_disabled(event)
-	local player = game.players[event.player_index]
+	local player = event.player_index and game.players[event.player_index]
 	if not player or not player.valid then return end
 
 	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 end
 
 local function on_player_cursor_stack_changed(event)
-	local player = game.players[event.player_index]
+	local player = event.player_index and game.players[event.player_index]
 	if not player or not player.valid then return end
 	local button_flow = mod_gui.get_button_flow(player)
 
@@ -609,7 +610,7 @@ local function general_update()
 end
 
 local function general_update_event(event)
-	local player = game.players[event.player_index]
+	local player = event.player_index and game.players[event.player_index]
 	if not player or not player.valid then return end
 	if not global.player or not global.player[event.player_index] then setup_player(player) end
 	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
@@ -627,7 +628,7 @@ local function on_player_configuration_changed(event)
 end
 
 local function on_player_joined(event)
-	local player = game.players[event.player_index]
+	local player = event.player_index and game.players[event.player_index]
 	local button_flow = mod_gui.get_button_flow(player)
 	general_update_event(event)
 
@@ -640,7 +641,7 @@ local function on_player_joined(event)
 end
 
 local function on_gui_click(event)
-	local player = game.players[event.player_index]
+	local player = event.player_index and game.players[event.player_index]
 	if not player or not player.valid then return end
 	local button_flow = mod_gui.get_button_flow(player)
 	if game.active_mods["YARM"] then update_yarm_button(event) end
@@ -704,6 +705,7 @@ end
 
 local function on_hivemindchange(event)
 	if game.active_mods["Hive_Mind"] or game.active_mods["Hive_Mind_Remastered"] then
+		if not event.player_index then return end
 		if not global.player or not global.player[event.player_index] then setup_player(game.players[event.player_index]) end
 		global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
 	end
