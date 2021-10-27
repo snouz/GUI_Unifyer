@@ -57,6 +57,13 @@ data:extend({
         hidden = true,
         order = "d",
     },
+	{
+        type = "bool-setting",
+        name = "gu_evogui_placement_right",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "e"
+    },
 })
 
 
