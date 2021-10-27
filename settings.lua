@@ -57,6 +57,13 @@ data:extend({
         hidden = true,
         order = "d",
     },
+	{
+        type = "bool-setting",
+        name = "gu_evogui_placement_right",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "e"
+    },
 })
 
 
@@ -87,7 +94,7 @@ for _, setting in pairs(settingslist) do
             name = "gu_button_" .. setting,
             setting_type = "runtime-per-user",
             default_value = true,
-            order = "e",
+            order = "f",
         },
     })
 end

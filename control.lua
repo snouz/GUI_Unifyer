@@ -634,7 +634,8 @@ local function on_player_joined(event)
 
 		--destroy evoGUI to let it recreate and display on the right of main gui.
 	if game.active_mods["EvoGUI"] then
-		if player.gui.top.evogui_root then
+	local gu_evogui_placement_right = settings.get_player_settings(player)["gu_evogui_placement_right"].value
+		if gu_evogui_placement_right and player.gui.top.evogui_root then
 			player.gui.top.evogui_root.destroy()
 		end
 	end
