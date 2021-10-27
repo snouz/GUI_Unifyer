@@ -94,7 +94,7 @@ for _, setting in pairs(settingslist) do
             name = "gu_button_" .. setting,
             setting_type = "runtime-per-user",
             default_value = true,
-            order = "e",
+            order = "f",
         },
     })
 end
