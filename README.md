@@ -33,120 +33,120 @@ https://mods.factorio.com/mod/emoji-signals
 https://mods.factorio.com/mod/ToggleSpeedBoost
 
 # Supports (so far)
-- Factory Planner
-- Helmod
-- Module Inserter
-- Placeables
-- Todo List
-- What Is It Really Used For
-- Creative Mod
-- BeastFinder
-- Blueprint request
-- Bob's mods
-- CleanMap / DeleteEmptyChunks
-- Death Counter
-- Ingame Technology Browser
-- Outpost Planner
-- Quickbar Import/Export
-- Rocket Silo Stats
-- Schall Satellite Controller
+- 248k Mod
 - Actual Craft Times Remade
+- Advanced Logistics System Fork
 - Attila Zoom Mod
 - Auto Trash
+- Automatic Belt Direction
+- Avatars
+- Base scenarios (PVP, Supply Challenge, Team Production...)
+- BeastFinder
 - Better Bots Technologies
+- Black Market 2
+- Blueprint Alignment
+- Blueprint Flip And Turn
+- Blueprint request
+- Bob's mods
+- Cargo Train Manager
 - Change Map Settings
-- Doing Things By Hand
-- Kill Lost Bots
-- Markers
-- Screenshot Toolkit
-- Factorissimo2
-- Kraskaska's Technology Total Raw Resources Calc
+- Cities Of Earth
+- CleanMap / DeleteEmptyChunks
+- Clock
+- Clusterio
+- Commu Guide Mod
 - Crafting Tools
-- Orbital Ion Cannon (SE Edition)
+- Creative Mod
+- Credo Time Lapse Mod 1.1
+- Cursed Upgradable Buildings
+- Dana: crafting tree/graph explorer
+- Death Counter
+- Decu
+- Default Wait Conditions
+- Delete Adjacent Chunk
+- Diplomacy
+- Doing Things By Hand
+- Electronic Locomotives
+- EvoGUI
+- FJEI
+- Factorio Tweaks by billbo99
+- Factorissimo2
+- Factory Planner
+- Forces
+- Handcraft Ghosts
+- Helmod
+- Hive Mind
+- Hive Mind Remastered
+- Homeworld Redux
+- How Far Has it Been?
+- Ingame Technology Browser
+- Inserter Throughput
+- Kill Lost Bots
+- Kraskaska's Technology Total Raw Resources Calc
+- Kuxynator's Blueprint Editor
 - Landfill Everything + variations
+- Lawful Evil (Added custom scripts in laws)
+- Logistic Machines
+- Logistic Request Manager (continued)
+- Markers
+- ModMash Splinter, New Worlds
+- Module Inserter
+- NewGame+
+- Non-Wave Defense 2
 - Not Enough Todo
+- Nullius
 - OSHA Hot Swap
+- Oarc Multiplayer Spawn
+- Orbital Ion Cannon (SE Edition)
+- Outpost Planner
+- PersonalTeleporter
 - Picker Inventory Tools
+- Picks Rocket Stats
+- Placeables
 - Powered Entities
+- Production Statistics Monitor HUD
+- Pyanodon
+- Quickbar Import/Export
+- RPG
+- Rd's Space Exploration Multiplayer Compat
+- Recipe Explorer
+- Region Cloner
+- Remote Switch
 - Research Counter
+- Reset Evolution and Pollution
 - Rich Text Helper
 - RitnTeleportation
+- Rocket Silo Stats
+- Schall Endgame Evolution
+- Schall Ore Conversion
+- Schall Railway Controller
+- Schall Satellite Controller
+- Screenshot Toolkit
+- Shuttle Train Continued
+- Simple Circuit Trains
+- Sky Wave Defense 3
+- Smart chest
 - Solar Calculator
 - Solar Ratio Calculator
 - Space Extension Mod (SpaceX)
+- Spawn Control
+- Spawn Control with cooldown
+- Spider sentinel
+- Spiderissmo
+- TSM Outpost Builder Addon
+- TeamCoop
+- Teleportation_Redux
+- The Blueprint Designer Lab
 - The Fat Controller
+- Todo List
 - Toggle Peaceful Mode
 - Train Log
 - Train Supply Manager (TSM)
-- Upgrade Builder and Planner
-- What's Missing?
-- Schall Railway Controller
-- Picks Rocket Stats
-- Black Market 2
-- Commu Guide Mod
-- Blueprint Flip And Turn
-- FJEI
-- 248k Mod
-- Blueprint Alignment
-- Cargo Train Manager
-- Clusterio
-- Cursed Upgradable Buildings
-- Default Wait Conditions
-- Diplomacy
-- Electronic Locomotives
-- Forces
-- Hive Mind
-- Hive Mind Remastered
-- How Far Has it Been?
-- Kuxynator's Blueprint Editor
-- Handcraft Ghosts
-- Logistic Machines
-- Logistic Request Manager (continued)
-- Region Cloner
-- Reset Evolution and Pollution
-- Schall Ore Conversion
-- Shuttle Train Continued
-- Simple Circuit Trains
-- Smart chest
-- TeamCoop
-- Pyanodon
-- Homeworld Redux
-- Lawful Evil (Added custom scripts in laws)
 - Trashcan
+- Upgrade Builder and Planner
 - Usage Detector
-- RPG
-- Spawn Control
-- Spawn Control with cooldown
+- What Is It Really Used For
 - What Is Missing
-- Advanced Logistics System Fork
-- Zoom (fixed + re-published abandoned mod)
-- Production Statistics Monitor HUD
-- Teleportation_Redux
-- PersonalTeleporter
-- Schall Endgame Evolution
-- Nullius
-- NewGame+
-- Inserter Throughput
+- What's Missing?
 - YARM - Resource Monitor
-- Recipe Explorer
-- The Blueprint Designer Lab
-- Dana: crafting tree/graph explorer
-- Factorio Tweaks by billbo99
-- Remote Switch
-- Spider sentinel
-- TSM Outpost Builder Addon
-- Credo Time Lapse Mod 1.1
-- Non-Wave Defense 2
-- Sky Wave Defense 3
-- base scenarios (PVP, Supply Challenge, Team Production...)
-- Cities Of Earth
-- Oarc Multiplayer Spawn
-- Decu
-- Rd's Space Exploration Multiplayer Compat
-- Spiderissmo
-- Automatic Belt Direction
-- Clock
-- Delete Adjacent Chunk
-- EvoGUI
-- Avatars
-- ModMash Splinter, New Worlds
+- Zoom (fixed + re-published abandoned mod)
