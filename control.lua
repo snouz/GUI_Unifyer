@@ -27,10 +27,21 @@ end
 
 -- Initialize or reset the global state
 local function ensure_global_state()
-    logging.debug("State", "Ensuring global state initialization", game.get_player(1))
-    global = global or {}
-    global.gubuttonarray = global.gubuttonarray or {}
-    global.window_states = global.window_states or {}
+    -- First create the global table if it doesn't exist
+    if not global then
+        global = {}
+    end
+    
+    -- Then initialize core global tables if they don't exist
+    if not global.player then
+        global.player = {}
+    end
+    if not global.gubuttonarray then
+        global.gubuttonarray = {}
+    end
+    if not global.window_states then
+        global.window_states = {}
+    end
     
     -- Handle edge case where array might be empty but initialized
     if not next(global.gubuttonarray) then
@@ -833,6 +844,7 @@ local function force_update_player_buttons(player)
     end
 end
 
+-- Reset button states safely
 local function reset_button_states(player)
     if not player or not player.valid then return end
     
@@ -888,7 +900,7 @@ local function on_player_joined(event)
     -- Force immediate button update instead of waiting for tick
     force_update_player_buttons(player)
 
-    -- Keep the EvoGUI handling as it was
+    -- EvoGUI handling
     if script.active_mods["EvoGUI"] then
         if player.gui.top.evogui_root then
             logging.debug("GUI", "Destroying and recreating EvoGUI for " .. player.name, player)
@@ -898,25 +910,17 @@ local function on_player_joined(event)
 end
 
 local function on_gui_click(event)
+    -- Skip if we're not properly initialized
+    if not global then 
+        logging.warning("State", "Skipping on_gui_click - global not initialized", game.get_player(1))
+        return 
+    end
+    
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then return end
-    local button_flow = mod_gui.get_button_flow(player)
-    
-    -- Ensure global state exists
-    if not global then
-        logging.warning("State", "Global table is nil in on_gui_click, reinitializing", player)
-        global = {}
-    end
-    
-    -- Ensure player table exists
-    if not global.player then
-        logging.warning("State", "Player table is nil in on_gui_click, reinitializing", player)
-        global.player = {}
-    end
     
     -- Ensure player state exists
     if not global.player[player.index] then
-        logging.debug("Player", "Setting up player in on_gui_click: " .. player.name, player)
         setup_player(player)
     end
     
@@ -924,13 +928,17 @@ local function on_gui_click(event)
 
     global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 
-    if script.active_mods["clock"] and button_flow.clockGUI then
-        if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
-            button_flow.clockGUI.style = "todo_button_default_snouz_selected"
-        else
-            button_flow.clockGUI.style = "todo_button_default_snouz"
+    -- More defensive clock GUI check
+    if script.active_mods["clock"] then
+        local gui_path = player.gui.top.mod_gui_top_frame
+        if gui_path and gui_path.mod_gui_inner_frame then
+            local clock_gui = gui_path.mod_gui_inner_frame.clock_gui
+            if clock_gui then
+                clock_gui.style = clock_gui.visible and "todo_button_default_snouz_selected" or "todo_button_default_snouz"
+            end
         end
     end
+
 
     local buttname = ""
     if event.element and event.element.name then
@@ -967,14 +975,6 @@ local function on_gui_click(event)
             end
         end
     end
-
-    --[[if buttname == "gu_ltnm-toggle-gui" then
-        --game.print("11111111")
-        if game.shortcut_prototypes["ltnm-toggle-gui"] then
-            --game.print(game.shortcut_prototypes["ltnm-toggle-gui"])
-            player.set_shortcut_toggled("ltnm-toggle-gui", not player.is_shortcut_toggled("ltnm-toggle-gui"))
-        end
-    end]]
 
     if activedebug or player == game.players["snouz"] then debug_button(event) end
 end
@@ -1079,15 +1079,25 @@ local function on_built(event)
 end
 
 local function on_gui_closed(event)
+    -- Skip if we're not properly initialized
+    if not global then 
+        logging.warning("State", "Skipping on_gui_closed - global not initialized", game.get_player(1))
+        return 
+    end
+    
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then return end
     
-    -- Force check all window states
+    -- Ensure player state exists
+    if not global.player[player.index] then
+        setup_player(player)
+    end
+    
+    -- Only process window states if gubuttonarray exists
     if global.gubuttonarray then
         for _, entry in pairs(global.gubuttonarray) do
-            if entry[7] then -- Has windowtocheck
+            if entry and entry[7] then -- Has windowtocheck
                 if update_window_state(player, entry[3], entry[7]) then
-                    -- Window state changed, update button
                     change_one_icon(player, entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
                 end
             end
@@ -1096,27 +1106,25 @@ local function on_gui_closed(event)
 end
 
 local function on_gui_opened(event)
+    -- Skip if we're not properly initialized
+    if not global then 
+        logging.warning("State", "Skipping on_gui_opened - global not initialized", game.get_player(1))
+        return 
+    end
+    
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then return end
     
-    -- Ensure global state exists
-    if not global then
-        logging.warning("State", "Global table is nil in on_gui_opened, reinitializing", player)
-        global = {}
+    -- Ensure player state exists
+    if not global.player[player.index] then
+        setup_player(player)
     end
     
-    -- Ensure button array exists
-    if not global.gubuttonarray then
-        logging.warning("State", "Button array missing in on_gui_opened, reinitializing", player)
-        init_button_array()
-    end
-    
-    -- Similar to on_gui_closed
+    -- Only process window states if gubuttonarray exists
     if global.gubuttonarray then
         for _, entry in pairs(global.gubuttonarray) do
-            if entry[7] then -- Has windowtocheck
+            if entry and entry[7] then -- Has windowtocheck
                 if update_window_state(player, entry[3], entry[7]) then
-                    -- Window state changed, update button
                     change_one_icon(player, entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
                 end
             end
@@ -1126,128 +1134,25 @@ end
 
 -- Main tick function. Now extra defensive to ensure no crashes
 local function on_tick()
-    -- Track state before any operations
-    local had_global = global ~= nil
-    local had_player_table = global and global.player ~= nil
-    local had_button_array = global and global.gubuttonarray ~= nil
+    -- Skip if we're not properly initialized
+    if not global then return end
     
-    -- Log if global is nil (this shouldn't happen in normal operation)
-    if not global then
-        logging.error("State", string.format(
-            "DIAGNOSTIC: Global table is nil. Game tick: %d, Had global before: %s", 
-            game.tick, 
-            tostring(had_global)
-        ), game.get_player(1))
-        
-        -- Instead of recreating, try to recover from on_init
-        script.on_init()
-        
-        -- Log the recovery attempt
-        logging.warning("State", string.format(
-            "Attempted global recovery. Global exists: %s, Player table exists: %s, Button array exists: %s",
-            tostring(global ~= nil),
-            tostring(global and global.player ~= nil),
-            tostring(global and global.gubuttonarray ~= nil)
-        ), game.get_player(1))
-        
-        return -- Skip this tick to let recovery take effect
-    end
-
-    -- Ensure player table exists
-    if not global.player then
-        logging.error("State", string.format(
-            "DIAGNOSTIC: Player table missing. Game tick: %d, Had player table before: %s",
-            game.tick,
-            tostring(had_player_table)
-        ), game.get_player(1))
-        global.player = {}
-    end
-
-    -- Ensure button array exists
-    if not global.gubuttonarray then
-        logging.error("State", string.format(
-            "DIAGNOSTIC: Button array missing. Game tick: %d, Had button array before: %s",
-            game.tick,
-            tostring(had_button_array)
-        ), game.get_player(1))
-        global.gubuttonarray = {}
-        init_button_array()
-    end
-
-    -- Process players with detailed error tracking
     for _, player in pairs(game.players) do
         if player and player.valid then
-            -- Track player state
-            local had_player_state = global.player[player.index] ~= nil
-            
-            if not global.player[player.index] then
-                logging.warning("Player", string.format(
-                    "Player state missing. Player: %s (index: %d), Tick: %d, Had state before: %s",
-                    player.name,
-                    player.index,
-                    game.tick,
-                    tostring(had_player_state)
-                ), player)
-                setup_player(player)
-            end
-
             local player_state = global.player[player.index]
-            if player_state then
-                -- Every 60 ticks (1 second), validate button states
-                if game.tick % 60 == 0 then
-                    local status, err = pcall(function()
-                        reset_button_states(player)
-                    end)
-                    if not status then
-                        logging.error("Buttons", string.format(
-                            "Failed to reset button states for %s: %s",
-                            player.name,
-                            tostring(err)
-                        ), player)
-                    end
-                end
-                
-                if player_state.checknexttick == 1 then
-                    -- Log before GUI updates with detailed state
-                    logging.debug("GUI", string.format(
-                        "Starting GUI update. Player: %s, Tick: %d, Button array size: %d",
-                        player.name,
-                        game.tick,
-                        #global.gubuttonarray
-                    ), player)
-                    
-                    -- Wrap core functionality in pcall with detailed error logging
-                    local status, err = pcall(function()
-                        cycle_buttons_to_rename(player)
-                        cycle_frames_to_rename(player)
-                        create_new_buttons(player)
-                        fix_buttons(player)
-                        destroy_obsolete_buttons(player)
-                    end)
-
-                    if not status then
-                        logging.error("GUI", string.format(
-                            "GUI update failed. Player: %s, Tick: %d, Error: %s",
-                            player.name,
-                            game.tick,
-                            tostring(err)
-                        ), player)
-                    else
-                        logging.debug("GUI", string.format(
-                            "Completed GUI update. Player: %s, Tick: %d",
-                            player.name,
-                            game.tick
-                        ), player)
-                    end
-                    
-                    player_state.checknexttick = 0
-                end
-            else
-                logging.error("Player", string.format(
-                    "Player state unexpectedly nil after setup. Player: %s, Tick: %d",
-                    player.name,
-                    game.tick
-                ), player)
+            if not player_state then
+                setup_player(player)
+                player_state = global.player[player.index]
+            end
+            
+            if player_state.checknexttick == 1 then
+                -- Perform GUI updates
+                cycle_buttons_to_rename(player)
+                cycle_frames_to_rename(player)
+                create_new_buttons(player)
+                fix_buttons(player)
+                destroy_obsolete_buttons(player)
+                player_state.checknexttick = 0
             end
         end
     end
@@ -1256,48 +1161,44 @@ end
 script.on_init(function()
     logging.info("Init", "Mod initialization started", game.get_player(1))
     
-    -- Initialize all required global tables
-    global = {}
-    global.player = {}
-    global.gubuttonarray = {}
+    -- Initialize global state
+    ensure_global_state()
     
-    -- Force complete initialization sequence
+    -- Initialize button array
     init_button_array()
     
-    -- Run general update after initialization
-    general_update()
-    
-    -- Force update buttons for all players
+    -- Setup all existing players
     for _, player in pairs(game.players) do
         if player and player.valid then
+            setup_player(player)
             force_update_player_buttons(player)
         end
     end
-
     
-    logging.info("Init", "Mod initialization completed with " .. #global.gubuttonarray .. " buttons", game.get_player(1))
+    logging.info("Init", "Mod initialization completed", game.get_player(1))
 end)
 
 script.on_configuration_changed(function()
     logging.info("Config", "Configuration change detected", game.get_player(1))
     
-    -- Ensure we have our global tables
-    global = global or {}
-    global.player = global.player or {}
+    -- Ensure global state
+    ensure_global_state()
     
-    -- Force complete reinitialization
+    -- Reinitialize button array
     init_button_array()
-    general_update()
     
-    -- Force update buttons for all players
+    -- Update all players
     for _, player in pairs(game.players) do
         if player and player.valid then
+            setup_player(player)
             force_update_player_buttons(player)
         end
     end
     
     logging.info("Config", "Configuration change handling completed", game.get_player(1))
 end)
+
+
 script.on_event({defines.events.on_research_finished, defines.events.on_rocket_launched}, general_update)
 
 script.on_nth_tick(6, function()
@@ -1316,5 +1217,3 @@ script.on_event({defines.events.on_built_entity, defines.events.on_entity_cloned
 script.on_event({defines.events.on_player_gun_inventory_changed, defines.events.on_player_died}, on_hivemindchange)
 script.on_event(defines.events.on_gui_closed, on_gui_closed)
 script.on_event(defines.events.on_gui_opened, on_gui_opened)
-
---game.print(serpent.block())

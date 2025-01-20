@@ -1,144 +1,48 @@
 ---------------------------------------------------------------------------------------------------
-Version: 2.1.2
-Date: 2025-01-12
-  Bugfixes:
-    - Fixed another crash in on_gui_click event handler when global state was nil
-    - Added more robust state initialization for button click handling
----------------------------------------------------------------------------------------------------
-Version: 2.1.1
-Date: 2025-01-12
-  Bugfixes:
-    - Fixed crash when opening inventory or other GUI elements due to uninitialized global state
-    - Added defensive initialization checks for global state in GUI event handlers
-    - Improved error recovery for GUI events
-    - Fixed crash in on_gui_click event handler when clicking buttons
-    - Added additional state validation for button click events
----------------------------------------------------------------------------------------------------
-Version: 2.1.0
-Date: 2025-01-12
-  Bugfixes:
-    - Fixed button selected states by implementing proper window state tracking
-    - Added persistent state management for window visibility
-    - Improved button state synchronization with window events
----------------------------------------------------------------------------------------------------
-Version: 2.0.9
-Date: 2025-01-12
+Version: 2.0.0
+Date: 2025-01-21
   Features:
+    - Added support for Quick Item Menu mod
+    - Added support for Visual Signals mod
     - Added comprehensive logging system with configurable levels (DEBUG, INFO, WARNING, ERROR)
     - Added per-player logging settings in mod options
     - Added minimum log level setting in mod options
-    - Added support for Visual Signals mod
-  Bugfixes:
-    - Improved multiplayer synchronization handling for global state
-    - Added detailed diagnostic logging for state inconsistencies
-    - Added recovery mechanisms for state corruption
-    - Sometimes buttons would get stuck in a selected state. Now a check is done every 60 ticks (1 second) to reset them.
-  Changes:
-    - Refactored logging implementation throughout the codebase
-    - Improved error messages with more context and player information
-    - Added categorized logging for different operations
-  Info:
-    - Added extensive diagnostic information to help track down multiplayer issues. Please enable logging and set it to DEBUG under the player mod settings.
----------------------------------------------------------------------------------------------------
-Version: 2.0.8
-Date: 2024.10.31
-  Bugfixes:
-    - Fixed regression where buttons wouldn't appear on new games
-    - Fixed crash during player join events on dedicated servers
-    - Fixed initialization sequence to ensure buttons are created properly
-  Changes:
-    - Added improved button initialization system
-    - Enhanced error recovery for initialization and player events
-    - Improved debug logging for troubleshooting startup issues
-    - Added comprehensive state validation during mod initialization
-    - Fixed function loading order to prevent nil value errors
-    - Improved initialization sequence reliability
----------------------------------------------------------------------------------------------------
-Version: 2.0.7
-Date: 2024.10.31
-  Bugfixes:
-    - Fixed crash occurring during player join events on dedicated servers
-    - Added defensive initialization of global state during player events
-    - Improved error handling for multiplayer synchronization
-  Changes:
-    - Enhanced error recovery system for player join events
-    - Added additional safety checks for global state management
-    - Improved logging for player join event debugging
----------------------------------------------------------------------------------------------------
-Version: 2.0.6
-Date: 2024.10.30
-  Changes:
-    - Added comprehensive debug logging system for dedicated server troubleshooting.
-    - Enhanced state tracking for multiplayer sessions
-    - Improved error detection for dedicated servers
-  Bugfixes:
-    - Added additional safeguards against state corruption
-    - Improved error recovery for multiplayer synchronization
-    - Enhanced initialization sequence for dedicated servers
----------------------------------------------------------------------------------------------------
-Version: 2.0.5
-Date: 2024.10.30
-  Bugfixes:
-    - Hopefully now fixed a crash occurring on dedicated servers with peaceful mode enabled
-    - Added comprehensive state validation for multiplayer synchronization
-    - Improved error recovery for unexpected state changes
-  Changes:
-    - Enhanced global state management system
-    - Added detailed error logging for better troubleshooting
-    - Improved mod initialization sequence for dedicated servers
----------------------------------------------------------------------------------------------------
-Version: 2.0.4
-Date: 2024.10.30
-  Bugfixes:
-    - Fixed crash with Toggle Peaceful Mode and other mods by improving global state initialization
-    - Added safety checks for global table access during mod events
-  Changes:
-    - Improved mod initialization sequence for better compatibility
-    - Enhanced state management system for more reliable operation
-    - Removed redundant git files.
----------------------------------------------------------------------------------------------------
-Version: 2.0.3
-Date: 2024.10.30
-  Changes:
-    - Refactored button and frame style code to be more consise.
----------------------------------------------------------------------------------------------------
-Version: 2.0.2
-Date: 2024.10.30
-  Features:
-    - Begun rewriting refactoring/rewriting huge chunks of the plugin. Bugs are expected...
-    - Reorganized icon management system for better maintainability
-    - Added comprehensive validation for GUI element access
-    - Added improved safety checks for GUI state management
-  Changes:
-    - Centralized mod button configurations into a single system
-    - Improved handling of mod settings and configuration changes
-    - Optimized button array processing for better performance
-  Bugfixes:
-    - Actually Fixed crashes occurring with Trainsaver and other mods that temporarily hide UI
-    - Actually Fixed errors when accessing GUI elements during mod configuration changes
-    - Fixed initialization errors in button array management
-    - Actually Fixed issues with invalid GUI states during mod events
----------------------------------------------------------------------------------------------------
-Version: 2.0.1
-Date: 2024.10.29
-  Bugfixes:
-    - Fixed crash when certain UI elements from other mods (e.g., `factoryplanner_mainframe`) were temporarily unavailable due to mod interactions.
-    - Added validation checks in `GUI_Unifyer` to prevent errors from occurring if UI elements are hidden or missing (e.g., during events triggered by mods like `Trainsaver`, `Helmod`, and `Space Exploration`).
-  Changes:
-    - Improved compatibility with mods that dynamically hide or alter UI elements, reducing crashes triggered by unexpected mod behavior.
----------------------------------------------------------------------------------------------------
-Version: 2.0.0
-Date: 2024.10.29
-  Features:
-    - Added support for Quick Item Menu mod
+    - Added extensive diagnostic and debug logging capabilities
+    - Added robust state validation and recovery mechanisms
+    - Added improved button initialization and management system
   Changes:
     - Updated for Factorio 2.0 compatibility
     - Replaced game.active_mods with script.active_mods
     - Updated frame styles to use Factorio 2.0's built-in styles
+    - Enhanced global state initialization and management
+    - Improved multiplayer synchronization
+    - Centralized mod button configurations
+    - Optimized button array processing
+    - Reorganized icon management system
+    - Improved mod compatibility with Trainsaver, Helmod, and Space Exploration
+    - Strengthened compatibility with mods that temporarily hide UI
+    - Enhanced error handling and recovery systems
+    - Comprehensive state validation for all operations
+    - Improved initialization sequences
   Bugfixes:
-    - Fixed crash during mod initialization (global table)
-    - Fixed crash when toggling button visibility
-    - Fixed crash during configuration changes
+    - Fixed multiple crashes related to global state initialization
+    - Fixed issues with nil global state during GUI interactions
+    - Fixed button selected states and window state tracking
+    - Added persistent state management for window visibility
+    - Fixed button state synchronization
+    - Fixed crashes during player join events on dedicated servers
+    - Fixed initialization issues with peaceful mode on dedicated servers
+    - Fixed button visibility issues in new games
+    - Added comprehensive validation for GUI element access
+    - Fixed errors when handling clock GUI updates
+    - Fixed buttons getting stuck in selected state (added 60-tick reset)
+    - Fixed issues that arose with Factorio 2.0's API changes
+  Info:
+    - This version represents a major rewrite of the mod with significant improvements
+    - The mod is now known as "GUI Unifier" in most places, though the internal mod name remains unchanged
+    - If you encounter any issues, please enable DEBUG logging in the mod settings. Report any issues with steps to reproduce
+    - The changes in this changelog are consolidated into a single release as 2.0.0.
+    - The full changelog and commit history can be found at https://github.com/snouz/GUI_Unifier
 ---------------------------------------------------------------------------------------------------
 Version: 1.12.0
 Date: 2021.10.26

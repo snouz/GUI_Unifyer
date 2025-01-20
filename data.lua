@@ -2,7 +2,7 @@
 ------- SPRITES -------
 -----------------------
 
-local ICONPATH = "__GUI_Unifyer_Unified__/graphics/icons/"
+local ICONPATH = "__GUI_Unifyer__/graphics/icons/"
 local sprites = {
 "248k_button", "actr_button", "attilazoommod_button", "beastfinder_button", "betterbotsfixed_button", "blackmarket1_button", "blackmarket2_button", "blueprint_flip_horizontal_button",
 "blueprint_flip_vertical_button", "blueprintalignment_button", "blueprintrequest_button", "bobclasses_button", "bobinserters_button", "cargotrainmanager_button", "changemapsettings_button", "cleanmap_button", "clusterio_button",
@@ -96,7 +96,7 @@ data:extend({
 	{
     type = "sprite",
     name = "DeleteAdjacentChunk_player",
-    filename = "__GUI_Unifyer_Unified__/graphics/gui/deleteadjacentchunks_center.png",
+    filename = "__GUI_Unifyer__/graphics/gui/deleteadjacentchunks_center.png",
     priority = "extra-high-no-scale",
     width = 40,
     height = 26,

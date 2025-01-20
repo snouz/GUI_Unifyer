@@ -1,4 +1,4 @@
-local GUIPATH = "__GUI_Unifyer_Unified__/graphics/gui/"
+local GUIPATH = "__GUI_Unifyer__/graphics/gui/"
 local COLORS = {
     transparent = {0, 0, 0, 0},
     white = {1, 1, 1, 0.9},
@@ -83,7 +83,7 @@ end
 -- Define custom button styles with varying opacities
 for i = 1, 8 do
     local opacity = i <= 4 and 1 or (i <= 6 and 0.8 or 0.9)
-    create_dynamic_button_style("gui_unifyer_gui_0" .. i, 80, 4, opacity)
+    create_dynamic_button_style("gui_Unifier_gui_0" .. i, 80, 4, opacity)
 end
 
 -- Define Font and Button Styles for Specific Functions
@@ -106,16 +106,16 @@ data.raw["gui-style"].default["todo_button_default_snouz"] = {
     minimal_width = 40,
     height = 40,
     default_font_color = COLORS.white,
-    default_graphical_set = {base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {0, 0}, corner_size = 12, scale = 0.5}},
+    default_graphical_set = {base = {filename = GUIPATH .. "gui_Unifier_gui_default_recreated.png", position = {0, 0}, corner_size = 12, scale = 0.5}},
     hovered_font_color = COLORS.white,
-    hovered_graphical_set = {base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {25, 0}, corner_size = 12, scale = 0.5}},
+    hovered_graphical_set = {base = {filename = GUIPATH .. "gui_Unifier_gui_default_recreated.png", position = {25, 0}, corner_size = 12, scale = 0.5}},
     clicked_font_color = COLORS.white,
     clicked_vertical_offset = 1,
-    clicked_graphical_set = {base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5}},
+    clicked_graphical_set = {base = {filename = GUIPATH .. "gui_Unifier_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5}},
     disabled_font_color = COLORS.disabled,
-    disabled_graphical_set = {base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {0, 0}, corner_size = 12, scale = 0.5}},
+    disabled_graphical_set = {base = {filename = GUIPATH .. "gui_Unifier_gui_default_recreated.png", position = {0, 0}, corner_size = 12, scale = 0.5}},
     selected_font_color = COLORS.white,
-    selected_graphical_set = {base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5}},
+    selected_graphical_set = {base = {filename = GUIPATH .. "gui_Unifier_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5}},
     pie_progress_color = COLORS.white,
     left_click_sound = {{filename = "__core__/sound/gui-click.ogg", volume = 1}}
 }
@@ -123,7 +123,7 @@ data.raw["gui-style"].default["todo_button_default_snouz"] = {
 data.raw["gui-style"].default["todo_button_default_snouz_selected"] = {
     type = "button_style",
     parent = "todo_button_default_snouz",
-    default_graphical_set = {base = {filename = GUIPATH .. "gui_unifyer_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5}}
+    default_graphical_set = {base = {filename = GUIPATH .. "gui_Unifier_gui_default_recreated.png", position = {50, 0}, corner_size = 12, scale = 0.5}}
 }
 
 data.raw["gui-style"].default["adjacentchunks_button"] = {

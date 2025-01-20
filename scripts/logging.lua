@@ -22,7 +22,7 @@ local function should_log(player)
 end
 
 local function format_message(level, category, message)
-    return string.format("[GUI Unifyer %s][%s] %s", get_log_level_name(level), category, message)
+    return string.format("[GUI Unifier %s][%s] %s", get_log_level_name(level), category, message)
 end
 
 local M = {}
