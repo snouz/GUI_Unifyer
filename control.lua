@@ -1,61 +1,67 @@
-require('scripts/debug')
-
+local debug = require('scripts/debug')
 local mod_gui = require("mod-gui")
+local icons = require('icons')  -- Load icons during initial parse
+
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local activedebug = false
 
-local iconlist = require('iconlist')
 
-local iconlist_creativemod = {
-	{"creative-mod",			"creativemod_button", 			"creative-mod_main-menu-open-button", 	nil,								nil,		nil,				{"left", "mod_gui_frame_flow", "creative-mod_main-menu-container"}},
-	{"creative-mod",			"creativemod_button",			"creative-mod_creative-chest-open-button",nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame"}},
-	{"creative-mod",			"creativemod_button",			"creative-mod_duplicating-chest-open-button",nil,							1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame"}},
-	{"creative-mod",			"creativemod_button",			"creative-mod_configurable-super-boiler-open-button",nil,					1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame"}},
-	{"creative-mod",			"creativemod_button",			"creative-mod_item-source-open-button",	nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame-container"}},
-	{"creative-mod",			"creativemod_button",			"creative-mod_duplicator-open-button",	nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame-container"}},
-	{"creative-mod",			"creativemod_button",			"creative-mod_item-void-open-button",	nil,								1,	{"creative-mod_entity-gui-button-container"},	{"left", "mod_gui_frame_flow", "creative-mod_entity-gui-container", "creative-mod_entity-gui-frame-container"}},
-}
 
-local iconlist_Picker = {
-	{"PickerInventoryTools",	"pickerinventorytools_button", 	"filterfill_requests", 					nil,								nil,		nil,				nil},
-	{"PickerInventoryTools",	"filterfill_requests_btn_bp",	"filterfill_requests_btn_bp",			nil,								1,	 {"filterfill_requests"},	nil},
-	{"PickerInventoryTools",	"filterfill_requests_btn_2x",	"filterfill_requests_btn_2x",			nil,								1,	 {"filterfill_requests"},	nil},
-	{"PickerInventoryTools",	"filterfill_requests_btn_5x",	"filterfill_requests_btn_5x",			nil,								1,	 {"filterfill_requests"},	nil},
-	{"PickerInventoryTools",	"filterfill_requests_btn_10x",	"filterfill_requests_btn_10x",			nil,								1,	 {"filterfill_requests"},	nil},
-	{"PickerInventoryTools",	"filterfill_requests_btn_max",	"filterfill_requests_btn_max",			nil,								1,	 {"filterfill_requests"},	nil},
-	{"PickerInventoryTools",	"filterfill_requests_btn_0x",	"filterfill_requests_btn_0x",			nil,								1,	 {"filterfill_requests"},	nil},
-	{"PickerInventoryTools",	"filterfill_filters_btn_all",	"filterfill_filters_btn_all",			nil,								1,	 {"filterfill_filters"},	nil},
-	{"PickerInventoryTools",	"filterfill_filters_btn_down",	"filterfill_filters_btn_down",			nil,								1,	 {"filterfill_filters"},	nil},
-	{"PickerInventoryTools",	"filterfill_filters_btn_right",	"filterfill_filters_btn_right",			nil,								1,	 {"filterfill_filters"},	nil},
-	{"PickerInventoryTools",	"filterfill_filters_btn_set_all","filterfill_filters_btn_set_all",		nil,								1,	 {"filterfill_filters"},	nil},
-	{"PickerInventoryTools",	"filterfill_filters_btn_clear_all","filterfill_filters_btn_clear_all",	nil,								1,	 {"filterfill_filters"},	nil},
-}
-
-local function build_button_array()
-    -- Initialize global if it doesn't exist
-    if not global then
-        global = {}
-    end
-    -- Initialize gubuttonarray if it doesn't exist
-    if not global.gubuttonarray then
-        global.gubuttonarray = {}
-    end
-
-    for k, icon in pairs(iconlist) do
-        if script.active_mods[icon[1]] then
-            local alreadyexists = false
-            for _, addedalready in pairs(global.gubuttonarray) do
-                if addedalready[1] == icon[1] then
-                    alreadyexists = true
-                end
-            end
-            if not alreadyexists then
-                table.insert(global.gubuttonarray, icon)
+-- Set to keep track of mods we've already processed
+local function get_processed_mods()
+    local processed = {}
+    if global.gubuttonarray then
+        for _, entry in pairs(global.gubuttonarray) do
+            if entry[1] then  -- Mod name is first element
+                processed[entry[1]] = true
             end
         end
     end
-    if global.gubuttonarray == {} then global.gubuttonarray = {{}} end
+    return processed
+end
+
+-- Initialize or reset the global state
+local function ensure_global_state()
+    global = global or {}
+    global.gubuttonarray = global.gubuttonarray or {}
+    
+    -- Handle edge case where array might be empty but initialized
+    if not next(global.gubuttonarray) then
+        global.gubuttonarray = {}
+    end
+end
+
+local function build_button_array()
+    ensure_global_state()
+    
+    -- Get list of mods we've already processed
+    local processed_mods = get_processed_mods()
+    
+    -- Process each icon definition using our stored icons variable
+    for _, icon in pairs(icons) do
+        local mod_name = icon[1]
+        
+        -- Only process if mod is active and we haven't handled it yet
+        if mod_name and script.active_mods[mod_name] and not processed_mods[mod_name] then
+            table.insert(global.gubuttonarray, icon)
+            processed_mods[mod_name] = true
+        end
+    end
+end
+
+-- For migration compatibility
+local function migrate_button_array()
+    if global and global.gubuttonarray and #global.gubuttonarray == 0 then
+        -- Only add empty entry if array is completely empty
+        global.gubuttonarray = {{}}
+    end
+end
+
+-- Main function that ties it all together
+function init_button_array()
+    build_button_array()
+    migrate_button_array()
 end
 
 local function setup_player(player)
@@ -97,52 +103,89 @@ local function set_button_sprite(button, spritepath)
 end
 
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath, windowtocheck)
-	if not player or not player.valid or not player.gui or not sprite or not button then return end
-	local settingname = "gu_button_" .. button
-	local is_button_true = true
-	if settings.get_player_settings(player)[settingname] then
-		is_button_true = settings.get_player_settings(player)[settingname].value
-	end
-	--game.print(is_button_true)
-	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-	local isselected = true
-	if windowtocheck then
-		local windowtocheckpath = player.gui
-		for i, k in pairs(windowtocheck) do
-			if windowtocheckpath[k] and windowtocheckpath[k].visible then
-				windowtocheckpath = windowtocheckpath[k]
-			else
-				isselected = false
-			end
-		end
-		if isselected == true then
-			gu_button_style_setting = gu_button_style_setting .. "_selected"
-		end
-	end
-	local button_flow = mod_gui.get_button_flow(player)
-	if buttonpath then
-		for _, k in pairs(buttonpath) do
-			if button_flow[k] then
-				button_flow = button_flow[k]
-			end
-		end
-	end
-	local modbutton = button_flow[button]
-	if modbutton and (modbutton.type == "button" or modbutton.type == "sprite-button") then
-
-		modbutton.style = gu_button_style_setting
-		if not dontreplacesprite then
-			set_button_sprite(modbutton, sprite)
-		end
-		if tooltip then
-			modbutton.tooltip = tooltip
-		end
-		if is_button_true == false then
-			modbutton.visible = false
-		else
-			modbutton.visible = true
-		end
-	end
+    -- Validate essential parameters
+    if not player or not player.valid or not player.gui or not sprite or not button then 
+        return 
+    end
+    
+    -- Safely get button settings
+    local settingname = "gu_button_" .. button
+    local player_settings = settings.get_player_settings(player)
+    if not player_settings then return end
+    
+    local is_button_true = true
+    if player_settings[settingname] then
+        is_button_true = player_settings[settingname].value
+    end
+    
+    -- Safely get button style
+    local style_setting = player_settings["gu_button_style_setting"]
+    if not style_setting then return end
+    local gu_button_style_setting = style_setting.value or "slot_button_notext"
+    
+    -- Check window visibility with safe traversal
+    local isselected = false
+    if windowtocheck then
+        isselected = true -- Start true, set false if any check fails
+        local windowtocheckpath = player.gui
+        
+        for _, k in pairs(windowtocheck) do
+            -- Safe navigation of GUI path
+            if not windowtocheckpath or not windowtocheckpath[k] then
+                isselected = false
+                break
+            end
+            
+            -- Check visibility safely
+            local next_element = windowtocheckpath[k]
+            if not next_element.valid or not next_element.visible then
+                isselected = false
+                break
+            end
+            
+            windowtocheckpath = next_element
+        end
+        
+        -- Apply selected style if all checks passed
+        if isselected then
+            gu_button_style_setting = gu_button_style_setting .. "_selected"
+        end
+    end
+    
+    -- Safely traverse button path
+    local button_flow = mod_gui.get_button_flow(player)
+    if not button_flow then return end
+    
+    if buttonpath then
+        for _, k in pairs(buttonpath) do
+            if not button_flow or not button_flow[k] then
+                return -- Exit if path is invalid
+            end
+            button_flow = button_flow[k]
+        end
+    end
+    
+    -- Final button modifications with safety checks
+    local modbutton = button_flow[button]
+    if modbutton and modbutton.valid and 
+       (modbutton.type == "button" or modbutton.type == "sprite-button") then
+        -- Wrap potentially dangerous operations in pcall
+        local success = pcall(function()
+            modbutton.style = gu_button_style_setting
+            if not dontreplacesprite then
+                set_button_sprite(modbutton, sprite)
+            end
+            if tooltip then
+                modbutton.tooltip = tooltip
+            end
+            modbutton.visible = is_button_true
+        end)
+        
+        if not success then
+            -- Optional: Log error or handle failure
+            return
+        end
+    end
 end
 
 local function fix_buttons(player)
@@ -152,18 +195,6 @@ local function fix_buttons(player)
 	if not global.gubuttonarray then build_button_array() end
 	for _, k in pairs(global.gubuttonarray) do
 		if k[1] == nil or script.active_mods[k[1]] then
-			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
-		end
-	end
-
-	if script.active_mods["creative-mod"] then
-		for _, k in pairs(iconlist_creativemod) do
-			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
-		end
-	end
-
-	if script.active_mods["PickerInventoryTools"] then
-		for _, k in pairs(iconlist_Picker) do
 			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
 		end
 	end
@@ -819,10 +850,17 @@ local function on_tick()
 	end
 end
 
-script.on_init(general_update)
+script.on_init(function()
+    init_button_array()
+    general_update()
+end)
+
+script.on_configuration_changed(function()
+    init_button_array()
+    general_update()
+end)
 script.on_event({defines.events.on_research_finished, defines.events.on_rocket_launched}, general_update)
 script.on_nth_tick(6, on_tick)
-script.on_configuration_changed(on_configuration_changed)
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_player_configuration_changed)
 script.on_event({defines.events.on_gui_closed, defines.events.on_gui_confirmed, defines.events.on_gui_opened, on_player_display_resolution_changed, defines.events.on_player_changed_surface, defines.events.on_player_created}, general_update_event)
 script.on_event(defines.events.on_player_joined_game, on_player_joined)

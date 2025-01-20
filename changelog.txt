@@ -1,16 +1,41 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.2
+Date: 2024.10.30
+  Features:
+    - Begun rewriting refactoring/rewriting huge chunks of the plugin. Bugs are expected...
+    - Reorganized icon management system for better maintainability
+    - Added comprehensive validation for GUI element access
+    - Added improved safety checks for GUI state management
+  Changes:
+    - Centralized mod button configurations into a single system
+    - Improved handling of mod settings and configuration changes
+    - Optimized button array processing for better performance
+  Bugfixes:
+    - Actually Fixed crashes occurring with Trainsaver and other mods that temporarily hide UI
+    - Actually Fixed errors when accessing GUI elements during mod configuration changes
+    - Fixed initialization errors in button array management
+    - Actually Fixed issues with invalid GUI states during mod events
+---------------------------------------------------------------------------------------------------
+Version: 2.0.1
+Date: 2024.10.29
+  Bugfixes:
+    - Fixed crash when certain UI elements from other mods (e.g., `factoryplanner_mainframe`) were temporarily unavailable due to mod interactions.
+    - Added validation checks in `GUI_Unifyer` to prevent errors from occurring if UI elements are hidden or missing (e.g., during events triggered by mods like `Trainsaver`, `Helmod`, and `Space Exploration`).
+  Changes:
+    - Improved compatibility with mods that dynamically hide or alter UI elements, reducing crashes triggered by unexpected mod behavior.
+---------------------------------------------------------------------------------------------------
 Version: 2.0.0
 Date: 2024.10.29
- Features:
-   - Added support for Quick Item Menu mod
- Changes:
-   - Updated for Factorio 2.0 compatibility
-   - Replaced game.active_mods with script.active_mods
-   - Updated frame styles to use Factorio 2.0's built-in styles
- Bugfixes:
-   - Fixed crash during mod initialization (global table)
-   - Fixed crash when toggling button visibility 
-   - Fixed crash during configuration changes
+  Features:
+    - Added support for Quick Item Menu mod
+  Changes:
+    - Updated for Factorio 2.0 compatibility
+    - Replaced game.active_mods with script.active_mods
+    - Updated frame styles to use Factorio 2.0's built-in styles
+  Bugfixes:
+    - Fixed crash during mod initialization (global table)
+    - Fixed crash when toggling button visibility
+    - Fixed crash during configuration changes
 ---------------------------------------------------------------------------------------------------
 Version: 1.12.0
 Date: 2021.10.26

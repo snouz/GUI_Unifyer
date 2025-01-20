@@ -59,27 +59,32 @@ data:extend({
     },
 })
 
-
---Hide icons
-
-local iconlist = require('iconlist')
-
+-- Hide icons
+local icons = require('icons')
 local settingslist = {}
 
-for k, icon in pairs(iconlist) do
+-- Convert new icon format to settings
+for _, icon in pairs(icons) do
+    -- Use array indices for backward compatibility since we're still in transition
+    -- icon[1] is mod name, icon[3] is button name
     if mods[icon[1]] and icon[1] ~= "base" then
+        local button_name = icon[3]
         local alreadyexists = false
-        for _, i in pairs(settingslist) do
-            if icon[3] == i then
+        
+        for _, existing_button in pairs(settingslist) do
+            if button_name == existing_button then
                 alreadyexists = true
+                break
             end
         end
+        
         if not alreadyexists then
-            table.insert(settingslist, icon[3])
+            table.insert(settingslist, button_name)
         end
     end
 end
 
+-- Create settings for each button
 for _, setting in pairs(settingslist) do
     data:extend({
         {
