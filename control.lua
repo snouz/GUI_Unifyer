@@ -6,6 +6,10 @@ local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local activedebug = false
 
+-- Debug logging function
+local function log_debug(message)
+    log("[GUI Unifyer Debug] " .. message)
+end
 
 
 -- Set to keep track of mods we've already processed
@@ -679,16 +683,22 @@ local function on_player_configuration_changed(event)
 end
 
 local function on_player_joined(event)
-	local player = event.player_index and game.players[event.player_index]
-	local button_flow = mod_gui.get_button_flow(player)
-	general_update_event(event)
+    local player = event.player_index and game.players[event.player_index]
+    if player and player.valid then
+        log_debug("Player joined: " .. player.name .. " (index: " .. player.index .. ")")
+    end
+    
+    -- Get button flow first to match your original structure
+    local button_flow = mod_gui.get_button_flow(player)
+    general_update_event(event)
 
-		--destroy evoGUI to let it recreate and display on the right of main gui.
-	if script.active_mods["EvoGUI"] then
-		if player.gui.top.evogui_root then
-			player.gui.top.evogui_root.destroy()
-		end
-	end
+    -- Keep the EvoGUI handling as it was in your original code
+    if script.active_mods["EvoGUI"] then
+        if player.gui.top.evogui_root then
+            log_debug("Destroying and recreating EvoGUI for " .. player.name)
+            player.gui.top.evogui_root.destroy()
+        end
+    end
 end
 
 local function on_gui_click(event)
@@ -810,41 +820,41 @@ end
 
 -- Main tick function. Now extra defensive to ensure no crashes
 local function on_tick()
-    -- Ensure global exists before doing anything
+    -- Log if global is nil
     if not global then
+        log_debug("on_tick: global table is nil, reinitializing...")
         global = {}
         global.player = {}
         global.gubuttonarray = {}
-        -- You might want to log this occurrence
-        log("Global table was nil during on_tick, reinitializing...")
     end
 
-    -- Validate global.player exists
+    -- Log if player table is missing
     if not global.player then
+        log_debug("on_tick: global.player table is nil, reinitializing...")
         global.player = {}
     end
 
-    -- Process players with additional safety checks
     for _, player in pairs(game.players) do
         if player and player.valid then
-            -- Ensure player entry exists with proper initialization
             if not global.player[player.index] then
+                log_debug("Player " .. player.name .. " (index: " .. player.index .. ") missing from global.player")
                 setup_player(player)
-                -- If setup_player failed for some reason, create minimal valid state
+                -- Verify setup succeeded
                 if not global.player[player.index] then
+                    log_debug("setup_player failed for " .. player.name .. ", creating minimal state")
                     global.player[player.index] = {
                         checknexttick = 0
                     }
                 end
             end
 
-            -- Safe access to player state
             local player_state = global.player[player.index]
             if player_state then
-                if player_state.checknexttick > 1 then
-                    player_state.checknexttick = player_state.checknexttick - 1
-                elseif player_state.checknexttick == 1 then
-                    -- Wrap core functionality in pcall for safety
+                if player_state.checknexttick == 1 then
+                    -- Log before attempting GUI updates
+                    log_debug("Starting GUI update cycle for player " .. player.name)
+                    
+                    -- Wrap core functionality in pcall with detailed error logging
                     local status, err = pcall(function()
                         cycle_buttons_to_rename(player)
                         cycle_frames_to_rename(player)
@@ -854,44 +864,58 @@ local function on_tick()
                     end)
                     
                     if not status then
-                        log("Error in GUI update cycle: " .. tostring(err))
+                        log_debug("Error in GUI update cycle for " .. player.name .. ": " .. tostring(err))
+                    else
+                        log_debug("Completed GUI update cycle for " .. player.name)
                     end
                     
                     player_state.checknexttick = 0
                 end
+            else
+                log_debug("Player state unexpectedly nil for " .. player.name .. " after verification")
             end
         end
     end
 end
 
 script.on_init(function()
-    -- Initialize core state
+    log_debug("Mod initialization started")
+    
     if not global then
+        log_debug("Global table nil during initialization")
         global = {}
     end
     if not global.player then
+        log_debug("Player table nil during initialization")
         global.player = {}
     end
     if not global.gubuttonarray then
+        log_debug("Button array nil during initialization")
         global.gubuttonarray = {}
     end
     
     init_button_array()
     general_update()
+    
+    log_debug("Mod initialization completed")
 end)
 
 script.on_configuration_changed(function()
+    log_debug("Configuration change detected")
     init_button_array()
     general_update()
+    log_debug("Configuration change handling completed")
 end)
+
 script.on_event({defines.events.on_research_finished, defines.events.on_rocket_launched}, general_update)
+
 script.on_nth_tick(6, function()
-    -- Wrap the entire tick handler in pcall
     local status, err = pcall(on_tick)
     if not status then
-        log("Error in tick handler: " .. tostring(err))
+        log_debug("Critical error in tick handler: " .. tostring(err))
     end
 end)
+
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_player_configuration_changed)
 script.on_event({defines.events.on_gui_closed, defines.events.on_gui_confirmed, defines.events.on_gui_opened, on_player_display_resolution_changed, defines.events.on_player_changed_surface, defines.events.on_player_created}, general_update_event)
 script.on_event(defines.events.on_player_joined_game, on_player_joined)

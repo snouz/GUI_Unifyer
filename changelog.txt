@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.6
+Date: 2024.10.30
+  Changes:
+    - Added comprehensive debug logging system for dedicated server troubleshooting.
+    - Enhanced state tracking for multiplayer sessions
+    - Improved error detection for dedicated servers
+  Bugfixes:
+    - Added additional safeguards against state corruption
+    - Improved error recovery for multiplayer synchronization
+    - Enhanced initialization sequence for dedicated servers
+---------------------------------------------------------------------------------------------------
 Version: 2.0.5
 Date: 2024.10.30
   Bugfixes:
