@@ -8,18 +8,7 @@ local snouz_invisible_frame =
   use_header_filler = false,
   padding = 0,
   margin = 0,
-  graphical_set =
-  {
-    base =
-    {
-      position = {0, 0},
-      corner_size = 1,
-      center = {position = {42, 8},
-      size = {1, 1}},
-      draw_type = "outer",
-      opacity = 0,
-    },
-  },
+  graphical_set = {}, -- Completely empty for true invisibility
   header_flow_style =
   {
     type = "horizontal_flow_style",
@@ -40,6 +29,13 @@ local snouz_barebone_frame =
   padding = 0,
   margin = 0,
   use_header_filler = false,
+  graphical_set = {
+    base = {
+      position = {0, 0},
+      corner_size = 8,
+      draw_type = "outer"
+    }
+  },
   header_flow_style =
   {
     type = "horizontal_flow_style",
@@ -59,6 +55,29 @@ local snouz_large_barebone_frame =
   type = "frame_style",
   parent = "snouz_barebone_frame",
   padding = 3,
+  graphical_set = {
+    base = {
+      position = {0, 0},
+      corner_size = 8,
+      draw_type = "outer"
+    }
+  },
 }
 
 data.raw["gui-style"].default["snouz_large_barebone_frame"] = snouz_large_barebone_frame
+
+-- Add a replacement for quick_bar_window_frame
+local mod_gui_frame = {
+  type = "frame_style",
+  parent = "frame",
+  padding = 0,
+  graphical_set = {
+    base = {
+      position = {0, 0},
+      corner_size = 8,
+      draw_type = "outer"
+    }
+  },
+}
+
+data.raw["gui-style"].default["mod_gui_frame"] = mod_gui_frame

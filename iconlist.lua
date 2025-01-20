@@ -128,8 +128,10 @@ return {
     {"Bluegistics",             "bluegistics_button",           "toggle_saved_logistics_layouts",       nil,                                1,          nil,                nil},
     {"Avatars",                 "avatars_button",               "avatar_disc",                          nil,                                nil,        nil,                nil},
     {"modmashsplinternewworlds","newworlds_button",             "planets-toggle-button",                nil,                                nil,        nil,                {"screen", "planets-main-frame"}},
+    {"qiMenu",    "quickitemmenu_button",    "qiMenu_button",    {'guiu.quickitemmenu_button'},    nil,    nil,    {"left", "qiMenu-frame-layout"}},
 
 
+    
     --{"",      "", "",                     nil,        nil,        nil,                nil},
     --{"trainschedulesignals_button", "TSS=open-close",                     nil,                                nil,        nil},       ??
     --{"attachnotes_button",            "attach-note-button",                   nil,                                1,          nil}    -- too complex

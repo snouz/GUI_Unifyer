@@ -1,4 +1,4 @@
-local GUIPATH = "__GUI_Unifyer__/graphics/gui/"
+local GUIPATH = "__GUI_Unifyer_Unified__/graphics/gui/"
 local trans = {0, 0, 0, 0}
 local white = {1, 1, 1, 0.9}
 local black = {0, 0, 0, 0.9}

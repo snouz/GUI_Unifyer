@@ -33,23 +33,29 @@ local iconlist_Picker = {
 }
 
 local function build_button_array()
+    -- Initialize global if it doesn't exist
+    if not global then
+        global = {}
+    end
+    -- Initialize gubuttonarray if it doesn't exist
+    if not global.gubuttonarray then
+        global.gubuttonarray = {}
+    end
 
-	global.gubuttonarray = {}
-
-	for k, icon in pairs(iconlist) do
-	    if game.active_mods[icon[1]] then
-	        local alreadyexists = false
-	        for _, addedalready in pairs(global.gubuttonarray) do
-	            if addedalready[1] == icon[1] then
-	                alreadyexists = true
-	            end
-	        end
-	        if not alreadyexists then
-	            table.insert(global.gubuttonarray, icon)
-	        end
-	    end
-	end
-	if global.gubuttonarray == {} then global.gubuttonarray = {{}} end
+    for k, icon in pairs(iconlist) do
+        if script.active_mods[icon[1]] then
+            local alreadyexists = false
+            for _, addedalready in pairs(global.gubuttonarray) do
+                if addedalready[1] == icon[1] then
+                    alreadyexists = true
+                end
+            end
+            if not alreadyexists then
+                table.insert(global.gubuttonarray, icon)
+            end
+        end
+    end
+    if global.gubuttonarray == {} then global.gubuttonarray = {{}} end
 end
 
 local function setup_player(player)
@@ -91,7 +97,7 @@ local function set_button_sprite(button, spritepath)
 end
 
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath, windowtocheck)
-	if not player or not player.valid or not sprite or not button then return end
+	if not player or not player.valid or not player.gui or not sprite or not button then return end
 	local settingname = "gu_button_" .. button
 	local is_button_true = true
 	if settings.get_player_settings(player)[settingname] then
@@ -145,24 +151,24 @@ local function fix_buttons(player)
 
 	if not global.gubuttonarray then build_button_array() end
 	for _, k in pairs(global.gubuttonarray) do
-		if k[1] == nil or game.active_mods[k[1]] then
+		if k[1] == nil or script.active_mods[k[1]] then
 			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
 		end
 	end
 
-	if game.active_mods["creative-mod"] then
+	if script.active_mods["creative-mod"] then
 		for _, k in pairs(iconlist_creativemod) do
 			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
 		end
 	end
 
-	if game.active_mods["PickerInventoryTools"] then
+	if script.active_mods["PickerInventoryTools"] then
 		for _, k in pairs(iconlist_Picker) do
 			change_one_icon(player, k[2], k[3], k[4], k[5], k[6], k[7])
 		end
 	end
 
-	if game.active_mods["BlackMarket2"] then
+	if script.active_mods["BlackMarket2"] then
 		if button_flow.flw_blkmkt and button_flow.flw_blkmkt.but_blkmkt_credits then
 			local blackmarketvalue = button_flow.flw_blkmkt.but_blkmkt_credits.caption
 			if blackmarketvalue then
@@ -171,7 +177,7 @@ local function fix_buttons(player)
 		end
 	end
 
-	if game.active_mods["AttilaZoomMod"] then
+	if script.active_mods["AttilaZoomMod"] then
 		for i=1,15 do
 			local attilazoommod_button = button_flow["Attila_zm_btn_"..tostring(i)]
 			local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
@@ -185,7 +191,7 @@ local function fix_buttons(player)
 		end
 	end
 
-	if game.active_mods["Todo-List"] then
+	if script.active_mods["Todo-List"] then
 		settings.get_player_settings(player)["gu_todolist_style_setting"].hidden = false
 		local todolist_button = button_flow.todo_maximize_button
 		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
@@ -211,7 +217,7 @@ local function fix_buttons(player)
 		settings.get_player_settings(player)["gu_todolist_style_setting"].hidden = true
 	end
 
-	if game.active_mods["DeleteAdjacentChunk"] and button_flow.DeleteAdjacentChunk_table then
+	if script.active_mods["DeleteAdjacentChunk"] and button_flow.DeleteAdjacentChunk_table then
 		local dac_buttons_list = {"DeleteAdjacentChunk_nw", "DeleteAdjacentChunk_n", "DeleteAdjacentChunk_ne", "DeleteAdjacentChunk_w", "DeleteAdjacentChunk_e", "DeleteAdjacentChunk_sw", "DeleteAdjacentChunk_s", "DeleteAdjacentChunk_se"}
 		for _,k in pairs(dac_buttons_list) do
 			if button_flow.DeleteAdjacentChunk_table[k] then
@@ -221,7 +227,7 @@ local function fix_buttons(player)
 		end
 	end
 
-	if game.active_mods["Factorissimo2"] then
+	if script.active_mods["Factorissimo2"] then
 		local fcsmo = button_flow.factory_camera_toggle_button
 		if fcsmo then
 			if fcsmo.sprite == "technology/factory-architecture-t1" then
@@ -240,7 +246,7 @@ local function create_new_buttons(player)
 	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 
 	local function create_buttons_from_list(mod, button, sprite, tooltip, optionon)
-		if game.active_mods[mod] and optionon then
+		if script.active_mods[mod] and optionon then
 			if not button_flow[button] then
 				button_flow.add {
 					type = "sprite-button",
@@ -307,7 +313,7 @@ local function create_new_buttons(player)
 		create_buttons_from_list("advanced-logistics-system-fork", "logistics-view-button", "logisticssystemfork_button", {'guiu.logisticssystemfork_button'}, true)
 	end
 
-	if game.active_mods["clock"] then
+	if script.active_mods["clock"] then
 		if not button_flow.clockGUI then
 			button_flow.add {
 				type = "button",
@@ -320,7 +326,7 @@ local function create_new_buttons(player)
 		button_flow.clockGUI.destroy()
 	end
 
-	if game.active_mods["SpawnControl"] or game.active_mods["TimedSpawnControl"] then
+	if script.active_mods["SpawnControl"] or script.active_mods["TimedSpawnControl"] then
 		if not button_flow.spawn then
 			button_flow.add {
 				type = "sprite-button",
@@ -333,7 +339,7 @@ local function create_new_buttons(player)
 		button_flow["spawn"].destroy()
 	end
 
-	if game.active_mods["inserter-throughput"] then
+	if script.active_mods["inserter-throughput"] then
 		if button_flow["inserter-throughput-toggle"] and settings.get_player_settings(player)["inserter-throughput-enabled"] then
 			if settings.get_player_settings(player)["inserter-throughput-enabled"].value == true then
 				button_flow["inserter-throughput-toggle"].sprite = "inserterthroughput_on_button"
@@ -383,7 +389,7 @@ local function destroy_obsolete_buttons(player)
 		if button_flow.blueprint_flip_vertical then button_flow.blueprint_flip_vertical.destroy() end
 	end
 
-	if game.active_mods["automatic-belt-direction"] and button_flow.abdgui and settings.get_player_settings(player)["abd-showgui"] and settings.get_player_settings(player)["abd-showgui"].value == false then
+	if script.active_mods["automatic-belt-direction"] and button_flow.abdgui and settings.get_player_settings(player)["abd-showgui"] and settings.get_player_settings(player)["abd-showgui"].value == false then
 		button_flow.abdgui.destroy()
 	end
 
@@ -407,7 +413,7 @@ local function destroy_obsolete_buttons(player)
 		end
 	end
 
-	if game.active_mods["production-monitor"] then
+	if script.active_mods["production-monitor"] then
 		if player.gui.left.stats_item_flow then
 			local button_table_pm = player.gui.left.stats_item_flow.children_names[1]
 			if player.gui.left.stats_item_flow[button_table_pm] and player.gui.left.stats_item_flow[button_table_pm].stats_show_settings then
@@ -429,7 +435,7 @@ local function destroy_obsolete_buttons(player)
 		end
 	end
 
-	if game.active_mods["YARM"] then
+	if script.active_mods["YARM"] then
 		local ff = mod_gui.get_frame_flow(player)
 		if ff and ff.YARM_root and ff.YARM_root.buttons then
 			local yarmbuttons = ff.YARM_root.buttons
@@ -443,7 +449,7 @@ local function destroy_obsolete_buttons(player)
 		player.gui.left.BPL_Flow.BPL_LabButton.visible = false
 	end
 
-	if game.active_mods["Spiderissmo"] then
+	if script.active_mods["Spiderissmo"] then
 		if top.minimap_button and top.minimap_button.visible == true then
 			top.minimap_button.visible = false
 		end
@@ -461,24 +467,25 @@ local function destroy_obsolete_buttons(player)
 end
 
 local function update_frame_style(event)
-	local player = event.player_index and game.players[event.player_index]
-	if not player or not player.valid then return end
-	local gu_frame_style_setting = settings.get_player_settings(player)["gu_frame_style_setting"].value or "normal_frame_style"
-	if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
-		if gu_frame_style_setting == "snouz_normal_frame_style" then
-			player.gui.top.mod_gui_top_frame.style = "quick_bar_window_frame"
-			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "mod_gui_inside_deep_frame"
-		elseif gu_frame_style_setting == "snouz_barebone_frame_style" then
-			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
-			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_barebone_frame"
-		elseif gu_frame_style_setting == "snouz_large_barebone_frame_style" then
-			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
-			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_large_barebone_frame"
-		elseif gu_frame_style_setting == "snouz_invisible_frame_style" then
-			player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
-			player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_invisible_frame"
-		end
-	end
+    local player = event.player_index and game.players[event.player_index]
+    if not player or not player.valid then return end
+    local gu_frame_style_setting = settings.get_player_settings(player)["gu_frame_style_setting"].value or "normal_frame_style"
+    
+    if player.gui and player.gui.top and player.gui.top.mod_gui_top_frame and player.gui.top.mod_gui_top_frame.mod_gui_inner_frame then
+        if gu_frame_style_setting == "snouz_normal_frame_style" then
+            player.gui.top.mod_gui_top_frame.style = "frame"  -- Using built-in frame style
+            player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "inside_shallow_frame"
+        elseif gu_frame_style_setting == "snouz_barebone_frame_style" then
+            player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
+            player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_barebone_frame"
+        elseif gu_frame_style_setting == "snouz_large_barebone_frame_style" then
+            player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
+            player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_large_barebone_frame"
+        elseif gu_frame_style_setting == "snouz_invisible_frame_style" then
+            player.gui.top.mod_gui_top_frame.style = "snouz_invisible_frame"
+            player.gui.top.mod_gui_top_frame.mod_gui_inner_frame.style = "snouz_invisible_frame"
+        end
+    end
 end
 
 local function cycle_buttons_to_rename(player)
@@ -512,15 +519,15 @@ end
 local function cycle_frames_to_rename(player)
 	if player.gui.screen.children then
 		for i, k in pairs(player.gui.screen.children) do
-			if game.active_mods["factoryplanner"] and k.tags and k.tags.mod and k.tags.mod == "fp" and not player.gui.screen.factoryplanner_mainframe then
+			if script.active_mods["factoryplanner"] and k.tags and k.tags.mod and k.tags.mod == "fp" and not player.gui.screen.factoryplanner_mainframe then
 				k.name = "factoryplanner_mainframe"
-			elseif game.active_mods["train-log"] and k.tags and k.tags["train-log"] and not player.gui.screen.trainlog_mainframe then
+			elseif script.active_mods["train-log"] and k.tags and k.tags["train-log"] and not player.gui.screen.trainlog_mainframe then
 				k.name = "trainlog_mainframe"
-			elseif game.active_mods["ModuleInserter"] and k.tags and k.tags.ModuleInserter and not player.gui.screen.moduleinserter_mainframe then
+			elseif script.active_mods["ModuleInserter"] and k.tags and k.tags.ModuleInserter and not player.gui.screen.moduleinserter_mainframe then
 				k.name = "moduleinserter_mainframe"
-			elseif game.active_mods["Rich_Text_Helper"] and k.name and k.name == "RICH_LOCATION_23_player01" and not player.gui.screen.richtexthelper_mainframe then
+			elseif script.active_mods["Rich_Text_Helper"] and k.name and k.name == "RICH_LOCATION_23_player01" and not player.gui.screen.richtexthelper_mainframe then
 				k.name = "richtexthelper_mainframe"
-			elseif game.active_mods["Not_Enough_Todo"] and k.children and k.children[1] and k.children[1].children and k.children[1].children[1] and k.children[1].children[1].children and k.children[1].children[1].children[1] and k.children[1].children[1].children[1].caption and k.children[1].children[1].children[1].caption[1] and k.children[1].children[1].children[1].caption[1] == "Todo.GuiTitle" and not player.gui.screen.notenoughtodo_mainframe then
+			elseif script.active_mods["Not_Enough_Todo"] and k.children and k.children[1] and k.children[1].children and k.children[1].children[1] and k.children[1].children[1].children and k.children[1].children[1].children[1] and k.children[1].children[1].children[1].caption and k.children[1].children[1].children[1].caption[1] and k.children[1].children[1].children[1].caption[1] == "Todo.GuiTitle" and not player.gui.screen.notenoughtodo_mainframe then
 				k.name = "notenoughtodo_mainframe"
 			end
 		end
@@ -545,7 +552,7 @@ local function on_player_cursor_stack_changed(event)
 
 		local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
 
-		if game.active_mods["blueprint-request"] then
+		if script.active_mods["blueprint-request"] then
 			local blueprintrequest_button = button_flow["blueprint-request-button"]
 			if blueprintrequest_button then
 				blueprintrequest_button.style = gu_button_style_setting
@@ -553,7 +560,7 @@ local function on_player_cursor_stack_changed(event)
 			end
 		end
 
-		if game.active_mods["LandfillEverythingU"] or game.active_mods["LandfillEverything"] or game.active_mods["LandfillEverythingButTrains"] or game.active_mods["LandfillEverythingAndPumps"] then
+		if script.active_mods["LandfillEverythingU"] or script.active_mods["LandfillEverything"] or script.active_mods["LandfillEverythingButTrains"] or script.active_mods["LandfillEverythingAndPumps"] then
 			if not button_flow.le_button then
 				button_flow.add {
 					type = "sprite-button",
@@ -565,7 +572,7 @@ local function on_player_cursor_stack_changed(event)
 			end
 		end
 
-		if game.active_mods["blueprint_flip_and_turn"] then
+		if script.active_mods["blueprint_flip_and_turn"] then
 			if not button_flow.blueprint_flip_horizontal and not button_flow.blueprint_flip_vertical then
 				button_flow.add {
 					type = "sprite-button",
@@ -585,7 +592,7 @@ local function on_player_cursor_stack_changed(event)
 		end
 	end
 
-	if game.active_mods["SchallOreConversion"] then
+	if script.active_mods["SchallOreConversion"] then
 		local pcs = player.cursor_stack
 		if pcs and pcs.valid_for_read and pcs.valid and pcs.name then
 			if pcs.name == "iron-ore" or pcs.name == "copper-ore" or pcs.name == "stone" or pcs.name == "coal" or pcs.name == "uranium-ore" or pcs.name == "crude-oil" then
@@ -601,12 +608,25 @@ local function on_player_cursor_stack_changed(event)
 end
 
 local function general_update()
-	for _,player in pairs(game.players) do
-		if player and player.valid then
-			if not global.player or not global.player[player.index] then setup_player(player) end
-			global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
-		end
-	end
+    -- Initialize global table if it doesn't exist
+    if not global then
+        global = {}
+    end
+    
+    -- Initialize global.player if it doesn't exist
+    if not global.player then
+        global.player = {}
+    end
+
+    -- Then process all players
+    for _, player in pairs(game.players) do
+        if player and player.valid then
+            if not global.player[player.index] then 
+                setup_player(player) 
+            end
+            global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+        end
+    end
 end
 
 local function general_update_event(event)
@@ -633,7 +653,7 @@ local function on_player_joined(event)
 	general_update_event(event)
 
 		--destroy evoGUI to let it recreate and display on the right of main gui.
-	if game.active_mods["EvoGUI"] then
+	if script.active_mods["EvoGUI"] then
 		if player.gui.top.evogui_root then
 			player.gui.top.evogui_root.destroy()
 		end
@@ -644,11 +664,11 @@ local function on_gui_click(event)
 	local player = event.player_index and game.players[event.player_index]
 	if not player or not player.valid then return end
 	local button_flow = mod_gui.get_button_flow(player)
-	if game.active_mods["YARM"] then update_yarm_button(event) end
+	if script.active_mods["YARM"] then update_yarm_button(event) end
 
 	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 
-	if game.active_mods["clock"] and button_flow.clockGUI then
+	if script.active_mods["clock"] and button_flow.clockGUI then
 		if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
 			button_flow.clockGUI.style = "todo_button_default_snouz_selected"
 		else
@@ -664,23 +684,23 @@ local function on_gui_click(event)
 	end
 
 		--force closed if button clicked
-	if game.active_mods["pycoalprocessing"] then
+	if script.active_mods["pycoalprocessing"] then
 		if buttname == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
 			player.gui.screen.wiki_frame.destroy()
 		end
 	end
-	if game.active_mods["SolarRatio"] then
+	if script.active_mods["SolarRatio"] then
 		if buttname == "niet-sr-guibutton" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
 			player.gui.center["niet-sr-guiframe"].destroy()
 		end
 	end
-	if game.active_mods["CitiesOfEarth"] then
+	if script.active_mods["CitiesOfEarth"] then
 		if buttname == "coe_button_show_targets" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
 			player.gui.center["coe_choose_target"].destroy()
 		end
 	end
 
-	if game.active_mods["automatic-belt-direction"] then
+	if script.active_mods["automatic-belt-direction"] then
 		if buttname == "abdgui" then
 			if player.gui.top.abdgui and player.gui.top.abdgui.sprite == "abd-gui-on" then
 				event.element.sprite = "abd_on_button"
@@ -704,7 +724,7 @@ local function on_gui_click(event)
 end
 
 local function on_hivemindchange(event)
-	if game.active_mods["Hive_Mind"] or game.active_mods["Hive_Mind_Remastered"] then
+	if script.active_mods["Hive_Mind"] or script.active_mods["Hive_Mind_Remastered"] then
 		if not event.player_index then return end
 		if not global.player or not global.player[event.player_index] then setup_player(game.players[event.player_index]) end
 		global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
@@ -712,7 +732,7 @@ local function on_hivemindchange(event)
 end
 
 local function on_built(event)
-	if game.active_mods["Teleportation_Redux"] then
+	if script.active_mods["Teleportation_Redux"] then
 		if not global.Teleportation_Redux_built then
 			if event and event.created_entity and event.created_entity.name == "teleportation-beacon" then
 				for _,player in pairs(game.players) do
@@ -734,7 +754,7 @@ local function on_built(event)
 		end
 	end
 
-	if game.active_mods["PersonalTeleporter"] then
+	if script.active_mods["PersonalTeleporter"] then
 		if not global.PersonalTeleporter_built then
 			if event and event.created_entity and event.created_entity.name == "Teleporter_Beacon" then
 				for _,player in pairs(game.players) do
@@ -776,21 +796,21 @@ local function on_tick()
 			global.player[player.index].checknexttick = 0
 		end
 
-		if game.active_mods["clock"] then
+		if script.active_mods["clock"] then
 			local button_flow = mod_gui.get_button_flow(player)
 			if player.gui.top.clockGUI and button_flow.clockGUI then
 				button_flow.clockGUI.caption = player.gui.top.clockGUI.caption
 			end
 		end
 
-		if game.active_mods["Avatars"] then
+		if script.active_mods["Avatars"] then
 			local button_flow = mod_gui.get_button_flow(player)
 			if button_flow.avatar_disc and not button_flow.avatar_disc["button_sprite"] then
 				fix_buttons(player)
 			end
 		end
 
-		if game.active_mods["creative-mod"] then
+		if script.active_mods["creative-mod"] then
 			local button_flow = mod_gui.get_button_flow(player)
 			if button_flow["creative-mod_main-menu-open-button"] and not button_flow["creative-mod_main-menu-open-button"]["button_sprite"] then
 				fix_buttons(player)

@@ -2,7 +2,7 @@
 ------- SPRITES -------
 -----------------------
 
-local ICONPATH = "__GUI_Unifyer__/graphics/icons/"
+local ICONPATH = "__GUI_Unifyer_Unified__/graphics/icons/"
 local sprites = {
 "248k_button", "actr_button", "attilazoommod_button", "beastfinder_button", "betterbotsfixed_button", "blackmarket1_button", "blackmarket2_button", "blueprint_flip_horizontal_button",
 "blueprint_flip_vertical_button", "blueprintalignment_button", "blueprintrequest_button", "bobclasses_button", "bobinserters_button", "cargotrainmanager_button", "changemapsettings_button", "cleanmap_button", "clusterio_button",
@@ -17,7 +17,7 @@ local sprites = {
 "spawncontrol_random_button", "teamcoop_button1", "teamcoop_button2", "teleportation_button", "thefatcontroller_button", "todolist_button", "trainlog_button", "trainpubsub_button",
 "trashcan_button", "upgradeplannernext_button", "usagedetector_button", "whatsmissing_button", "wiiuf_button", "yarm_all_button", "yarm_none_button", "yarm_warnings_button",
 "blueprintlabdesign_button", "recexplo_button", "nonwavedefense2_button", "dana_button", "factorio_tweaks_button", "remoteswitch_button", "tsmoutpostbuilder_button", "credotimelapse_button", "spidersentinel_button",
-"citiesofearth_button", "enemyracemanager_button", "oarcmod_button", "decu_button", "leaderboard_button", "abd_on_button", "abd_off_button", "avatars_button", "newworlds_button",
+"citiesofearth_button", "enemyracemanager_button", "oarcmod_button", "decu_button", "leaderboard_button", "abd_on_button", "abd_off_button", "avatars_button", "newworlds_button", "quickitemmenu_button"
 }
 
 for _, i in pairs(sprites) do
@@ -96,7 +96,7 @@ data:extend({
 	{
     type = "sprite",
     name = "DeleteAdjacentChunk_player",
-    filename = "__GUI_Unifyer__/graphics/gui/deleteadjacentchunks_center.png",
+    filename = "__GUI_Unifyer_Unified__/graphics/gui/deleteadjacentchunks_center.png",
     priority = "extra-high-no-scale",
     width = 40,
     height = 26,
