@@ -1,4 +1,14 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.4
+Date: 2024.10.30
+  Bugfixes:
+    - Fixed crash with Toggle Peaceful Mode and other mods by improving global state initialization
+    - Added safety checks for global table access during mod events
+  Changes:
+    - Improved mod initialization sequence for better compatibility
+    - Enhanced state management system for more reliable operation
+    - Removed redundant git files.
+---------------------------------------------------------------------------------------------------
 Version: 2.0.3
 Date: 2024.10.30
   Changes:
