@@ -5,6 +5,21 @@ end
 
 data:extend({
     {
+        type = "bool-setting",
+        name = "gu_enable_logging",
+        setting_type = "runtime-per-user",
+        default_value = false,
+        order = "a-a"
+    },
+    {
+        type = "string-setting",
+        name = "gu_log_level",
+        setting_type = "runtime-per-user",
+        default_value = "INFO",
+        allowed_values = {"DEBUG", "INFO", "WARNING", "ERROR"},
+        order = "a-b"
+    },
+    {
         type = "string-setting",
         name = "gu_frame_style_setting",
         setting_type = "runtime-per-user",

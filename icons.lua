@@ -234,10 +234,11 @@ local icons = {
     create_icon_entry("Avatars", "avatars_button", "avatar_disc", nil, nil, nil, nil),
     create_icon_entry("modmashsplinternewworlds", "newworlds_button", "planets-toggle-button", nil, nil, nil,
         {"screen", "planets-main-frame"}),
-        create_icon_entry("qiMenu", "quickitemmenu_button", "qiMenu_button", {'guiu.quickitemmenu_button'}, nil, nil,
-        {"left", "qiMenu-frame-layout"})
+    create_icon_entry("qiMenu", "quickitemmenu_button", "qiMenu_button", {'guiu.quickitemmenu_button'}, nil, nil,
+        {"left", "qiMenu-frame-layout"}),
+    create_icon_entry("visual-signals", "visualsignals_button", "visual_signals", {'guiu.visual_signals_button'}, nil, nil, 
+    {"left", "gui_signal_display"})
 
-        
 }
 
 -- Convert new format back to legacy format for backward compatibility

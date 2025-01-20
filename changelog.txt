@@ -1,4 +1,23 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.9
+Date: 2025-01-12
+  Features:
+    - Added comprehensive logging system with configurable levels (DEBUG, INFO, WARNING, ERROR)
+    - Added per-player logging settings in mod options
+    - Added minimum log level setting in mod options
+    - Added support for Visual Signals mod
+  Bugfixes:
+    - Improved multiplayer synchronization handling for global state
+    - Added detailed diagnostic logging for state inconsistencies
+    - Added recovery mechanisms for state corruption
+    - Sometimes buttons would get stuck in a selected state. Now a check is done every 60 ticks (1 second) to reset them.
+  Changes:
+    - Refactored logging implementation throughout the codebase
+    - Improved error messages with more context and player information
+    - Added categorized logging for different operations
+  Info:
+    - Added extensive diagnostic information to help track down multiplayer issues. Please enable logging and set it to DEBUG under the player mod settings.
+---------------------------------------------------------------------------------------------------
 Version: 2.0.8
 Date: 2024.10.31
   Bugfixes:

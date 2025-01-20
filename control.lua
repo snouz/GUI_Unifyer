@@ -1,19 +1,16 @@
 local debug = require('scripts/debug')
 local mod_gui = require("mod-gui")
 local icons = require('icons')  -- Load icons during initial parse
+local logging = require('scripts/logging')
 
 local gui_button_style = "slot_button_notext"
 local gui_button_style_whitetext = "slot_button_whitetext"
 local activedebug = false
 
--- Debug logging function
+-- Debug logging function (legacy support)
 local function log_debug(message)
-    log("[GUI Unifyer Debug] " .. message)
+    logging.debug("GUI", message, game.get_player(1))
 end
-
-
-
-
 
 -- Set to keep track of mods we've already processed
 local function get_processed_mods()
@@ -30,17 +27,19 @@ end
 
 -- Initialize or reset the global state
 local function ensure_global_state()
+    logging.debug("State", "Ensuring global state initialization", game.get_player(1))
     global = global or {}
     global.gubuttonarray = global.gubuttonarray or {}
     
     -- Handle edge case where array might be empty but initialized
     if not next(global.gubuttonarray) then
         global.gubuttonarray = {}
+        logging.info("State", "Created empty button array", game.get_player(1))
     end
 end
 
 local function build_button_array()
-    log_debug("Starting build_button_array")
+    logging.info("Buttons", "Starting build_button_array", game.get_player(1))
     ensure_global_state()
     
     -- Clear existing array to prevent duplicates
@@ -52,16 +51,18 @@ local function build_button_array()
         
         -- Process all icons, even those we've seen before
         if mod_name and script.active_mods[mod_name] then
-            log_debug("Adding button for mod: " .. mod_name)
+            logging.debug("Buttons", "Adding button for mod: " .. mod_name, game.get_player(1))
             table.insert(global.gubuttonarray, icon)
         end
     end
     
-    log_debug("Completed build_button_array with " .. #global.gubuttonarray .. " buttons")
+    logging.info("Buttons", "Completed build_button_array with " .. #global.gubuttonarray .. " buttons", game.get_player(1))
 end
+
 -- For migration compatibility
 local function migrate_button_array()
     if global and global.gubuttonarray and #global.gubuttonarray == 0 then
+        logging.info("Migration", "Performing button array migration", game.get_player(1))
         -- Only add empty entry if array is completely empty
         global.gubuttonarray = {{}}
     end
@@ -69,7 +70,7 @@ end
 
 -- Main function that ties it all together
 function init_button_array()
-    log_debug("Starting init_button_array")
+    logging.info("Init", "Starting init_button_array", game.get_player(1))
     
     -- Force rebuild the button array
     build_button_array()
@@ -77,17 +78,23 @@ function init_button_array()
     -- Always migrate after building
     migrate_button_array()
     
-    log_debug("Completed init_button_array")
+    logging.info("Init", "Completed init_button_array", game.get_player(1))
 end
 
 local function setup_player(player)
-	if not player or not player.valid then return end
-	if not global.player then global.player = {} end
-	if not global.player[player.index] then
-		global.player[player.index] = {
-			checknexttick = 0
-		}
-	end
+    if not player or not player.valid then 
+        logging.warning("Player", "Attempted to setup invalid player", game.get_player(1))
+        return 
+    end
+    
+    logging.debug("Player", "Setting up player: " .. player.name, player)
+    if not global.player then global.player = {} end
+    if not global.player[player.index] then
+        global.player[player.index] = {
+            checknexttick = 0
+        }
+        logging.info("Player", "Initialized new player state for: " .. player.name, player)
+    end
 end
 
 local function set_button_sprite(button, spritepath)
@@ -121,13 +128,25 @@ end
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath, windowtocheck)
     -- Validate essential parameters
     if not player or not player.valid or not player.gui or not sprite or not button then 
+        logging.debug("Icons", string.format("Invalid parameters for button replacement - Player: %s, Sprite: %s, Button: %s", 
+            player and player.name or "nil", 
+            sprite or "nil", 
+            button or "nil"
+        ), player)
         return 
     end
+    
+    -- Log the attempt
+    logging.debug("Icons", string.format("Attempting to replace button '%s' with sprite '%s' for player %s", 
+        button, sprite, player.name), player)
     
     -- Safely get button settings
     local settingname = "gu_button_" .. button
     local player_settings = settings.get_player_settings(player)
-    if not player_settings then return end
+    if not player_settings then 
+        logging.debug("Icons", "Could not get player settings", player)
+        return 
+    end
     
     local is_button_true = true
     if player_settings[settingname] then
@@ -136,7 +155,10 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
     
     -- Safely get button style
     local style_setting = player_settings["gu_button_style_setting"]
-    if not style_setting then return end
+    if not style_setting then 
+        logging.debug("Icons", "Could not get style settings", player)
+        return 
+    end
     local gu_button_style_setting = style_setting.value or "slot_button_notext"
     
     -- Check window visibility with safe traversal
@@ -145,9 +167,12 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
         isselected = true -- Start true, set false if any check fails
         local windowtocheckpath = player.gui
         
+        logging.debug("Icons", string.format("Checking window path for button '%s'", button), player)
+        
         for _, k in pairs(windowtocheck) do
             -- Safe navigation of GUI path
             if not windowtocheckpath or not windowtocheckpath[k] then
+                logging.debug("Icons", string.format("Window check failed at path element '%s'", k), player)
                 isselected = false
                 break
             end
@@ -155,6 +180,7 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
             -- Check visibility safely
             local next_element = windowtocheckpath[k]
             if not next_element.valid or not next_element.visible then
+                logging.debug("Icons", string.format("Window element '%s' is not valid or visible", k), player)
                 isselected = false
                 break
             end
@@ -165,16 +191,46 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
         -- Apply selected style if all checks passed
         if isselected then
             gu_button_style_setting = gu_button_style_setting .. "_selected"
+            logging.debug("Icons", string.format("Window is visible, using selected style for button '%s'", button), player)
         end
     end
     
     -- Safely traverse button path
     local button_flow = mod_gui.get_button_flow(player)
-    if not button_flow then return end
+    if not button_flow then 
+        logging.debug("Icons", "Could not get button flow", player)
+        return 
+    end
+
+    -- Also check top GUI for buttons
+    local top_button = player.gui.top[button]
+    if top_button then
+        logging.debug("Icons", string.format("Found button '%s' in top GUI", button), player)
+        if top_button.valid and (top_button.type == "button" or top_button.type == "sprite-button") then
+            local success = pcall(function()
+                top_button.style = gu_button_style_setting
+                if not dontreplacesprite then
+                    set_button_sprite(top_button, sprite)
+                end
+                if tooltip then
+                    top_button.tooltip = tooltip
+                end
+                top_button.visible = is_button_true
+            end)
+            if success then
+                logging.debug("Icons", string.format("Successfully replaced button '%s' in top GUI", button), player)
+            else
+                logging.debug("Icons", string.format("Failed to replace button '%s' in top GUI", button), player)
+            end
+        end
+    else
+        logging.debug("Icons", string.format("Button '%s' not found in top GUI", button), player)
+    end
     
     if buttonpath then
         for _, k in pairs(buttonpath) do
             if not button_flow or not button_flow[k] then
+                logging.debug("Icons", string.format("Button path traversal failed at '%s'", k), player)
                 return -- Exit if path is invalid
             end
             button_flow = button_flow[k]
@@ -197,10 +253,13 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
             modbutton.visible = is_button_true
         end)
         
-        if not success then
-            -- Optional: Log error or handle failure
-            return
+        if success then
+            logging.debug("Icons", string.format("Successfully replaced button '%s' in mod_gui flow", button), player)
+        else
+            logging.debug("Icons", string.format("Failed to replace button '%s' in mod_gui flow", button), player)
         end
+    else
+        logging.debug("Icons", string.format("Button '%s' not found in mod_gui flow", button), player)
     end
 end
 
@@ -289,8 +348,26 @@ local function fix_buttons(player)
 end
 
 local function create_new_buttons(player)
-	local button_flow = mod_gui.get_button_flow(player)
-	local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+    local button_flow = mod_gui.get_button_flow(player)
+    local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+
+    if script.active_mods["visual-signals"] then
+        -- First destroy the original button if it exists
+        if player.gui.top["visual_signals"] then
+            player.gui.top["visual_signals"].destroy()
+        end
+        
+        -- Then create our version in the button flow
+        if not button_flow["visual_signals"] then
+            button_flow.add {
+                type = "sprite-button",
+                name = "visual_signals",
+                style = gu_button_style_setting,
+                sprite = "visualsignals_button",
+                tooltip = {'guiu.visual_signals_button'}
+            }
+        end
+    end
 
 	local function create_buttons_from_list(mod, button, sprite, tooltip, optionon)
 		if script.active_mods[mod] and optionon then
@@ -340,8 +417,7 @@ local function create_new_buttons(player)
 		{"rd-se-multiplayer-compat","toggle_spawn_gui",						"spawncontrol_button",			{'guiu.compatspawn_button'},				true},
 		{"Spiderissmo",			"108",										"item/spidertron",				{'guiu.Spiderissmo_spider_button'},			true},
 		{"Spiderissmo",			"minimap_button",							"credotimelapse_button",		{'guiu.Spiderissmo_minimap_button'},		true},
-		{"automatic-belt-direction","abdgui",								"abd_on_button",				{'guiu.abd_on_button'},						abdshowgui},
-		--{"warptorio2",		"warptorio_warpbutton",						"credotimelapse_button",		{'guiu.credotimelapse_button'}},
+		{"automatic-belt-direction","abdgui",								"abd_on_button",				{'guiu.abd_on_button'},						abdshowgui}
 	}
 
 	for _, k in pairs(newbuttonlist) do
@@ -399,6 +475,7 @@ local function create_new_buttons(player)
 	end
 end
 
+
 local function update_yarm_button(event)
 	if event and event.element then
 		if event.element.name == "YARM_filter_all" or event.element.name == "YARM_filter_none" or event.element.name == "YARM_filter_warnings" then
@@ -443,7 +520,7 @@ local function destroy_obsolete_buttons(player)
 	local topelems_tokill = {
 		"blpflip_flow", "fjei_toggle_button", "Homeworld_btn", "lawful_evil_button", "trashbingui", "pywiki_frame", "usage_detector", "104",
 		"spawn", "random", "what_is_missing", "logistics-view-button", "flw_zoom", "stats_show_settings", "teleportation_main_button",
-		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container", "abdgui", "clockGUI",
+		"personalTeleporter_PersonalTeleportTool", "inserter-throughput-toggle", "b_recexplo", "CTLM_mainbutton", "market_button", "rd_container", "abdgui", "clockGUI", "visual_signals",
 	}
 
 	if settings.get_player_settings(player)["gu_mod_enabled_perplayer"].value == true then
@@ -657,11 +734,13 @@ end
 local function general_update()
     -- Initialize global table if it doesn't exist
     if not global then
+        logging.warning("State", "Global table is nil in general_update, reinitializing", game.get_player(1))
         global = {}
     end
     
     -- Initialize global.player if it doesn't exist
     if not global.player then
+        logging.warning("State", "Global.player table is nil in general_update, reinitializing", game.get_player(1))
         global.player = {}
     end
 
@@ -669,6 +748,7 @@ local function general_update()
     for _, player in pairs(game.players) do
         if player and player.valid then
             if not global.player[player.index] then 
+                logging.debug("Player", "Setting up missing player in general_update: " .. player.name, player)
                 setup_player(player) 
             end
             global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
@@ -680,31 +760,31 @@ local function general_update_event(event)
     -- First verify we have a valid player
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then 
-        log_debug("Invalid player in general_update_event")
+        logging.error("Event", "Invalid player in general_update_event", game.get_player(1))
         return 
     end
 
     -- Initialize global if it doesn't exist
     if not global then
-        log_debug("global table is nil in general_update_event, reinitializing...")
+        logging.warning("State", "Global table is nil in general_update_event, reinitializing", player)
         global = {}
     end
 
     -- Initialize global.player if it doesn't exist
     if not global.player then
-        log_debug("global.player table is nil in general_update_event, reinitializing...")
+        logging.warning("State", "Global.player table is nil in general_update_event, reinitializing", player)
         global.player = {}
     end
     
     -- Check if button array needs initialization
     if not global.gubuttonarray or #global.gubuttonarray == 0 then
-        log_debug("Button array empty during update, reinitializing...")
+        logging.info("Buttons", "Button array empty during update, reinitializing", player)
         init_button_array()
     end
 
     -- Setup player if needed and increment check counter
     if not global.player[event.player_index] then
-        log_debug("Setting up player " .. player.name)
+        logging.debug("Player", "Setting up player " .. player.name, player)
         setup_player(player)
     end
 
@@ -712,7 +792,7 @@ local function general_update_event(event)
     if global.player[event.player_index] then
         global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
     else
-        log_debug("Failed to setup player " .. player.name .. ", creating minimal state")
+        logging.error("Player", "Failed to setup player " .. player.name .. ", creating minimal state", player)
         global.player[event.player_index] = {
             checknexttick = 1
         }
@@ -732,11 +812,11 @@ end
 
 local function force_update_player_buttons(player)
     if not player or not player.valid then
-        log_debug("Invalid player in force_update_player_buttons")
+        logging.error("Buttons", "Invalid player in force_update_player_buttons", game.get_player(1))
         return
     end
     
-    log_debug("Forcing button update for player " .. player.name)
+    logging.debug("Buttons", "Forcing button update for player " .. player.name, player)
     
     -- Wrap in pcall for safety
     local status, err = pcall(function()
@@ -746,19 +826,41 @@ local function force_update_player_buttons(player)
     end)
     
     if not status then
-        log_debug("Error updating buttons for " .. player.name .. ": " .. tostring(err))
+        logging.error("Buttons", "Error updating buttons for " .. player.name .. ": " .. tostring(err), player)
     end
 end
 
+local function reset_button_states(player)
+    if not player or not player.valid then return end
+    
+    local button_flow = mod_gui.get_button_flow(player)
+    if not button_flow then return end
+    
+    -- Get default style
+    local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+    
+    -- Reset all button states
+    if button_flow.children then
+        for _, button in pairs(button_flow.children) do
+            if button.valid then
+                -- Remove any "_selected" suffix from style
+                local current_style = button.style and button.style.name
+                if current_style and current_style:match("_selected$") then
+                    button.style = gu_button_style_setting
+                end
+            end
+        end
+    end
+end
 
 local function on_player_joined(event)
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then
-        log_debug("Invalid player in on_player_joined")
+        logging.error("Event", "Invalid player in on_player_joined", game.get_player(1))
         return
     end
     
-    log_debug("Player joined: " .. player.name .. " (index: " .. player.index .. ")")
+    logging.info("Player", "Player joined: " .. player.name .. " (index: " .. player.index .. ")", player)
     
     -- Initialize player state
     local status, err = pcall(function()
@@ -766,7 +868,7 @@ local function on_player_joined(event)
     end)
     
     if not status then
-        log_debug("Error in general_update_event during player join: " .. tostring(err))
+        logging.error("Event", "Error in general_update_event during player join: " .. tostring(err), player)
         -- Attempt recovery
         if not global then global = {} end
         if not global.player then global.player = {} end
@@ -777,13 +879,16 @@ local function on_player_joined(event)
         end
     end
     
+    -- Reset button states first
+    reset_button_states(player)
+    
     -- Force immediate button update instead of waiting for tick
     force_update_player_buttons(player)
 
     -- Keep the EvoGUI handling as it was
     if script.active_mods["EvoGUI"] then
         if player.gui.top.evogui_root then
-            log_debug("Destroying and recreating EvoGUI for " .. player.name)
+            logging.debug("GUI", "Destroying and recreating EvoGUI for " .. player.name, player)
             player.gui.top.evogui_root.destroy()
         end
     end
@@ -861,86 +966,187 @@ local function on_hivemindchange(event)
 end
 
 local function on_built(event)
-	if script.active_mods["Teleportation_Redux"] then
-		if not global.Teleportation_Redux_built then
-			if event and event.created_entity and event.created_entity.name == "teleportation-beacon" then
-				for _,player in pairs(game.players) do
-					local button_flow = mod_gui.get_button_flow(player)
-					local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-					if not button_flow.teleportation_main_button then
-						button_flow.add {
-							type = "sprite-button",
-							name = "teleportation_main_button",
-							style = gu_button_style_setting,
-							sprite = "teleportation_button",
-							tooltip = {'guiu.teleportation_button'},
-						}
-					end
-					global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
-				end
-				global.Teleportation_Redux_built = true
-			end
-		end
-	end
+    -- Log all build events for debugging
+    if event and event.created_entity then
+        logging.debug("Build Event", string.format(
+            "Entity built: %s (type: %s) (tick: %d)",
+            event.created_entity.name,
+            event.created_entity.type,
+            game.tick
+        ), game.get_player(1))
+    end
 
-	if script.active_mods["PersonalTeleporter"] then
-		if not global.PersonalTeleporter_built then
-			if event and event.created_entity and event.created_entity.name == "Teleporter_Beacon" then
-				for _,player in pairs(game.players) do
-					local button_flow = mod_gui.get_button_flow(player)
-					local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
-					if not button_flow.personalTeleporter_PersonalTeleportTool then
-						button_flow.add {
-							type = "sprite-button",
-							name = "personalTeleporter_PersonalTeleportTool",
-							style = gu_button_style_setting,
-							sprite = "teleportation_button",
-							tooltip = {'guiu.teleportation_button'},
-						}
-					end
-					global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
-				end
-				global.PersonalTeleporter_built = true
-			end
-		end
-	end
+    -- Handle Visual Signals button creation
+    if script.active_mods["visual-signals"] then
+        if event and event.created_entity and event.created_entity.name == "gui-signal-display" then
+            -- Create the button for all players if it doesn't exist
+            for _, player in pairs(game.players) do
+                local button_flow = mod_gui.get_button_flow(player)
+                local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+                
+                -- Only create if not exists
+                if not button_flow.visual_signals then
+                    button_flow.add {
+                        type = "sprite-button",
+                        name = "visual_signals",
+                        style = gu_button_style_setting,
+                        sprite = "visualsignals_button",
+                        tooltip = {'guiu.visual_signals_button'}
+                    }
+                end
+                
+                -- Update styling even if button exists
+                if button_flow.visual_signals then
+                    button_flow.visual_signals.style = gu_button_style_setting
+                    button_flow.visual_signals.sprite = "visualsignals_button"
+                    button_flow.visual_signals.tooltip = {'guiu.visual_signals_button'}
+                end
+                
+                -- Set the check counter to force an update
+                if global.player[player.index] then
+                    global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+                end
+            end
+        end
+    end
+
+    -- Rest of the existing on_built code...
+    if script.active_mods["Teleportation_Redux"] then
+        if not global.Teleportation_Redux_built then
+            if event and event.created_entity and event.created_entity.name == "teleportation-beacon" then
+                for _,player in pairs(game.players) do
+                    local button_flow = mod_gui.get_button_flow(player)
+                    local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+                    if not button_flow.teleportation_main_button then
+                        button_flow.add {
+                            type = "sprite-button",
+                            name = "teleportation_main_button",
+                            style = gu_button_style_setting,
+                            sprite = "teleportation_button",
+                            tooltip = {'guiu.teleportation_button'},
+                        }
+                    end
+                    global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+                end
+                global.Teleportation_Redux_built = true
+            end
+        end
+    end
+
+    if script.active_mods["PersonalTeleporter"] then
+        if not global.PersonalTeleporter_built then
+            if event and event.created_entity and event.created_entity.name == "Teleporter_Beacon" then
+                for _,player in pairs(game.players) do
+                    local button_flow = mod_gui.get_button_flow(player)
+                    local gu_button_style_setting = settings.get_player_settings(player)["gu_button_style_setting"].value or "slot_button_notext"
+                    if not button_flow.personalTeleporter_PersonalTeleportTool then
+                        button_flow.add {
+                            type = "sprite-button",
+                            name = "personalTeleporter_PersonalTeleportTool",
+                            style = gu_button_style_setting,
+                            sprite = "teleportation_button",
+                            tooltip = {'guiu.teleportation_button'},
+                        }
+                    end
+                    global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+                end
+                global.PersonalTeleporter_built = true
+            end
+        end
+    end
 end
 
 -- Main tick function. Now extra defensive to ensure no crashes
 local function on_tick()
-    -- Log if global is nil
+    -- Track state before any operations
+    local had_global = global ~= nil
+    local had_player_table = global and global.player ~= nil
+    local had_button_array = global and global.gubuttonarray ~= nil
+    
+    -- Log if global is nil (this shouldn't happen in normal operation)
     if not global then
-        log_debug("on_tick: global table is nil, reinitializing...")
-        global = {}
-        global.player = {}
-        global.gubuttonarray = {}
+        logging.error("State", string.format(
+            "DIAGNOSTIC: Global table is nil. Game tick: %d, Had global before: %s", 
+            game.tick, 
+            tostring(had_global)
+        ), game.get_player(1))
+        
+        -- Instead of recreating, try to recover from on_init
+        script.on_init()
+        
+        -- Log the recovery attempt
+        logging.warning("State", string.format(
+            "Attempted global recovery. Global exists: %s, Player table exists: %s, Button array exists: %s",
+            tostring(global ~= nil),
+            tostring(global and global.player ~= nil),
+            tostring(global and global.gubuttonarray ~= nil)
+        ), game.get_player(1))
+        
+        return -- Skip this tick to let recovery take effect
     end
 
-    -- Log if player table is missing
+    -- Ensure player table exists
     if not global.player then
-        log_debug("on_tick: global.player table is nil, reinitializing...")
+        logging.error("State", string.format(
+            "DIAGNOSTIC: Player table missing. Game tick: %d, Had player table before: %s",
+            game.tick,
+            tostring(had_player_table)
+        ), game.get_player(1))
         global.player = {}
     end
 
+    -- Ensure button array exists
+    if not global.gubuttonarray then
+        logging.error("State", string.format(
+            "DIAGNOSTIC: Button array missing. Game tick: %d, Had button array before: %s",
+            game.tick,
+            tostring(had_button_array)
+        ), game.get_player(1))
+        global.gubuttonarray = {}
+        init_button_array()
+    end
+
+    -- Process players with detailed error tracking
     for _, player in pairs(game.players) do
         if player and player.valid then
+            -- Track player state
+            local had_player_state = global.player[player.index] ~= nil
+            
             if not global.player[player.index] then
-                log_debug("Player " .. player.name .. " (index: " .. player.index .. ") missing from global.player")
+                logging.warning("Player", string.format(
+                    "Player state missing. Player: %s (index: %d), Tick: %d, Had state before: %s",
+                    player.name,
+                    player.index,
+                    game.tick,
+                    tostring(had_player_state)
+                ), player)
                 setup_player(player)
-                -- Verify setup succeeded
-                if not global.player[player.index] then
-                    log_debug("setup_player failed for " .. player.name .. ", creating minimal state")
-                    global.player[player.index] = {
-                        checknexttick = 0
-                    }
-                end
             end
 
             local player_state = global.player[player.index]
             if player_state then
+                -- Every 60 ticks (1 second), validate button states
+                if game.tick % 60 == 0 then
+                    local status, err = pcall(function()
+                        reset_button_states(player)
+                    end)
+                    if not status then
+                        logging.error("Buttons", string.format(
+                            "Failed to reset button states for %s: %s",
+                            player.name,
+                            tostring(err)
+                        ), player)
+                    end
+                end
+                
                 if player_state.checknexttick == 1 then
-                    -- Log before attempting GUI updates
-                    log_debug("Starting GUI update cycle for player " .. player.name)
+                    -- Log before GUI updates with detailed state
+                    logging.debug("GUI", string.format(
+                        "Starting GUI update. Player: %s, Tick: %d, Button array size: %d",
+                        player.name,
+                        game.tick,
+                        #global.gubuttonarray
+                    ), player)
                     
                     -- Wrap core functionality in pcall with detailed error logging
                     local status, err = pcall(function()
@@ -950,24 +1156,37 @@ local function on_tick()
                         fix_buttons(player)
                         destroy_obsolete_buttons(player)
                     end)
-                    
+
                     if not status then
-                        log_debug("Error in GUI update cycle for " .. player.name .. ": " .. tostring(err))
+                        logging.error("GUI", string.format(
+                            "GUI update failed. Player: %s, Tick: %d, Error: %s",
+                            player.name,
+                            game.tick,
+                            tostring(err)
+                        ), player)
                     else
-                        log_debug("Completed GUI update cycle for " .. player.name)
+                        logging.debug("GUI", string.format(
+                            "Completed GUI update. Player: %s, Tick: %d",
+                            player.name,
+                            game.tick
+                        ), player)
                     end
                     
                     player_state.checknexttick = 0
                 end
             else
-                log_debug("Player state unexpectedly nil for " .. player.name .. " after verification")
+                logging.error("Player", string.format(
+                    "Player state unexpectedly nil after setup. Player: %s, Tick: %d",
+                    player.name,
+                    game.tick
+                ), player)
             end
         end
     end
 end
 
 script.on_init(function()
-    log_debug("Mod initialization started")
+    logging.info("Init", "Mod initialization started", game.get_player(1))
     
     -- Initialize all required global tables
     global = {}
@@ -986,13 +1205,13 @@ script.on_init(function()
             force_update_player_buttons(player)
         end
     end
+
     
-    log_debug("Mod initialization completed with " .. #global.gubuttonarray .. " buttons")
+    logging.info("Init", "Mod initialization completed with " .. #global.gubuttonarray .. " buttons", game.get_player(1))
 end)
 
-
 script.on_configuration_changed(function()
-    log_debug("Configuration change detected")
+    logging.info("Config", "Configuration change detected", game.get_player(1))
     
     -- Ensure we have our global tables
     global = global or {}
@@ -1009,18 +1228,16 @@ script.on_configuration_changed(function()
         end
     end
     
-    log_debug("Configuration change handling completed")
+    logging.info("Config", "Configuration change handling completed", game.get_player(1))
 end)
 script.on_event({defines.events.on_research_finished, defines.events.on_rocket_launched}, general_update)
 
 script.on_nth_tick(6, function()
     local status, err = pcall(on_tick)
     if not status then
-        log_debug("Critical error in tick handler: " .. tostring(err))
+        logging.error("Tick", "Critical error in tick handler: " .. tostring(err), game.get_player(1))
     end
 end)
-
-
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_player_configuration_changed)
 script.on_event({defines.events.on_gui_closed, defines.events.on_gui_confirmed, defines.events.on_gui_opened, on_player_display_resolution_changed, defines.events.on_player_changed_surface, defines.events.on_player_created}, general_update_event)
