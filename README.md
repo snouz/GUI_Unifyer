@@ -11,11 +11,13 @@
 Experience the difference with the before and after comparison below:
 
 **Before**:
+
 - ![before](https://i.imgur.com/yudkRLa.png)
 - ![before](https://i.imgur.com/PRWSeGo.png)
 - ![before](https://i.imgur.com/P9wklhD.png)
 
 **After**:
+
 - ![after](https://i.imgur.com/D3vMpmR.png)
 - ![after](https://i.imgur.com/5OUYZgh.png)
 - ![after](https://i.imgur.com/bSNqD4p.png)
@@ -23,18 +25,23 @@ Experience the difference with the before and after comparison below:
 ## Features
 
 - **Tooltips for Hover Text**: Many buttons that previously had no tooltip now include helpful hover text.
+
   ![tooltips](https://i.imgur.com/IXbqUlR.png)
 
 - **Customizable Button Styles**: Choose from 11 different button styles to personalize your interface.
+
   ![butt](https://i.imgur.com/PgrDvmK.png) ![butt](https://i.imgur.com/vHc719U.png) ![butt](https://i.imgur.com/VsLSNcu.png) ![butt](https://i.imgur.com/kr7xCK3.png) ![butt](https://i.imgur.com/Usx5HX5.png) ![butt](https://i.imgur.com/ilOvyF6.png) ![butt](https://i.imgur.com/4g3JbpD.png) ![butt](https://i.imgur.com/A42SceU.png) ![butt](https://i.imgur.com/Xg1Vsu5.png) ![butt](https://i.imgur.com/qIsdTUG.png) ![butt](https://i.imgur.com/3n5vluJ.png)
 
 - **Tweakable Top Left Frame**: Choose between normal, barebone, or invisible styles for the top left frame.
+
   ![frame](https://i.imgur.com/fOtkHbr.png) ![frame](https://i.imgur.com/linVC4l.png) ![frame](https://i.imgur.com/rbWNha5.png)
 
 - **Persistent Button States**: Most buttons now remain selected when their respective windows are open, adding to the consistency of your experience.
+
   ![shiny](https://i.imgur.com/Cof4F6v.png)
 
 - **Dynamic Blueprint Button Visibility**: Blueprint-related buttons only appear when a blueprint is selected.
+
   ![blueprint](https://i.imgur.com/jUbwLoX.png)
 
 # Check out my other mods
