@@ -30,6 +30,7 @@ local function ensure_global_state()
     logging.debug("State", "Ensuring global state initialization", game.get_player(1))
     global = global or {}
     global.gubuttonarray = global.gubuttonarray or {}
+    global.window_states = global.window_states or {}
     
     -- Handle edge case where array might be empty but initialized
     if not next(global.gubuttonarray) then
@@ -125,6 +126,34 @@ local function set_button_sprite(button, spritepath)
 	end
 end
 
+local function update_window_state(player, button, windowtocheck)
+    if not player or not player.valid or not windowtocheck then return false end
+    
+    local window_key = player.index .. "_" .. button
+    local windowtocheckpath = player.gui
+    local is_visible = true
+    
+    for _, k in pairs(windowtocheck) do
+        if not windowtocheckpath or not windowtocheckpath[k] then
+            is_visible = false
+            break
+        end
+        local next_element = windowtocheckpath[k]
+        if not next_element.valid or not next_element.visible then
+            is_visible = false
+            break
+        end
+        windowtocheckpath = next_element
+    end
+    
+    -- Update stored state
+    if not global.window_states[window_key] ~= is_visible then
+        global.window_states[window_key] = is_visible
+        return true -- State changed
+    end
+    return false
+end
+
 local function change_one_icon(player, sprite, button, tooltip, dontreplacesprite, buttonpath, windowtocheck)
     -- Validate essential parameters
     if not player or not player.valid or not player.gui or not sprite or not button then 
@@ -161,37 +190,11 @@ local function change_one_icon(player, sprite, button, tooltip, dontreplacesprit
     end
     local gu_button_style_setting = style_setting.value or "slot_button_notext"
     
-    -- Check window visibility with safe traversal
-    local isselected = false
+    -- Check window state
     if windowtocheck then
-        isselected = true -- Start true, set false if any check fails
-        local windowtocheckpath = player.gui
-        
-        logging.debug("Icons", string.format("Checking window path for button '%s'", button), player)
-        
-        for _, k in pairs(windowtocheck) do
-            -- Safe navigation of GUI path
-            if not windowtocheckpath or not windowtocheckpath[k] then
-                logging.debug("Icons", string.format("Window check failed at path element '%s'", k), player)
-                isselected = false
-                break
-            end
-            
-            -- Check visibility safely
-            local next_element = windowtocheckpath[k]
-            if not next_element.valid or not next_element.visible then
-                logging.debug("Icons", string.format("Window element '%s' is not valid or visible", k), player)
-                isselected = false
-                break
-            end
-            
-            windowtocheckpath = next_element
-        end
-        
-        -- Apply selected style if all checks passed
-        if isselected then
+        local window_key = player.index .. "_" .. button
+        if global.window_states[window_key] then
             gu_button_style_setting = gu_button_style_setting .. "_selected"
-            logging.debug("Icons", string.format("Window is visible, using selected style for button '%s'", button), player)
         end
     end
     
@@ -1056,6 +1059,40 @@ local function on_built(event)
     end
 end
 
+local function on_gui_closed(event)
+    local player = event.player_index and game.players[event.player_index]
+    if not player or not player.valid then return end
+    
+    -- Force check all window states
+    if global.gubuttonarray then
+        for _, entry in pairs(global.gubuttonarray) do
+            if entry[7] then -- Has windowtocheck
+                if update_window_state(player, entry[3], entry[7]) then
+                    -- Window state changed, update button
+                    change_one_icon(player, entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
+                end
+            end
+        end
+    end
+end
+
+local function on_gui_opened(event)
+    local player = event.player_index and game.players[event.player_index]
+    if not player or not player.valid then return end
+    
+    -- Similar to on_gui_closed
+    if global.gubuttonarray then
+        for _, entry in pairs(global.gubuttonarray) do
+            if entry[7] then -- Has windowtocheck
+                if update_window_state(player, entry[3], entry[7]) then
+                    -- Window state changed, update button
+                    change_one_icon(player, entry[2], entry[3], entry[4], entry[5], entry[6], entry[7])
+                end
+            end
+        end
+    end
+end
+
 -- Main tick function. Now extra defensive to ensure no crashes
 local function on_tick()
     -- Track state before any operations
@@ -1246,5 +1283,7 @@ script.on_event(defines.events.on_gui_click, on_gui_click)
 script.on_event(defines.events.on_player_cursor_stack_changed, on_player_cursor_stack_changed)
 script.on_event({defines.events.on_built_entity, defines.events.on_entity_cloned, defines.events.on_robot_built_entity}, on_built)
 script.on_event({defines.events.on_player_gun_inventory_changed, defines.events.on_player_died}, on_hivemindchange)
+script.on_event(defines.events.on_gui_closed, on_gui_closed)
+script.on_event(defines.events.on_gui_opened, on_gui_opened)
 
 --game.print(serpent.block())

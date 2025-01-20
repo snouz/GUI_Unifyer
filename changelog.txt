@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.1.0
+Date: 2025-01-12
+  Bugfixes:
+    - Fixed button selected states by implementing proper window state tracking
+    - Added persistent state management for window visibility
+    - Improved button state synchronization with window events
+---------------------------------------------------------------------------------------------------
 Version: 2.0.9
 Date: 2025-01-12
   Features:
