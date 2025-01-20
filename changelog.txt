@@ -1,4 +1,18 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.8
+Date: 2024.10.31
+  Bugfixes:
+    - Fixed regression where buttons wouldn't appear on new games
+    - Fixed crash during player join events on dedicated servers
+    - Fixed initialization sequence to ensure buttons are created properly
+  Changes:
+    - Added improved button initialization system
+    - Enhanced error recovery for initialization and player events
+    - Improved debug logging for troubleshooting startup issues
+    - Added comprehensive state validation during mod initialization
+    - Fixed function loading order to prevent nil value errors
+    - Improved initialization sequence reliability
+---------------------------------------------------------------------------------------------------
 Version: 2.0.7
 Date: 2024.10.31
   Bugfixes:

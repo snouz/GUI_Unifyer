@@ -12,6 +12,9 @@ local function log_debug(message)
 end
 
 
+
+
+
 -- Set to keep track of mods we've already processed
 local function get_processed_mods()
     local processed = {}
@@ -37,23 +40,25 @@ local function ensure_global_state()
 end
 
 local function build_button_array()
+    log_debug("Starting build_button_array")
     ensure_global_state()
     
-    -- Get list of mods we've already processed
-    local processed_mods = get_processed_mods()
+    -- Clear existing array to prevent duplicates
+    global.gubuttonarray = {}
     
     -- Process each icon definition using our stored icons variable
     for _, icon in pairs(icons) do
         local mod_name = icon[1]
         
-        -- Only process if mod is active and we haven't handled it yet
-        if mod_name and script.active_mods[mod_name] and not processed_mods[mod_name] then
+        -- Process all icons, even those we've seen before
+        if mod_name and script.active_mods[mod_name] then
+            log_debug("Adding button for mod: " .. mod_name)
             table.insert(global.gubuttonarray, icon)
-            processed_mods[mod_name] = true
         end
     end
+    
+    log_debug("Completed build_button_array with " .. #global.gubuttonarray .. " buttons")
 end
-
 -- For migration compatibility
 local function migrate_button_array()
     if global and global.gubuttonarray and #global.gubuttonarray == 0 then
@@ -64,8 +69,15 @@ end
 
 -- Main function that ties it all together
 function init_button_array()
+    log_debug("Starting init_button_array")
+    
+    -- Force rebuild the button array
     build_button_array()
+    
+    -- Always migrate after building
     migrate_button_array()
+    
+    log_debug("Completed init_button_array")
 end
 
 local function setup_player(player)
@@ -683,6 +695,12 @@ local function general_update_event(event)
         log_debug("global.player table is nil in general_update_event, reinitializing...")
         global.player = {}
     end
+    
+    -- Check if button array needs initialization
+    if not global.gubuttonarray or #global.gubuttonarray == 0 then
+        log_debug("Button array empty during update, reinitializing...")
+        init_button_array()
+    end
 
     -- Setup player if needed and increment check counter
     if not global.player[event.player_index] then
@@ -712,6 +730,27 @@ local function on_player_configuration_changed(event)
 	update_frame_style(event)
 end
 
+local function force_update_player_buttons(player)
+    if not player or not player.valid then
+        log_debug("Invalid player in force_update_player_buttons")
+        return
+    end
+    
+    log_debug("Forcing button update for player " .. player.name)
+    
+    -- Wrap in pcall for safety
+    local status, err = pcall(function()
+        create_new_buttons(player)
+        fix_buttons(player)
+        destroy_obsolete_buttons(player)
+    end)
+    
+    if not status then
+        log_debug("Error updating buttons for " .. player.name .. ": " .. tostring(err))
+    end
+end
+
+
 local function on_player_joined(event)
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then
@@ -721,7 +760,7 @@ local function on_player_joined(event)
     
     log_debug("Player joined: " .. player.name .. " (index: " .. player.index .. ")")
     
-    -- Wrap the general_update_event call in pcall for safety
+    -- Initialize player state
     local status, err = pcall(function()
         general_update_event(event)
     end)
@@ -729,18 +768,17 @@ local function on_player_joined(event)
     if not status then
         log_debug("Error in general_update_event during player join: " .. tostring(err))
         -- Attempt recovery
-        if not global then
-            global = {}
-        end
-        if not global.player then
-            global.player = {}
-        end
+        if not global then global = {} end
+        if not global.player then global.player = {} end
         if not global.player[event.player_index] then
             global.player[event.player_index] = {
                 checknexttick = 0
             }
         end
     end
+    
+    -- Force immediate button update instead of waiting for tick
+    force_update_player_buttons(player)
 
     -- Keep the EvoGUI handling as it was
     if script.active_mods["EvoGUI"] then
@@ -931,32 +969,48 @@ end
 script.on_init(function()
     log_debug("Mod initialization started")
     
-    if not global then
-        log_debug("Global table nil during initialization")
-        global = {}
-    end
-    if not global.player then
-        log_debug("Player table nil during initialization")
-        global.player = {}
-    end
-    if not global.gubuttonarray then
-        log_debug("Button array nil during initialization")
-        global.gubuttonarray = {}
-    end
+    -- Initialize all required global tables
+    global = {}
+    global.player = {}
+    global.gubuttonarray = {}
     
+    -- Force complete initialization sequence
     init_button_array()
+    
+    -- Run general update after initialization
     general_update()
     
-    log_debug("Mod initialization completed")
+    -- Force update buttons for all players
+    for _, player in pairs(game.players) do
+        if player and player.valid then
+            force_update_player_buttons(player)
+        end
+    end
+    
+    log_debug("Mod initialization completed with " .. #global.gubuttonarray .. " buttons")
 end)
+
 
 script.on_configuration_changed(function()
     log_debug("Configuration change detected")
+    
+    -- Ensure we have our global tables
+    global = global or {}
+    global.player = global.player or {}
+    
+    -- Force complete reinitialization
     init_button_array()
     general_update()
+    
+    -- Force update buttons for all players
+    for _, player in pairs(game.players) do
+        if player and player.valid then
+            force_update_player_buttons(player)
+        end
+    end
+    
     log_debug("Configuration change handling completed")
 end)
-
 script.on_event({defines.events.on_research_finished, defines.events.on_rocket_launched}, general_update)
 
 script.on_nth_tick(6, function()
@@ -965,6 +1019,8 @@ script.on_nth_tick(6, function()
         log_debug("Critical error in tick handler: " .. tostring(err))
     end
 end)
+
+
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, on_player_configuration_changed)
 script.on_event({defines.events.on_gui_closed, defines.events.on_gui_confirmed, defines.events.on_gui_opened, on_player_display_resolution_changed, defines.events.on_player_changed_surface, defines.events.on_player_created}, general_update_event)
