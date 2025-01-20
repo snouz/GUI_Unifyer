@@ -1,18 +1,10 @@
 ---------------------------------------------------------------------------------------------------
-Version: 2.1.2
-Date: 2025-01-12
-  Bugfixes:
-    - Fixed another crash in on_gui_click event handler when global state was nil
-    - Added more robust state initialization for button click handling
----------------------------------------------------------------------------------------------------
 Version: 2.1.1
 Date: 2025-01-12
   Bugfixes:
     - Fixed crash when opening inventory or other GUI elements due to uninitialized global state
     - Added defensive initialization checks for global state in GUI event handlers
     - Improved error recovery for GUI events
-    - Fixed crash in on_gui_click event handler when clicking buttons
-    - Added additional state validation for button click events
 ---------------------------------------------------------------------------------------------------
 Version: 2.1.0
 Date: 2025-01-12

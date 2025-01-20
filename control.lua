@@ -898,85 +898,66 @@ local function on_player_joined(event)
 end
 
 local function on_gui_click(event)
-    local player = event.player_index and game.players[event.player_index]
-    if not player or not player.valid then return end
-    local button_flow = mod_gui.get_button_flow(player)
-    
-    -- Ensure global state exists
-    if not global then
-        logging.warning("State", "Global table is nil in on_gui_click, reinitializing", player)
-        global = {}
-    end
-    
-    -- Ensure player table exists
-    if not global.player then
-        logging.warning("State", "Player table is nil in on_gui_click, reinitializing", player)
-        global.player = {}
-    end
-    
-    -- Ensure player state exists
-    if not global.player[player.index] then
-        logging.debug("Player", "Setting up player in on_gui_click: " .. player.name, player)
-        setup_player(player)
-    end
-    
-    if script.active_mods["YARM"] then update_yarm_button(event) end
+	local player = event.player_index and game.players[event.player_index]
+	if not player or not player.valid then return end
+	local button_flow = mod_gui.get_button_flow(player)
+	if script.active_mods["YARM"] then update_yarm_button(event) end
 
-    global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
+	global.player[player.index].checknexttick = global.player[player.index].checknexttick + 1
 
-    if script.active_mods["clock"] and button_flow.clockGUI then
-        if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
-            button_flow.clockGUI.style = "todo_button_default_snouz_selected"
-        else
-            button_flow.clockGUI.style = "todo_button_default_snouz"
-        end
-    end
+	if script.active_mods["clock"] and button_flow.clockGUI then
+		if player.gui.left.mod_gui_frame_flow and player.gui.left.mod_gui_frame_flow.clock_gui and player.gui.left.mod_gui_frame_flow.clock_gui.visible then
+			button_flow.clockGUI.style = "todo_button_default_snouz_selected"
+		else
+			button_flow.clockGUI.style = "todo_button_default_snouz"
+		end
+	end
 
-    local buttname = ""
-    if event.element and event.element.name then
-        buttname = event.element.name
-    else
-        return
-    end
+	local buttname = ""
+	if event.element and event.element.name then
+		buttname = event.element.name
+	else
+		return
+	end
 
-        --force closed if button clicked
-    if script.active_mods["pycoalprocessing"] then
-        if buttname == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
-            player.gui.screen.wiki_frame.destroy()
-        end
-    end
-    if script.active_mods["SolarRatio"] then
-        if buttname == "niet-sr-guibutton" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
-            player.gui.center["niet-sr-guiframe"].destroy()
-        end
-    end
-    if script.active_mods["CitiesOfEarth"] then
-        if buttname == "coe_button_show_targets" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
-            player.gui.center["coe_choose_target"].destroy()
-        end
-    end
+		--force closed if button clicked
+	if script.active_mods["pycoalprocessing"] then
+		if buttname == "pywiki" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+			player.gui.screen.wiki_frame.destroy()
+		end
+	end
+	if script.active_mods["SolarRatio"] then
+		if buttname == "niet-sr-guibutton" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+			player.gui.center["niet-sr-guiframe"].destroy()
+		end
+	end
+	if script.active_mods["CitiesOfEarth"] then
+		if buttname == "coe_button_show_targets" and event.element.style and event.element.style.name and event.element.style.name == settings.get_player_settings(player)["gu_button_style_setting"].value .. "_selected" then
+			player.gui.center["coe_choose_target"].destroy()
+		end
+	end
 
-    if script.active_mods["automatic-belt-direction"] then
-        if buttname == "abdgui" then
-            if player.gui.top.abdgui and player.gui.top.abdgui.sprite == "abd-gui-on" then
-                event.element.sprite = "abd_on_button"
-                event.element.tooltip = {'guiu.abd_on_button'}
-            else
-                event.element.sprite = "abd_off_button"
-                event.element.tooltip = {'guiu.abd_off_button'}
-            end
-        end
-    end
+	if script.active_mods["automatic-belt-direction"] then
+		if buttname == "abdgui" then
+			if player.gui.top.abdgui and player.gui.top.abdgui.sprite == "abd-gui-on" then
+				event.element.sprite = "abd_on_button"
+				event.element.tooltip = {'guiu.abd_on_button'}
+			else
+				event.element.sprite = "abd_off_button"
+				event.element.tooltip = {'guiu.abd_off_button'}
+			end
+		end
+	end
 
-    --[[if buttname == "gu_ltnm-toggle-gui" then
-        --game.print("11111111")
-        if game.shortcut_prototypes["ltnm-toggle-gui"] then
-            --game.print(game.shortcut_prototypes["ltnm-toggle-gui"])
-            player.set_shortcut_toggled("ltnm-toggle-gui", not player.is_shortcut_toggled("ltnm-toggle-gui"))
-        end
-    end]]
+	--[[if buttname == "gu_ltnm-toggle-gui" then
+		--game.print("11111111")
+		if game.shortcut_prototypes["ltnm-toggle-gui"] then
+			--game.print(game.shortcut_prototypes["ltnm-toggle-gui"])
+			player.set_shortcut_toggled("ltnm-toggle-gui", not player.is_shortcut_toggled("ltnm-toggle-gui"))
+		end
+	end]]
 
-    if activedebug or player == game.players["snouz"] then debug_button(event) end
+	if activedebug or player == game.players["snouz"] then debug_button(event) end
 end
 
 local function on_hivemindchange(event)
