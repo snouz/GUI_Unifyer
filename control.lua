@@ -665,10 +665,40 @@ local function general_update()
 end
 
 local function general_update_event(event)
-	local player = event.player_index and game.players[event.player_index]
-	if not player or not player.valid then return end
-	if not global.player or not global.player[event.player_index] then setup_player(player) end
-	global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
+    -- First verify we have a valid player
+    local player = event.player_index and game.players[event.player_index]
+    if not player or not player.valid then 
+        log_debug("Invalid player in general_update_event")
+        return 
+    end
+
+    -- Initialize global if it doesn't exist
+    if not global then
+        log_debug("global table is nil in general_update_event, reinitializing...")
+        global = {}
+    end
+
+    -- Initialize global.player if it doesn't exist
+    if not global.player then
+        log_debug("global.player table is nil in general_update_event, reinitializing...")
+        global.player = {}
+    end
+
+    -- Setup player if needed and increment check counter
+    if not global.player[event.player_index] then
+        log_debug("Setting up player " .. player.name)
+        setup_player(player)
+    end
+
+    -- Verify setup succeeded
+    if global.player[event.player_index] then
+        global.player[event.player_index].checknexttick = global.player[event.player_index].checknexttick + 1
+    else
+        log_debug("Failed to setup player " .. player.name .. ", creating minimal state")
+        global.player[event.player_index] = {
+            checknexttick = 1
+        }
+    end
 end
 
 local function on_configuration_changed()
@@ -684,15 +714,35 @@ end
 
 local function on_player_joined(event)
     local player = event.player_index and game.players[event.player_index]
-    if player and player.valid then
-        log_debug("Player joined: " .. player.name .. " (index: " .. player.index .. ")")
+    if not player or not player.valid then
+        log_debug("Invalid player in on_player_joined")
+        return
     end
     
-    -- Get button flow first to match your original structure
-    local button_flow = mod_gui.get_button_flow(player)
-    general_update_event(event)
+    log_debug("Player joined: " .. player.name .. " (index: " .. player.index .. ")")
+    
+    -- Wrap the general_update_event call in pcall for safety
+    local status, err = pcall(function()
+        general_update_event(event)
+    end)
+    
+    if not status then
+        log_debug("Error in general_update_event during player join: " .. tostring(err))
+        -- Attempt recovery
+        if not global then
+            global = {}
+        end
+        if not global.player then
+            global.player = {}
+        end
+        if not global.player[event.player_index] then
+            global.player[event.player_index] = {
+                checknexttick = 0
+            }
+        end
+    end
 
-    -- Keep the EvoGUI handling as it was in your original code
+    -- Keep the EvoGUI handling as it was
     if script.active_mods["EvoGUI"] then
         if player.gui.top.evogui_root then
             log_debug("Destroying and recreating EvoGUI for " .. player.name)

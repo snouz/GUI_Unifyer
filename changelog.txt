@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.7
+Date: 2024.10.31
+  Bugfixes:
+    - Fixed crash occurring during player join events on dedicated servers
+    - Added defensive initialization of global state during player events
+    - Improved error handling for multiplayer synchronization
+  Changes:
+    - Enhanced error recovery system for player join events
+    - Added additional safety checks for global state management
+    - Improved logging for player join event debugging
+---------------------------------------------------------------------------------------------------
 Version: 2.0.6
 Date: 2024.10.30
   Changes:
