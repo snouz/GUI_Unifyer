@@ -1,4 +1,15 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.5
+Date: 2024.10.30
+  Bugfixes:
+    - Hopefully now fixed a crash occurring on dedicated servers with peaceful mode enabled
+    - Added comprehensive state validation for multiplayer synchronization
+    - Improved error recovery for unexpected state changes
+  Changes:
+    - Enhanced global state management system
+    - Added detailed error logging for better troubleshooting
+    - Improved mod initialization sequence for dedicated servers
+---------------------------------------------------------------------------------------------------
 Version: 2.0.4
 Date: 2024.10.30
   Bugfixes:
