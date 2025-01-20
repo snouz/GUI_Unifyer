@@ -1080,6 +1080,18 @@ local function on_gui_opened(event)
     local player = event.player_index and game.players[event.player_index]
     if not player or not player.valid then return end
     
+    -- Ensure global state exists
+    if not global then
+        logging.warning("State", "Global table is nil in on_gui_opened, reinitializing", player)
+        global = {}
+    end
+    
+    -- Ensure button array exists
+    if not global.gubuttonarray then
+        logging.warning("State", "Button array missing in on_gui_opened, reinitializing", player)
+        init_button_array()
+    end
+    
     -- Similar to on_gui_closed
     if global.gubuttonarray then
         for _, entry in pairs(global.gubuttonarray) do

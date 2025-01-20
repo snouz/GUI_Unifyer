@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.1.1
+Date: 2025-01-12
+  Bugfixes:
+    - Fixed crash when opening inventory or other GUI elements due to uninitialized global state
+    - Added defensive initialization checks for global state in GUI event handlers
+    - Improved error recovery for GUI events
+---------------------------------------------------------------------------------------------------
 Version: 2.1.0
 Date: 2025-01-12
   Bugfixes:
